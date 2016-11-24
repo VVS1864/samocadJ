@@ -1,10 +1,11 @@
 package samoJ;
 
-class Line {
-	Coord C1, C2;
+class Line extends Shape {
 
-	Line(Coord C1, Coord C2) {
-		this.C1 = C1;
-		this.C2 = C2;
+	public Line(Coord[] newCoords) {
+		super(newCoords);
+		// TODO Auto-generated constructor stub
 	}
+
+
 }
