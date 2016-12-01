@@ -29,11 +29,11 @@ public class Zoom {
 		double s;
 
 		if (notches > 0) {
-			//System.out.println("Mouse wheel moved UP " + -notches + " notch(es)");
+			
 			s = Values.scale_size;
 
 		} else {
-			//System.out.println("Mouse wheel moved DOWN " + notches + " notch(es)");
+			
 			s = 1.0 / Values.scale_size;
 		}
 

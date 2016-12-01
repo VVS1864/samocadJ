@@ -191,7 +191,7 @@ public class cad_demo {
 		
 		final JPanel bot_panel = new JPanel();
 		
-		//bot_panel.setComponentOrientation(ComponentOrientation.);
+		
 		bot_panel.setLayout(new BoxLayout(bot_panel, BoxLayout.Y_AXIS));
 		
 		final JPanel cmd_panel = new JPanel();
