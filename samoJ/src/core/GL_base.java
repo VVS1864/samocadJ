@@ -1,6 +1,11 @@
 package core;
 import java.nio.FloatBuffer;
+
 import org.apache.commons.lang3.ArrayUtils;	
+
+import samoJ.Line;
+import samoJ.Shape;
+
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -18,8 +23,8 @@ public class GL_base {
 	static int N = 20000;// number of vertices
 
 	static FloatBuffer fbVertices;
-	static float[] vertices = new float[N * 3];
-
+	//static float[] vertices = new float[N * 3];
+	static float[] vertices;
 	static FloatBuffer fbDinamicVertices;
 	public static float[] dinamic_vertices = new float[4 * 3];
 
@@ -56,19 +61,46 @@ public class GL_base {
 			vertices[idx * 3 + 1] = ((float) randomInt2);// y
 			vertices[idx * 3 + 2] = ((float) 0);
 		}*/
-		List<Float> list1 = new LinkedList<Float>();
+		long t1 =System.currentTimeMillis();
+		
+		LinkedList<Float> list1 = new LinkedList<Float>();
+		/*
 		for (int idx = 0; idx <= N - 1; ++idx) {
 			//int randomInt = randomGenerator.nextInt(1200);
 			list1.add( (float)randomGenerator.nextInt(1200));
 			list1.add( (float)randomGenerator.nextInt(1200));
 			list1.add( 0f);
 		}
-		
-		
+		*/
+		List<Shape> theShapes = new LinkedList<Shape>();
+		for (int idx = 0; idx <= N - 1; ++idx) {
+			float x1, y1, x2, y2;
+			x1 = (float)randomGenerator.nextInt(1200);
+			y1 = (float)randomGenerator.nextInt(1200);
+			x2 = (float)randomGenerator.nextInt(1200);
+			y2 = (float)randomGenerator.nextInt(1200);
+			
+			theShapes.add(new Line(x1, y1, 0.0f, x2, y2, 0.0f));
+			//int randomInt = randomGenerator.nextInt(1200);
+			
+		}
 		//list1.addAll(list2);
 		// convert List<Float> to float[]
+		long t2= System.currentTimeMillis();
+		System.out.println("Генерация "+(t2 - t1));
+	
+		t1 =System.currentTimeMillis();
+		//vertices = ArrayUtils.toPrimitive(list1.toArray(new Float[list1.size()]));
+		for (Shape sh: theShapes) {
+			list1.addAll(sh.toList());
+		}
+		t2= System.currentTimeMillis();
+		System.out.println("Shape to List "+(t2 - t1));
+		
 		vertices = ArrayUtils.toPrimitive(list1.toArray(new Float[list1.size()]));
-
+		
+		
+		
 		fbVertices = Buffers.newDirectFloatBuffer(vertices);
 		gl2.glGenBuffers(1, vbo_buffer, 0);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
