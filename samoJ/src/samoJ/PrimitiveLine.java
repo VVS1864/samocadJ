@@ -1,3 +1,5 @@
+package samoJ;
+
 import java.util.LinkedList;
 
 /**
