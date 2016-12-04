@@ -1,7 +1,5 @@
 package samoJ;
 
-import core.Values;
-
 public class Circle extends Shape {
 	Coord theCenter;
 	int Radius;
@@ -14,55 +12,41 @@ public class Circle extends Shape {
 	 * @param y1
 	 * @param z1
 	 */
-	
-	public Circle(int Radius, int x1, int y1, int z1) {
-		create_circle(Radius, x1, y1);
+
+	public Circle(int r, int x1, int y1, int z1) {
+		theCenter = new Coord(x1, y1, z1);
+		Radius = r;
+		create_circle();
 	}
 
 	public Circle(int rx, int ry, int rz, int x2, int y2, int z2) {
-		int xd = rx - x2;
+		this((int)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2);
+		/*int xd = rx - x2;
 		int yd = ry - y2;
 		int r = (int) Math.sqrt(xd * xd + yd * yd);
-		create_circle(r, x2, y2);
+		create_circle();
+		*/
+
 	}
 
-	public void create_circle(int Radius, int x1, int y1) {
-		// int[] lines = circle_lines(Radius, x1, y1); красота!!!
-		
-		int[] lines = circle_points(Radius, x1, y1);
+	public void create_circle() {
+		// int[] lines = circle_lines(Radius, theCenter.x, theCenter.y); красота!!!
 
-		for (int i = 0; i < lines.length - 2; i += 2) {
-			//super.add(new DashedLine(lines[i], lines[i + 1], 0,
-			//		lines[i + 2], lines[i + 3], 0));
-			
-			super.add(new DashedLine(lines[i], lines[i + 1], 0,
-					lines[i + 2], lines[i + 3], 0, Values.stipple_factor, Values.stipple));
+		int[] points = circle_points();
+
+		for (int i = 0; i < points.length - 2; i += 2) {
+
+			add(new PrimitiveLine(points[i], points[i + 1], 0,
+					points[i + 2], points[i + 3], 0));
 		}
-		//super.add(new DashedLine(lines[lines.length - 2],
-		//		lines[lines.length - 1], 0, lines[0], lines[1], 0));
-		
-		super.add(new DashedLine(lines[lines.length - 2],
-				lines[lines.length - 1], 0, lines[0], lines[1], 0, Values.stipple_factor, Values.stipple));
+		// last segment from last to first point
+		add(new PrimitiveLine(points[points.length - 2],
+				points[points.length - 1], 0, points[0], points[1], 0));
 
-		/*
-		 * thePointData = circle_lines(Radius, x1, y1); //core.GL_base.list1 =
-		 * ArrayUtils.addAll(core.GL_base.list1, thePointData);
-		 * 
-		 * int[] array1and2 = new int[core.GL_base.list1.length +
-		 * thePointData.length];
-		 * 
-		 * System.arraycopy(core.GL_base.list1, 0, array1and2, 0,
-		 * core.GL_base.list1.length); System.arraycopy(thePointData, 0,
-		 * array1and2, core.GL_base.list1.length, thePointData.length);
-		 * core.GL_base.list1 = array1and2;
-		 */
-		
-		// crosshairs in center of circle
+		// Crossers in center of circle
 		int s = Radius / 20;
-		super.add(new DashedLine(x1-s, y1, 0, x1+s, y1, 0));
-		super.add(new DashedLine(x1, y1-s, 0, x1, y1+s, 0));
-		
-		
+		add(new PrimitiveLine(theCenter.x - s, theCenter.y, 0, theCenter.x + s, theCenter.y, 0));
+		add(new PrimitiveLine(theCenter.x, theCenter.y - s, 0, theCenter.x, theCenter.y + s, 0));
 
 	}
 
@@ -74,7 +58,7 @@ public class Circle extends Shape {
 	 * @param y
 	 * @return
 	 */
-	public static int[] circle_points(int Radius, int xr, int yr) {
+	public int[] circle_points() {
 		int segments = core.Values.circle_segments;
 		int[] lines = new int[segments * 2];
 		// int w, h = 2.0f*Radius;
@@ -83,46 +67,18 @@ public class Circle extends Shape {
 
 		for (int i = 0; i < segments; i++) {
 
-			lines[i * 2] = (int) (Radius * Math.cos(theta) + xr);
-			lines[i * 2 + 1] = (int) (Radius * Math.sin(theta) + yr);
+			lines[i * 2] = (int) (Radius * Math.cos(theta) + theCenter.x);
+			lines[i * 2 + 1] = (int) (Radius * Math.sin(theta) + theCenter.y);
 
 			theta += angle_increment;
 		}
 		return lines;
 	}
 
-	/*
-	 * public static LinkedList<Double> circle_lines_(double Radius, double x,
-	 * double y) { int segments = core.Values.circle_segments; int d = segments
-	 * * 6; LinkedList<Double> lines = new LinkedList<Double>(); // double w, h
-	 * = 2.0f*Radius; double angle_increment = (double) Math.PI * 2.0f /
-	 * segments; double theta = 0; double x1 = x+Radius; double y1 = y;
-	 * lines.add(x1); lines.add(y1); lines.add(0.0); for (int i = 3; i < d-6;
-	 * i+=6) { theta += angle_increment;
-	 * 
-	 * double x2 = Radius * (double) Math.cos(theta) + x; double y2 = Radius *
-	 * (double) Math.sin(theta) + y; double z2 = 0.0f; lines.add(x2);
-	 * lines.add(y2); lines.add(z2); lines.add(x2); lines.add(y2);
-	 * lines.add(z2); } lines.add(x1); lines.add(y1); lines.add(0.0); return
-	 * lines; }
-	 * 
-	 * public static double[] circle_lines(double Radius, double x, double y) {
-	 * int segments = core.Values.circle_segments; int d = segments * 6;
-	 * double[] lines = new double[d]; // double w, h = 2.0f*Radius; double
-	 * angle_increment = (double) Math.PI * 2.0f / segments; double theta = 0;
-	 * double x1 = x+Radius; double y1 = y; lines[0] = x1; lines[1] = y1;
-	 * lines[2] = 0.0f; for (int i = 3; i < d-6; i+=6) { theta +=
-	 * angle_increment;
-	 * 
-	 * double x2 = Radius * (double) Math.cos(theta) + x; double y2 = Radius *
-	 * (double) Math.sin(theta) + y; double z2 = 0.0f; lines[i] = x2; lines[i+1]
-	 * = y2; lines[i+2] = z2; lines[i+3] = x2; lines[i+4] = y2; lines[i+5] = z2;
-	 * } lines[d-3] = x1; lines[d-2] = y1; lines[d-1] = 0.0f; return lines; }
-	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		// Circle c = new Circle(5.0f, 15.0f, 0.0f, 25.0f, 30.0f, 0.0f);
-		// System.out.println(c.toList());
+		Circle c = new Circle(5, 15, 0, 25, 30, 0);
+		System.out.println(c.toList());
 	}
 
 }

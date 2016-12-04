@@ -80,8 +80,9 @@ public class GL_base {
 			x2 =  randomGenerator.nextInt(1200);
 			y2 =  randomGenerator.nextInt(1200);
 
-			theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
+			//theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//theShapes.add(new Line(x1, y1, 0, x2, y2, 0));
+			theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 50, new int[]{1,1}));
 			// int randomInt = randomGenerator.nextInt(1200);
 
 		}
