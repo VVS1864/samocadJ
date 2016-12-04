@@ -6,6 +6,8 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.awt.GLCanvas;
 
+import core.navigation.Plan_motion;
+import core.navigation.Zoom;
 import mudules.Standart;
 
 import javax.swing.JFrame;
@@ -14,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout; 
 import java.awt.BorderLayout;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
+//import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -34,22 +36,9 @@ import java.awt.event.KeyListener;
 public class cad_demo {
 
 	static boolean mouse_plan_motion = false;
-	static double[] mouse = new double[2];
-	static GLCanvas glcanvas;
-
-	public static void plan_motion(GLCanvas glcanvas, float x, float y) {
-
-		double[] real_coords = GL_base.get_real_coords(glcanvas, x, y);
-		double dx = real_coords[0] - mouse[0];
-		double dy = real_coords[1] - mouse[1];
-
-		double[] m = { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
-				0.0, dx, dy, 0.0, 1.0 };
-
-		GL_base.general_matrix = m.clone();
-		glcanvas.display();
-	}
-
+	public static double[] mouse = new double[2];
+	public static GLCanvas glcanvas;
+	
 	public static void main(String[] args) {
 		GLProfile glprofile = GLProfile.getDefault();
 		GLCapabilities glcapabilities = new GLCapabilities(glprofile);
@@ -109,7 +98,7 @@ public class cad_demo {
 			public void mouseReleased(MouseEvent e) {
 				if (e.getButton() == MouseEvent.BUTTON2) {
 					System.out.println("Button 2 released...");
-					plan_motion(glcanvas, e.getX(), e.getY());
+					Plan_motion.plan_motion(glcanvas, e.getX(), e.getY());
 					mouse_plan_motion = false;
 
 				}
@@ -122,8 +111,8 @@ public class cad_demo {
 
 				double[] xy = GL_base.get_real_coords(glcanvas, e.getX(),
 						e.getY());
-				float x = (float)xy[0];
-				float y = (float)xy[1];
+				double x = (double)xy[0];
+				double y = (double)xy[1];
 				info_down.setText("Coordinates: X "+ String.format("%.2f", x) + "; Y "
 						+ String.format("%.2f", y) + ";");
 
@@ -133,7 +122,7 @@ public class cad_demo {
 
 				if (mouse_plan_motion == true) {
 
-					plan_motion(glcanvas, e.getX(), e.getY());
+					Plan_motion.plan_motion(glcanvas, e.getX(), e.getY());
 
 				}
 			}
@@ -143,8 +132,8 @@ public class cad_demo {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int notches = -e.getWheelRotation();
-				float x = e.getX();
-				float y = e.getY();
+				double x = e.getX();
+				double y = e.getY();
 				Zoom.zoom(x, y, notches);
 
 			}

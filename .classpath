@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="samoJ/src"/>
+	<classpathentry kind="lib" path="samoJ/lib/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/gluegen-rt-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/gluegen-rt-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/gluegen-rt-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/Jama-1.0.3.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/jogl-all-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/jogl-all-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="samoJ/lib/jogl-all.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="samoJ/bin"/>
+</classpath>
