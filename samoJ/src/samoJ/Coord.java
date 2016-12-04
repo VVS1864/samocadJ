@@ -1,8 +1,9 @@
 package samoJ;
+//import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
- * It is an point, non-graphical, with 3 coordinates x,y,z Currently float is
+ * It is an point, non-graphical, with 3 coordinates x,y,z Currently Integer is
  * the type of coordinates
  * 
  * @author E.Askadullin
@@ -10,26 +11,34 @@ import java.util.LinkedList;
  */
 
 public class Coord {
-	float x, y, z;
+	int x, y, z;
+	//Integer c[];
 
-	Coord(float x, float y, float z) {
+	Coord(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-
+		//c = new Integer[] {x,y,z};
+	
 	}
-
-	public LinkedList<Float> toList() {
-		LinkedList<Float> ret = new LinkedList<Float>();
+	/**
+	 * 
+	 * @return list for GL rendering
+	 */
+	public LinkedList<Integer> toList() {
+		LinkedList<Integer> ret = new LinkedList<Integer>();
 		ret.add(x);
 		ret.add(y);
 		ret.add(z);
+		//for (Integer theC:c) ret.add(theC);
 		return ret;
+		//return (LinkedList)Arrays.asList(c);
 	}
-
+	
+	// Simple testing
 	public static void main(String[] args) {
 
-		Coord c = new Coord(1.0f, 2.0f, 3.0f);
+		Coord c = new Coord(1, 2, 3);
 		System.out.println(c.toList());
 	}
 

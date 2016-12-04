@@ -8,23 +8,23 @@ public class Zoom {
 	public static void button_zoom(char c){
 		if (c == '+'){
 			int notches = 1;
-			float x = GL_base.viewport[2]/2;
-			float y = GL_base.viewport[3]/2;
+			double x = GL_base.viewport[2]/2;
+			double y = GL_base.viewport[3]/2;
 			zoom(x, y, notches);
 			System.out.println("+");
 			
 		}else
 		if (c == '-'){
 			int notches = -1;
-			float x = GL_base.viewport[2]/2;
-			float y = GL_base.viewport[3]/2;
+			double x = GL_base.viewport[2]/2;
+			double y = GL_base.viewport[3]/2;
 			zoom(x, y, notches);
 			System.out.println("-");
 		}
 	}
 	
 	
-	static void zoom(float x, float y, int notches) {
+	static void zoom(double x, double y, int notches) {
 		GLCanvas glcanvas = cad_demo.glcanvas;
 		double s;
 

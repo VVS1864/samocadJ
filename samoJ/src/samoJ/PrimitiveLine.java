@@ -17,13 +17,12 @@ public class PrimitiveLine {
 		this.c2 = c2;
 	}
 
-	PrimitiveLine(float x1, float y1, float z1, float x2, float y2, float z2) {
+	PrimitiveLine(int x1, int y1, int z1, int x2, int y2, int z2) {
 		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2));
 	}
 
-	public LinkedList<Float> toList() {
-		LinkedList<Float> ret = new LinkedList<Float>();
-		ret.addAll(c1.toList());
+	public LinkedList<Integer> toList() {
+		LinkedList<Integer> ret = c1.toList();
 		ret.addAll(c2.toList());
 		return ret;
 	}

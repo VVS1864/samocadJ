@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout; 
 import java.awt.BorderLayout;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
+//import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -37,7 +37,7 @@ public class cad_demo {
 	static double[] mouse = new double[2];
 	static GLCanvas glcanvas;
 
-	public static void plan_motion(GLCanvas glcanvas, float x, float y) {
+	public static void plan_motion(GLCanvas glcanvas, double x, double y) {
 
 		double[] real_coords = GL_base.get_real_coords(glcanvas, x, y);
 		double dx = real_coords[0] - mouse[0];
@@ -122,8 +122,8 @@ public class cad_demo {
 
 				double[] xy = GL_base.get_real_coords(glcanvas, e.getX(),
 						e.getY());
-				float x = (float)xy[0];
-				float y = (float)xy[1];
+				double x = (double)xy[0];
+				double y = (double)xy[1];
 				info_down.setText("Coordinates: X "+ String.format("%.2f", x) + "; Y "
 						+ String.format("%.2f", y) + ";");
 
@@ -143,8 +143,8 @@ public class cad_demo {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				int notches = -e.getWheelRotation();
-				float x = e.getX();
-				float y = e.getY();
+				double x = e.getX();
+				double y = e.getY();
 				Zoom.zoom(x, y, notches);
 
 			}
