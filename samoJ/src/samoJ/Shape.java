@@ -17,7 +17,7 @@ public class Shape {
 
 	public Shape() {
 		PrimLines = new LinkedList<PrimitiveLine>();
-		System.out.println("The constructor Shape()");
+		//System.out.println("The constructor Shape()");
 	}
 
 	public LinkedList<Integer> toList() {

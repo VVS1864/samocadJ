@@ -23,7 +23,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	static int N = 2;// number of vertices
+	static int N = 20;// number of vertices
 	
 	static IntBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -82,7 +82,7 @@ public class GL_base {
 
 			//theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//theShapes.add(new Line(x1, y1, 0, x2, y2, 0));
-			theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 50, new int[]{1,1}));
+			theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new int[]{1,1}));
 			// int randomInt = randomGenerator.nextInt(1200);
 
 		}
