@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
+
+import core.navigation.Zoom;
+
 //import javax.swing.ImageIcon;
 //import java.net.URL;
 import java.awt.event.ActionEvent;
@@ -19,7 +22,7 @@ public class Standart {
 		button.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				core.Zoom.button_zoom('+');
+				Zoom.button_zoom('+');
 			}
 			});
 		
@@ -29,7 +32,7 @@ public class Standart {
 		button.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				core.Zoom.button_zoom('-');
+				Zoom.button_zoom('-');
 			}
 			});
 		
