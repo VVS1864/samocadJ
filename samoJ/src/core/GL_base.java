@@ -23,7 +23,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	static int N = 20;// number of vertices
+	static int N = 20000;// number of vertices
 	
 	static IntBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -124,7 +124,7 @@ public class GL_base {
 		
 		t2 = System.currentTimeMillis();
 		System.out.println("List to array: " + (t2 - t1)+ " ms.");
-		System.out.println("size of vertices  " + vertices.length+ ", lines=" + vertices.length/6);
+		System.out.println("size of vertices  " + vertices.length+ ", primitive lines=" + vertices.length/6);
 		
 		t1 = System.currentTimeMillis();
 		fbVertices = Buffers.newDirectIntBuffer(vertices);
