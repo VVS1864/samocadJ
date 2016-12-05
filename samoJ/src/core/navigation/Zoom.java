@@ -1,7 +1,10 @@
-package core;
+package core.navigation;
 import com.jogamp.opengl.awt.GLCanvas;
 
 import Jama.Matrix;
+import core.GL_base;
+import core.Values;
+import core.cad_demo;
 
 public class Zoom {
 	
@@ -24,7 +27,7 @@ public class Zoom {
 	}
 	
 	
-	static void zoom(double x, double y, int notches) {
+	public static void zoom(double x, double y, int notches) {
 		GLCanvas glcanvas = cad_demo.glcanvas;
 		double s;
 

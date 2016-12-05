@@ -23,7 +23,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	static int N = 20000;// number of vertices
+	static int N = 20;// number of vertices
 	
 	static IntBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -104,9 +104,9 @@ public class GL_base {
 		theShapes.add(new Line(0, 0, 0, 0, 400, 0));
 		theShapes.add(new Line(0, 0, 0, 400, 0, 0));
 		*/
-		System.out.println( N + " фигур");
+		System.out.println( N + " пїЅпїЅпїЅпїЅпїЅ");
 		long t2 = System.currentTimeMillis();
-		System.out.println("Генерация: " + (t2 - t1)+ " ms.");
+		System.out.println("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: " + (t2 - t1)+ " ms.");
 
 		// t1 =System.currentTimeMillis();
 		 //vertices = ArrayUtils.toPrimitive(list1.toArray(new
@@ -124,7 +124,7 @@ public class GL_base {
 		
 		t2 = System.currentTimeMillis();
 		System.out.println("List to array: " + (t2 - t1)+ " ms.");
-		System.out.println("size of vertices  " + vertices.length+ ", primitive lines=" + vertices.length/6);
+		System.out.println("size of vertices  " + vertices.length+ ", lines=" + vertices.length/6);
 		
 		t1 = System.currentTimeMillis();
 		fbVertices = Buffers.newDirectIntBuffer(vertices);
@@ -200,7 +200,7 @@ public class GL_base {
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 	}
 
-	static double[] get_real_coords(GLCanvas glcanvas, double x, double y) {
+	public static double[] get_real_coords(GLCanvas glcanvas, double x, double y) {
 		double wcoord[] = new double[4];
 
 		double realy_y = viewport[3] - y;
