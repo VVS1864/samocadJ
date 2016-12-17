@@ -1,16 +1,14 @@
-package mudules;
+package modules;
 
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class MakeButton {
 	
-	protected static JButton makeButton(String imageName,
+	public static JButton makeButton(String imageName,
 			// actionCommand,
 			String toolTipText,
 			String altText){
@@ -46,4 +44,23 @@ public class MakeButton {
 
 		return button;
 	}
+	
+	public static JLabel makeLabel(String imageName, String altText){
+		String imgLocation = "/res/"
+				+ imageName;
+		URL imageURL = Standart.class.getResource(imgLocation);
+		
+		JLabel label = new JLabel();
+		
+		if (imageURL != null) {                      //image found
+			label.setIcon(new ImageIcon(imageURL, altText));
+		} else {                                     //no image found
+			label.setText(altText);
+			System.err.println("Resource not found: "
+					+ imgLocation);
+		}
+		
+		return label;
+	}
+	
 }
