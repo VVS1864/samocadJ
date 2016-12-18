@@ -23,7 +23,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	static int N = 20;// number of vertices
+	public static int N = 20;// number of vertices
 	
 	static IntBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -49,7 +49,7 @@ public class GL_base {
 	public static double projmatrix[] = new double[16];
 	public static int viewport[] = new int[4];
 
-	protected static void init(GL2 gl2, int width, int height) {
+	public static void init(GL2 gl2, int width, int height) {
 
 		gl2.glMatrixMode(GL2.GL_MODELVIEW);
 		gl2.glLoadIdentity();
@@ -143,7 +143,7 @@ public class GL_base {
 
 	}
 
-	protected static void setup(GL2 gl2, int width, int height) {
+	public static void setup(GL2 gl2, int width, int height) {
 
 		gl2.glPushMatrix();
 
@@ -162,7 +162,7 @@ public class GL_base {
 
 	}
 
-	protected static void render(GL2 gl2, int width, int height) {
+	public static void render(GL2 gl2, int width, int height) {
 		gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		gl2.glMatrixMode(GL2.GL_MODELVIEW);
