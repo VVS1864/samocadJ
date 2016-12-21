@@ -3,13 +3,16 @@ package core.GUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import core.program_state;
 import core.navigation.Zoom;
 
 public class gl_key_listener implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent e) {
 		char c = e.getKeyChar();
-		Zoom.button_zoom(c);
+		if (c == '+' | c == '-'){
+			Zoom.button_zoom(c);
+		}
 		
 	}
 
@@ -21,7 +24,10 @@ public class gl_key_listener implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+			System.out.println("Kill");
+			program_state.set_default();
+		}
 		
 	}
 }

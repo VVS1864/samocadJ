@@ -67,15 +67,15 @@ public class GUI {
 
 // Info labels
 		cad_demo.info = new JLabel();
-		cad_demo.info.setText("Comand:");
+		//cad_demo.info.setText("Comand:");
 		cad_demo.info2 = new JLabel();
-		cad_demo.info2.setText(" ");
+		//cad_demo.info2.setText(" ");
 		cad_demo.info_down = new JLabel();
 		cad_demo.info_down.setText("Coordinates: X "+ 0 + "; Y " + 0 + ";");
 		
 		
 //Command line
-		final JTextField cmd = new JTextField(6);
+		cad_demo.cmd = new JTextField(6);
 		
 //Frame for all elements
 		cad_demo.jframe = new JFrame("Cad_demo, display " + GL_base.N
@@ -107,7 +107,7 @@ public class GUI {
 		final JPanel cmd_panel = new JPanel();
 		cmd_panel.setLayout(new BoxLayout(cmd_panel, BoxLayout.X_AXIS));
 		cmd_panel.add(cad_demo.info);
-		cmd_panel.add(cmd);
+		cmd_panel.add(cad_demo.cmd);
 		cmd_panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		//trace buttons container 

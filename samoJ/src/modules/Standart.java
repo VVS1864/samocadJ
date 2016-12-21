@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
 import core.navigation.Zoom;
+import modules.base_draw_entities.base_draw;
+import modules.standard_objects.line.draw_line;
 
 //import javax.swing.ImageIcon;
 //import java.net.URL;
@@ -40,6 +42,14 @@ public class Standart {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Zoom.button_zoom('-');
+			}
+			});
+		
+		button_line.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				draw_line draw_action = new draw_line();
 			}
 			});
 		
