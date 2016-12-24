@@ -4,8 +4,8 @@ public class Line extends Shape {
 	// Not dashed line
 	public Line(int x1, int y1, int z1, int x2, int y2, int z2) {
 		add(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
-		System.out.println("factor="+ factor);
-		System.out.println("mask="+mask);
+		//System.out.println("factor="+ factor);
+		//System.out.println("mask="+mask);
 	}
 	// 
 	public Line(int x1, int y1, int z1, int x2, int y2, int z2, double factor,
@@ -27,7 +27,7 @@ public class Line extends Shape {
 		}
 		int dx = x2 - x1;
 		int dy = y2 - y1;
-		double sq = Math.sqrt(dx * dx + dy * dy); // проверить на ноль
+		double sq = Math.sqrt(dx * dx + dy * dy); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ
 		double den_x = (dx / sq);// * factor;
 		double den_y = (dy / sq);// * factor;
 		int i = 0;

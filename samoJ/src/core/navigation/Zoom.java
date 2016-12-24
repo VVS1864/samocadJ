@@ -7,20 +7,30 @@ import core.Values;
 import core.cad_demo;
 
 public class Zoom {
+	public static double[] get_real_coords_of_screen(){
+		double x = GL_base.viewport[2]/2;
+		double y = GL_base.viewport[3]/2;
+		double[] real_coords = GL_base.get_real_coords(cad_demo.glcanvas, x, y);
+		
+		return real_coords;
+		
+	}
 	
 	public static void button_zoom(char c){
 		if (c == '+'){
 			int notches = 1;
-			double x = GL_base.viewport[2]/2;
-			double y = GL_base.viewport[3]/2;
+			double [] real_centr_coords = get_real_coords_of_screen();
+			double x = real_centr_coords[0];
+			double y = real_centr_coords[1];
 			zoom(x, y, notches);
 			System.out.println("+");
 			
 		}else
 		if (c == '-'){
 			int notches = -1;
-			double x = GL_base.viewport[2]/2;
-			double y = GL_base.viewport[3]/2;
+			double [] real_centr_coords = get_real_coords_of_screen();
+			double x = real_centr_coords[0];
+			double y = real_centr_coords[1];
 			zoom(x, y, notches);
 			System.out.println("-");
 		}
@@ -28,7 +38,7 @@ public class Zoom {
 	
 	
 	public static void zoom(double x, double y, int notches) {
-		GLCanvas glcanvas = cad_demo.glcanvas;
+		//GLCanvas glcanvas = cad_demo.glcanvas;
 		double s;
 
 		if (notches > 0) {
@@ -40,10 +50,10 @@ public class Zoom {
 			s = 1.0 / Values.scale_size;
 		}
 
-		double[] real_coords = GL_base.get_real_coords(glcanvas, x, y);
+		//double[] real_coords = GL_base.get_real_coords(glcanvas, x, y);
 
-		double gl_x = real_coords[0];
-		double gl_y = real_coords[1];
+		double gl_x = x;//real_coords[0];
+		double gl_y = y; //real_coords[1];
 
 		double new_scale = Values.current_scale / s;
 		System.out.println(new_scale);
@@ -72,7 +82,7 @@ public class Zoom {
 		Matrix zoom_m = translate_m.times(scale_m).times(translate2_m);					
 		double[] zoom_matrix = zoom_m.getRowPackedCopy();
 		GL_base.general_matrix = zoom_matrix.clone();					
-		glcanvas.display();	
+		cad_demo.glcanvas.display();	
 		
 		Values.current_scale = new_scale;
 		
