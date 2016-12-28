@@ -17,7 +17,7 @@ public class MakeButton {
 		//Look for the image.
 		String imgLocation = "/res/"
 				+ imageName;
-		URL imageURL = Standart.class.getResource(imgLocation);
+		URL imageURL = Object.class.getResource(imgLocation);
 
 		//Create and initialize the button.
 		JButton button = new JButton();

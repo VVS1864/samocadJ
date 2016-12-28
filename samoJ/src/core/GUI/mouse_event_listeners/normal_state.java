@@ -73,14 +73,11 @@ public class normal_state extends mouse_state{
 		//Updating coordinates of cursor
 		//this is unique place for get real coords of cursor
 		
-		double[] xy = GL_base.get_real_coords(cad_demo.glcanvas, e.getX(),
+		cad_demo.cursor_coords = GL_base.get_real_coords(cad_demo.glcanvas, e.getX(),
 				e.getY());
-		double x = (double)xy[0];
-		double y = (double)xy[1];
-		cad_demo.cursor_coords[0] = x;
-		cad_demo.cursor_coords[1] = y;
-		cad_demo.info_down.setText("Coordinates: X "+ String.format("%.2f", x) + "; Y "
-				+ String.format("%.2f", y) + ";");
+		double[] xy = cad_demo.cursor_coords;
+		cad_demo.info_down.setText("Coordinates: X "+ String.format("%.2f", xy[0]) + "; Y "
+				+ String.format("%.2f", xy[1]) + ";");
 		
 	}
 	

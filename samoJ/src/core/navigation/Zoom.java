@@ -34,7 +34,7 @@ public class Zoom {
 	}
 
 	// For "public static void button_zoom(char c)"
-	public static void button_zoom_doing(int nt) {
+	private static void button_zoom_doing(int nt) {
 		double [] real_centr_coords = get_real_coords_of_screen();
 		double x = real_centr_coords[0];
 		double y = real_centr_coords[1];

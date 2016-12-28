@@ -9,7 +9,10 @@ import core.cad_demo;
  * @author vlad
  *
  */
-public class base_draw_class{
+public class base_draw_class
+
+
+{
 	
 	//Points for create object
 	public int x1;
