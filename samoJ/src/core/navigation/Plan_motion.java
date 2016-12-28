@@ -16,14 +16,13 @@ public class Plan_motion {
 		double dy = /*real_coords[1]*/y - cad_demo.mouse[1];
 
 		double[] m = { 
-				1.0, 0.0, 0.0, 
-				0.0, 0.0, 1.0, 
-				0.0, 0.0, 0.0, 
-				0.0, 1.0, 0.0, 
+				1.0, 0.0, 0.0, 0.0,
+				0.0, 1.0, 0.0, 0.0, 
+				0.0, 0.0, 1.0, 0.0, 
 				dx, dy, 0.0, 1.0 
 		};
 
-		GL_base.general_matrix = m.clone();
+		GL_base.general_matrix = m;
 		glcanvas.display();
 	}
 }
