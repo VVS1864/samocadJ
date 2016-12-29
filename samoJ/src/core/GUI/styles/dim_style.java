@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import core.Values;
-import core.cad_demo;
+import core.Global_var;
 import modules.MakeButton;
 
 public class dim_style extends base_style_dialog{
@@ -24,7 +24,7 @@ public class dim_style extends base_style_dialog{
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
 				dispose();
-				cad_demo.dim_style = null;
+				Global_var.dim_style = null;
 			}	
 		});
 		

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import core.Values;
-import core.cad_demo;
+import core.Global_var;
 
 public class text_style extends base_style_dialog{
 	public text_style(){
@@ -16,7 +16,7 @@ public class text_style extends base_style_dialog{
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
 				dispose();
-				cad_demo.text_style = null;
+				Global_var.text_style = null;
 			}
 		});
 		// panel1 - letters width factor
