@@ -1,6 +1,6 @@
 package modules.base_draw_entities;
 
-import core.cad_demo;
+import core.Global_var;
 
 /**
  * Base "entity"-class for process of creating any Shape (line, circle, etc.) 
@@ -33,7 +33,7 @@ public class base_draw_class
 	 */
 	public void init_draw(String message1, String message2, base_draw next_class){
 		set_next(message1, message2, next_class);
-		cad_demo.draw_new_object = true;
+		Global_var.draw_new_object = true;
 
 	}
 	
@@ -46,7 +46,7 @@ public class base_draw_class
 	 */
 	public void draw_1(String message1, String message2, base_draw next_class){
 		set_next(message1, message2, next_class);
-		cad_demo.point_1_coords = cad_demo.cursor_coords.clone();
+		Global_var.point_1_coords = Global_var.cursor_coords.clone();
 	}
 	
 	/**
@@ -58,14 +58,14 @@ public class base_draw_class
 	public void draw_2(String message1, String message2, base_draw next_class){
 		set_next(message1, message2, next_class);
 		
-		cad_demo.point_2_coords = cad_demo.cursor_coords.clone();
+		Global_var.point_2_coords = Global_var.cursor_coords.clone();
 		
-		x1 = (int)cad_demo.point_1_coords[0];
-		y1 = (int)cad_demo.point_1_coords[1];
+		x1 = (int)Global_var.point_1_coords[0];
+		y1 = (int)Global_var.point_1_coords[1];
 		
-		x2 = (int)cad_demo.point_2_coords[0];
-		y2 = (int)cad_demo.point_2_coords[1];
-		cad_demo.point_1_coords = cad_demo.cursor_coords.clone();
+		x2 = (int)Global_var.point_2_coords[0];
+		y2 = (int)Global_var.point_2_coords[1];
+		Global_var.point_1_coords = Global_var.cursor_coords.clone();
 	}
 	
 	/**
@@ -75,9 +75,9 @@ public class base_draw_class
 	 * @param next_class
 	 */
 	public void set_next(String message1, String message2, base_draw next_class){
-		cad_demo.info.setText(message1);
-		cad_demo.info2.setText(message2);
-		cad_demo.current_function = next_class;
+		Global_var.info.setText(message1);
+		Global_var.info2.setText(message2);
+		Global_var.current_function = next_class;
 	}
 	
 }

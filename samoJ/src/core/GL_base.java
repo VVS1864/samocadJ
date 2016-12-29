@@ -68,7 +68,7 @@ public class GL_base {
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
 
-			cad_demo.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
+			Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			// cad_demo.theShapes.add(new Line(x1, y1, 0, x2, y2, 0));
 			// cad_demo.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new
 			// int[]{1,1}));
@@ -110,11 +110,11 @@ public class GL_base {
 	 * Method for update (remove and create new) VBO from theShapes
 	 */
 	public static void update_data() {
-		gl2 = cad_demo.glcanvas.getGL().getGL2();
+		gl2 = Global_var.glcanvas.getGL().getGL2();
 
 		LinkedList<Integer> list1 = new LinkedList<Integer>();
 
-		for (Shape sh : cad_demo.theShapes) {
+		for (Shape sh : Global_var.theShapes) {
 			list1.addAll(sh.toList());
 		}
 
@@ -140,7 +140,7 @@ public class GL_base {
 		// of GLEventListener interface ONLY!
 		update_data_flag = true;
 
-		cad_demo.glcanvas.display(); // Now in .display will call update_data
+		Global_var.glcanvas.display(); // Now in .display will call update_data
 										// method
 	}
 

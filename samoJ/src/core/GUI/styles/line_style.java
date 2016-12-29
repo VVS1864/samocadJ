@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import core.Values;
-import core.cad_demo;
+import core.Global_var;
 
 public class line_style extends base_style_dialog{
 
@@ -19,7 +19,7 @@ public class line_style extends base_style_dialog{
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
 				dispose();
-				cad_demo.line_style = null;
+				Global_var.line_style = null;
 			}
 		});
 		

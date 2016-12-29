@@ -12,7 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import core.cad_demo;
+import core.Global_var;
 
 public class base_style_dialog extends JDialog{
 	protected JPanel properties_panel;
@@ -22,7 +22,7 @@ public class base_style_dialog extends JDialog{
 
 	
 	public base_style_dialog(String title, int w, int h){
-		super(cad_demo.jframe, title);
+		super(Global_var.jframe, title);
 		setSize(w, h);
 		setResizable(false);
 		

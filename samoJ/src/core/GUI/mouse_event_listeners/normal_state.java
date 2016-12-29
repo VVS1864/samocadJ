@@ -5,7 +5,7 @@ import java.awt.event.MouseWheelEvent;
 
 
 import core.GL_base;
-import core.cad_demo;
+import core.Global_var;
 import core.navigation.Plan_motion;
 import core.navigation.Zoom;
 
@@ -21,14 +21,14 @@ public class normal_state extends mouse_state{
 		//Middle button
 		if (e.getButton() == MouseEvent.BUTTON2) {
 			System.out.println("Button 2 pressed...");
-			cad_demo.mouse_plan_motion = true;
-			cad_demo.mouse = cad_demo.cursor_coords.clone();
+			Global_var.mouse_plan_motion = true;
+			Global_var.mouse = Global_var.cursor_coords.clone();
 		}
 		//Left button
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			//If program is in state of Shape-creating process or making function
-			if (cad_demo.draw_new_object == true){
-				cad_demo.current_function.run();
+			if (Global_var.draw_new_object == true){
+				Global_var.current_function.run();
 			}
 		}
 
@@ -38,10 +38,10 @@ public class normal_state extends mouse_state{
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON2) {
 			System.out.println("Button 2 released...");
-			double x = cad_demo.cursor_coords[0];
-			double y = cad_demo.cursor_coords[1];
-			Plan_motion.plan_motion(cad_demo.glcanvas, x, y);
-			cad_demo.mouse_plan_motion = false;
+			double x = Global_var.cursor_coords[0];
+			double y = Global_var.cursor_coords[1];
+			Plan_motion.plan_motion(Global_var.glcanvas, x, y);
+			Global_var.mouse_plan_motion = false;
 
 		}
 		
@@ -50,8 +50,8 @@ public class normal_state extends mouse_state{
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int notches = -e.getWheelRotation();
-		double x = cad_demo.cursor_coords[0];
-		double y = cad_demo.cursor_coords[1];
+		double x = Global_var.cursor_coords[0];
+		double y = Global_var.cursor_coords[1];
 		Zoom.zoom(x, y, notches);
 		
 	}
@@ -59,10 +59,10 @@ public class normal_state extends mouse_state{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		mouseMoved(e);
-		if (cad_demo.mouse_plan_motion == true) {
-			double x = cad_demo.cursor_coords[0];
-			double y = cad_demo.cursor_coords[1];
-			Plan_motion.plan_motion(cad_demo.glcanvas, x, y);
+		if (Global_var.mouse_plan_motion == true) {
+			double x = Global_var.cursor_coords[0];
+			double y = Global_var.cursor_coords[1];
+			Plan_motion.plan_motion(Global_var.glcanvas, x, y);
 
 		}
 		
@@ -73,10 +73,10 @@ public class normal_state extends mouse_state{
 		//Updating coordinates of cursor
 		//this is unique place for get real coords of cursor
 		
-		cad_demo.cursor_coords = GL_base.get_real_coords(cad_demo.glcanvas, e.getX(),
+		Global_var.cursor_coords = GL_base.get_real_coords(Global_var.glcanvas, e.getX(),
 				e.getY());
-		double[] xy = cad_demo.cursor_coords;
-		cad_demo.info_down.setText("Coordinates: X "+ String.format("%.2f", xy[0]) + "; Y "
+		double[] xy = Global_var.cursor_coords;
+		Global_var.info_down.setText("Coordinates: X "+ String.format("%.2f", xy[0]) + "; Y "
 				+ String.format("%.2f", xy[1]) + ";");
 		
 	}

@@ -10,11 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import core.GUI.GUI;
 import modules.base_draw_entities.base_draw;
 import samoJ.Shape;
 
-public class cad_demo {
+public class Global_var {
 	// Important elements of GUI
 	public static JFrame jframe;
 	public static GLCanvas glcanvas;
@@ -43,11 +42,4 @@ public class cad_demo {
 	public static double[] point_2_coords = new double[2]; // coords of point 1
 	public static base_draw current_function = null;
 	public static List<Shape> theShapes = new LinkedList<Shape>();
-
-	public static void main(String[] args) {
-
-		// GUI initialization
-		final GUI graphical_interface = new GUI();
-		program_state.set_default();
-	}
 }

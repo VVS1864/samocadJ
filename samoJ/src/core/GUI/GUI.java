@@ -31,7 +31,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 
 import core.GL_base;
 import core.Values;
-import core.cad_demo;
+import core.Global_var;
 import core.GUI.mouse_event_listeners.normal_state;
 import core.GUI.styles.dim_style;
 import core.GUI.styles.line_style;
@@ -49,65 +49,65 @@ public class GUI {
 // GL CANVAS
 		GLProfile glprofile = GLProfile.getDefault();
 		GLCapabilities glcapabilities = new GLCapabilities(glprofile);
-		cad_demo.glcanvas = new GLCanvas(glcapabilities);
-		cad_demo.glcanvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		Global_var.glcanvas = new GLCanvas(glcapabilities);
+		Global_var.glcanvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		
 		// GL event listener for canvas - initialization, display, resize...
-		cad_demo.glcanvas.addGLEventListener(new core.GUI.glcanvas_event_listener());
+		Global_var.glcanvas.addGLEventListener(new core.GUI.glcanvas_event_listener());
 		
 		//Mouse event listener for cursor in glcanvas
 		normal_state mouse_listener = new core.GUI.mouse_event_listeners.normal_state();
 		
-		cad_demo.glcanvas.addMouseListener(mouse_listener);
-		cad_demo.glcanvas.addMouseMotionListener(mouse_listener);
-		cad_demo.glcanvas.addMouseWheelListener(mouse_listener);
+		Global_var.glcanvas.addMouseListener(mouse_listener);
+		Global_var.glcanvas.addMouseMotionListener(mouse_listener);
+		Global_var.glcanvas.addMouseWheelListener(mouse_listener);
 		
 		//Key listener for glcanvas
-		cad_demo.glcanvas.addKeyListener(new gl_key_listener());
+		Global_var.glcanvas.addKeyListener(new gl_key_listener());
 
 // Info labels
-		cad_demo.info = new JLabel();
+		Global_var.info = new JLabel();
 		//cad_demo.info.setText("Comand:");
-		cad_demo.info2 = new JLabel();
+		Global_var.info2 = new JLabel();
 		//cad_demo.info2.setText(" ");
-		cad_demo.info_down = new JLabel();
-		cad_demo.info_down.setText("Coordinates: X "+ 0 + "; Y " + 0 + ";");
+		Global_var.info_down = new JLabel();
+		Global_var.info_down.setText("Coordinates: X "+ 0 + "; Y " + 0 + ";");
 		
 		
 //Command line
-		cad_demo.cmd = new JTextField(6);
+		Global_var.cmd = new JTextField(6);
 		
 //Frame for all elements
-		cad_demo.jframe = new JFrame("Cad_demo, display " + GL_base.N
+		Global_var.jframe = new JFrame("Cad_demo, display " + GL_base.N
 				+ " vertices");
 
-		cad_demo.jframe.addWindowListener(new WindowAdapter() {
+		Global_var.jframe.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
-				cad_demo.jframe.dispose();
+				Global_var.jframe.dispose();
 				System.exit(0);
 			}
 		});
 		
-		cad_demo.jframe.setLayout(new BorderLayout());
-		cad_demo.jframe.setSize(800, 640);
+		Global_var.jframe.setLayout(new BorderLayout());
+		Global_var.jframe.setSize(800, 640);
 		
 		//Icon 
 		URL imageURL = GUI.class.getResource("/res/icon.gif");
 		if (imageURL != null) {  
 			ImageIcon img = new ImageIcon(imageURL);
-			cad_demo.jframe.setIconImage(img.getImage());
+			Global_var.jframe.setIconImage(img.getImage());
 		}
 		
 //Addition standard button bars
-		Standart.addButtonsBar(cad_demo.jframe);
-		Standart_functions.addButtonsBar(cad_demo.jframe);
+		Standart.addButtonsBar(Global_var.jframe);
+		Standart_functions.addButtonsBar(Global_var.jframe);
 		
 //Add all
 		//command line container
 		final JPanel cmd_panel = new JPanel();
 		cmd_panel.setLayout(new BoxLayout(cmd_panel, BoxLayout.X_AXIS));
-		cmd_panel.add(cad_demo.info);
-		cmd_panel.add(cad_demo.cmd);
+		cmd_panel.add(Global_var.info);
+		cmd_panel.add(Global_var.cmd);
 		cmd_panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		//trace buttons container 
@@ -133,8 +133,8 @@ public class GUI {
 		final JPanel bot_panel = new JPanel();
 		bot_panel.setLayout(new BoxLayout(bot_panel, BoxLayout.Y_AXIS));
 		bot_panel.add(cmd_panel);
-		bot_panel.add(cad_demo.info2);
-		bot_panel.add(cad_demo.info_down);
+		bot_panel.add(Global_var.info2);
+		bot_panel.add(Global_var.info_down);
 		bot_panel.add(trace_panel);
 		
 		//North container 
@@ -205,9 +205,9 @@ public class GUI {
 		top_panel.add(button_undo);
 		
 		//Addition all containers to frame
-		cad_demo.jframe.add(top_panel, BorderLayout.NORTH);
-		cad_demo.jframe.add(bot_panel, BorderLayout.SOUTH);
-		cad_demo.jframe.add(cad_demo.glcanvas, BorderLayout.CENTER);
+		Global_var.jframe.add(top_panel, BorderLayout.NORTH);
+		Global_var.jframe.add(bot_panel, BorderLayout.SOUTH);
+		Global_var.jframe.add(Global_var.glcanvas, BorderLayout.CENTER);
 		
 //MENU BAR
 		
@@ -233,7 +233,7 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				cad_demo.jframe.dispose();
+				Global_var.jframe.dispose();
 				System.exit(0);//Exit
 			}
 
@@ -297,8 +297,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (cad_demo.dim_style == null){
-					cad_demo.dim_style = new dim_style();
+				if (Global_var.dim_style == null){
+					Global_var.dim_style = new dim_style();
 				}
 			}
 		});
@@ -308,8 +308,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (cad_demo.line_style == null){
-					cad_demo.line_style = new line_style();
+				if (Global_var.line_style == null){
+					Global_var.line_style = new line_style();
 				}
 			}
 		});
@@ -319,8 +319,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (cad_demo.text_style == null){
-					cad_demo.text_style = new text_style();
+				if (Global_var.text_style == null){
+					Global_var.text_style = new text_style();
 				}
 			}
 		});
@@ -340,8 +340,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (cad_demo.about_prog == null){
-					cad_demo.about_prog = new about();
+				if (Global_var.about_prog == null){
+					Global_var.about_prog = new about();
 				}
 			}
 		});
@@ -357,9 +357,9 @@ public class GUI {
 		menuBar.add(menu_format);
 		menuBar.add(menu_help);
 		
-		cad_demo.jframe.setJMenuBar(menuBar);
+		Global_var.jframe.setJMenuBar(menuBar);
 		
 		
-		cad_demo.jframe.setVisible(true);
+		Global_var.jframe.setVisible(true);
 	}
 }
