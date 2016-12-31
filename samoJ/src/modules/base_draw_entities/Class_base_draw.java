@@ -9,7 +9,7 @@ import core.Global_var;
  * @author vlad
  *
  */
-public class base_draw_class
+public class Class_base_draw
 
 
 {
@@ -31,7 +31,7 @@ public class base_draw_class
 	 * @param message2 text value for second label (after command line)
 	 * @param next_class next class for next draw action
 	 */
-	public void init_draw(String message1, String message2, base_draw next_class){
+	public void init_draw(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		Global_var.draw_new_object = true;
 
@@ -44,7 +44,7 @@ public class base_draw_class
 	 * @param message2
 	 * @param next_class
 	 */
-	public void draw_1(String message1, String message2, base_draw next_class){
+	public void draw_1(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		Global_var.point_1_coords = Global_var.cursor_coords.clone();
 	}
@@ -55,7 +55,7 @@ public class base_draw_class
 	 * @param message2
 	 * @param next_class
 	 */
-	public void draw_2(String message1, String message2, base_draw next_class){
+	public void draw_2(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		
 		Global_var.point_2_coords = Global_var.cursor_coords.clone();
@@ -74,7 +74,7 @@ public class base_draw_class
 	 * @param message2
 	 * @param next_class
 	 */
-	public void set_next(String message1, String message2, base_draw next_class){
+	public void set_next(String message1, String message2, Interface_base_draw next_class){
 		Global_var.info.setText(message1);
 		Global_var.info2.setText(message2);
 		Global_var.current_function = next_class;

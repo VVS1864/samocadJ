@@ -6,6 +6,7 @@ import java.awt.event.MouseWheelEvent;
 
 import core.GL_base;
 import core.Global_var;
+import core.Select_objects;
 import core.navigation.Plan_motion;
 import core.navigation.Zoom;
 
@@ -29,6 +30,10 @@ public class normal_state extends mouse_state{
 			//If program is in state of Shape-creating process or making function
 			if (Global_var.draw_new_object == true){
 				Global_var.current_function.run();
+			}
+			else {
+				//Enable select with rectangle program state
+				Select_objects.mouse_select();
 			}
 		}
 
@@ -67,17 +72,24 @@ public class normal_state extends mouse_state{
 		}
 		
 	}
-	
+	/**
+	 * Updating coordinates of cursor, this is unique place for get real coords of cursor
+	 */
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		//Updating coordinates of cursor
-		//this is unique place for get real coords of cursor
-		
+	public void mouseMoved(MouseEvent e) {		
 		Global_var.cursor_coords = GL_base.get_real_coords(Global_var.glcanvas, e.getX(),
 				e.getY());
 		double[] xy = Global_var.cursor_coords;
-		Global_var.info_down.setText("Coordinates: X "+ String.format("%.2f", xy[0]) + "; Y "
+		//TO-DO snap to Shapes
+		Global_var.cursor_snap_coords = Global_var.cursor_coords.clone();
+		if (Global_var.mouse_plan_motion == false){
+			Global_var.info_down.setText("Coordinates: X "+ String.format("%.2f", xy[0]) + "; Y "
 				+ String.format("%.2f", xy[1]) + ";");
+			
+			if (Global_var.select_mode == true){
+				Select_objects.draw_selective_rect();
+			}
+		}
 		
 	}
 	

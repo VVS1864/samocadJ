@@ -5,6 +5,6 @@ package modules.base_draw_entities;
  * @author vlad
  *
  */
-public interface base_draw {
+public interface Interface_base_draw {
 	public void run();
 }
