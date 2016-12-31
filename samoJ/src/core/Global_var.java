@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import modules.base_draw_entities.base_draw;
+import modules.base_draw_entities.Interface_base_draw;
 import samoJ.Shape;
 
 public class Global_var {
@@ -27,19 +27,73 @@ public class Global_var {
 	public static JDialog text_style;
 
 	// Program state variables
+	/**
+	 * True if user is press middle mouse button and drag it
+	 */
 	public static boolean mouse_plan_motion = false;
+	
+	/**
+	 * True if program in state of draw new Shape or active function state (copy, mirror, rotate...)
+	 */
 	public static boolean draw_new_object = false;
+	
+	/**
+	 * True if program in select with rectangle state
+	 */
+	public static boolean select_mode = false;
 
 	// Program global variables
-	public static double[] mouse = new double[2]; // coords of mouse when
-													// mouse_plan_motion
-	public static double[] cursor_coords = new double[2]; // latest coords of
-															// cursor
-	public static double[] point_1_coords = new double[2]; // coords of point 1
-															// for draw objects
-															// or make actions
-															// with them
-	public static double[] point_2_coords = new double[2]; // coords of point 1
-	public static base_draw current_function = null;
+	/**
+	 * Coords of mouse when mouse_plan_motion
+	 */
+	public static double[] mouse = new double[2];
+	
+	/**
+	 * latest coords of cursor
+	 */
+	public static double[] cursor_coords = new double[2];
+	
+	/**
+	 * latest coords of cursor with snap
+	 */
+	public static double[] cursor_snap_coords = new double[2];
+	
+	/**
+	 * coords of point 1 for draw objects or make actions with them
+	 */
+	public static double[] point_1_coords = new double[2]; 
+	
+	/**
+	 * Coords of point 2 for draw objects or make actions with them
+	 */
+	public static double[] point_2_coords = new double[2];
+	
+	/**
+	 * Point 1 of selective rectangle
+	 */
+	public static double[] select_rect_1 = new double[2];
+	
+	/**
+	 * Point 2 of selective rectangle
+	 */
+	public static double[] select_rect_2 = new double[2];
+	
+	/**
+	 * Class implements Interface_base_draw for run an action if user clicks left mouse button and draw_new_object == true
+	 */
+	public static Interface_base_draw current_function = null;
+	
+	/**
+	 * General linked list of Shapes - Lines, Circles, Dimensions... Any new Shape must be linked here.
+	 * All of Shapes will be passed to OpenGL VBO
+	 */
 	public static List<Shape> theShapes = new LinkedList<Shape>();
+	
+	/**
+	 * Selective rectangle vertices for draw on canvas and select Shapes
+	 */
+	public static int[] select_rect_vertices = new int[8];
+	
+	// COLORES  
+	public static int[] select_rect_color = new int[3];
 }

@@ -28,8 +28,8 @@ public class GL_base {
 	static IntBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
 	static int[] vertices;
-	static DoubleBuffer fbDinamicVertices;
-	public static double[] dinamic_vertices = new double[4 * 3];
+	static IntBuffer fbDinamicVertices;
+	//public static double[] dinamic_vertices = new double[4 * 3];
 
 	// public static LinkedList<Integer> list1 = new LinkedList<Integer>();
 	// public static double[] list1 = {};
@@ -188,7 +188,7 @@ public class GL_base {
 		gl2.glDrawArrays(GL2.GL_LINES, 0, (int) vertices.length / 3);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 
-		// dinamic_render(gl2);
+		dinamic_render(gl2);
 
 		gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 
@@ -201,11 +201,19 @@ public class GL_base {
 	}
 
 	static void dinamic_render(GL2 gl2) {
-		gl2.glColor3f(100, 100, 0);
-		fbDinamicVertices = Buffers.newDirectDoubleBuffer(dinamic_vertices);
-		gl2.glVertexPointer(3, GL2.GL_INT, 0, fbDinamicVertices);
-		gl2.glDrawArrays(GL2.GL_LINES, 0, ((int) dinamic_vertices.length) / 3);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+		//for (int i = 0; i<Global_var.select_rect_vertices.length; i++){
+		//	System.out.print(Global_var.select_rect_vertices[i] + ", ");
+		//}
+		
+		//System.out.println(Global_var.select_rect_vertices.length);
+		if (Global_var.select_mode){
+			int[] rect_c = Global_var.select_rect_color;
+			gl2.glColor3f(rect_c[0], rect_c[1], rect_c[2]);
+			fbDinamicVertices = Buffers.newDirectIntBuffer(Global_var.select_rect_vertices);
+			gl2.glVertexPointer(2, GL2.GL_INT, 0, fbDinamicVertices);
+			gl2.glDrawArrays(GL2.GL_LINES, 0, (int)Global_var.select_rect_vertices.length / 2);
+			gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+		}
 	}
 
 	/**

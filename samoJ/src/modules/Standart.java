@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
 import core.navigation.Zoom;
-import modules.base_draw_entities.base_draw;
+import modules.base_draw_entities.Interface_base_draw;
 import modules.standard_objects.line.draw_line;
 
 //import javax.swing.ImageIcon;

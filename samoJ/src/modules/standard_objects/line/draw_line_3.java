@@ -2,11 +2,11 @@ package modules.standard_objects.line;
 
 import core.GL_base;
 import core.Global_var;
-import modules.base_draw_entities.base_draw;
-import modules.base_draw_entities.base_draw_class;
+import modules.base_draw_entities.Interface_base_draw;
+import modules.base_draw_entities.Class_base_draw;
 import samoJ.Line;
 
-public  class draw_line_3 extends base_draw_class implements base_draw{
+public  class draw_line_3 extends Class_base_draw implements Interface_base_draw{
 	@Override
 	public void run() {
 		
