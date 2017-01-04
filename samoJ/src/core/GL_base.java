@@ -1,6 +1,5 @@
 package core;
 
-import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -67,11 +66,11 @@ public class GL_base {
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
-
-			Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
-			// cad_demo.theShapes.add(new Line(x1, y1, 0, x2, y2, 0));
-			// cad_demo.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new
-			// int[]{1,1}));
+			
+			new Line(x1, y1, 0, x2, y2, 0);
+			//Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
+			//Global_var.theShapes.put(new Line(x1, y1, 0, x2, y2, 0));
+			// Global_var.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new int[]{1,1}));
 
 		}
 		update_data();
@@ -114,7 +113,7 @@ public class GL_base {
 
 		LinkedList<Integer> list1 = new LinkedList<Integer>();
 
-		for (Shape sh : Global_var.theShapes) {
+		for (Shape sh : Global_var.theShapes.values()) {
 			list1.addAll(sh.toList());
 		}
 
@@ -159,7 +158,7 @@ public class GL_base {
 
 		gl2.glViewport(0, 0, width, height);
 		gl2.glPopMatrix();
-		System.out.println("resize");
+		//System.out.println("resize");
 
 	}
 
@@ -201,19 +200,30 @@ public class GL_base {
 	}
 
 	static void dinamic_render(GL2 gl2) {
-		//for (int i = 0; i<Global_var.select_rect_vertices.length; i++){
-		//	System.out.print(Global_var.select_rect_vertices[i] + ", ");
-		//}
-		
-		//System.out.println(Global_var.select_rect_vertices.length);
 		if (Global_var.select_mode){
-			int[] rect_c = Global_var.select_rect_color;
-			gl2.glColor3f(rect_c[0], rect_c[1], rect_c[2]);
-			fbDinamicVertices = Buffers.newDirectIntBuffer(Global_var.select_rect_vertices);
-			gl2.glVertexPointer(2, GL2.GL_INT, 0, fbDinamicVertices);
-			gl2.glDrawArrays(GL2.GL_LINES, 0, (int)Global_var.select_rect_vertices.length / 2);
-			gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+			gl_draw_array(Global_var.select_rect_vertices, Global_var.select_rect_color, 2);			
 		}
+		if (Global_var.current_Shape_vertices != null){
+			gl_draw_array(Global_var.current_Shape_vertices, Values.current_shape_color, 3);	
+		}
+		if (Global_var.snap_sign_vertices != null){
+			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color, 2);
+		}
+	}
+	
+	/**
+	 * Cover for glDrawArrays for draw it with a color
+	 * @param vertices_array - array of coordinates xy-only.
+	 * @param color - color for this vertices
+	 */
+	static void gl_draw_array(int[] vertices_array, int[] color, int dimensions){
+		
+		gl2.glColor3f(color[0], color[1], color[2]);
+		
+		fbDinamicVertices = Buffers.newDirectIntBuffer(vertices_array);
+		gl2.glVertexPointer(dimensions, GL2.GL_INT, 0, fbDinamicVertices);
+		gl2.glDrawArrays(GL2.GL_LINES, 0, vertices_array.length / dimensions);
+		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 	}
 
 	/**

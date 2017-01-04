@@ -9,8 +9,8 @@ import java.util.LinkedList;
  *
  */
 public class PrimitiveLine {
-	Coord c1;
-	Coord c2;
+	public Coord c1;
+	public Coord c2;
 
 	private PrimitiveLine(Coord c1, Coord c2) {
 		this.c1 = c1;

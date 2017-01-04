@@ -43,4 +43,11 @@ public class Values {
 			"arch",
 			"arrow",
 	};
+	
+	public static int snap_distance = 10;
+	
+	//Colors 
+	public static int[] snap_color = {0, 255, 255};
+	public static int[] current_shape_color = {0, 255, 0};
+	
 }

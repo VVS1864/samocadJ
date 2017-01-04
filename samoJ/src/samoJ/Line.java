@@ -3,7 +3,9 @@ package samoJ;
 public class Line extends Shape {
 	// Not dashed line
 	public Line(int x1, int y1, int z1, int x2, int y2, int z2) {
-		add(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
+		PrimitiveLine line = new PrimitiveLine(x1, y1, z1, x2, y2, z2);
+		add(line);
+		add_snap_line(line);
 		//System.out.println("factor="+ factor);
 		//System.out.println("mask="+mask);
 	}
@@ -13,6 +15,7 @@ public class Line extends Shape {
 		this.factor = factor;
 		this.mask = mask;
 		formPrimitiveLines(x1, y1, z1, x2, y2, z2);
+		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
 	}
 
 	void formPrimitiveLines(int x1, int y1, int z1, int x2, int y2, int z2) {

@@ -2,8 +2,10 @@ package core;
 
 import com.jogamp.opengl.awt.GLCanvas;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -11,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import modules.base_draw_entities.Interface_base_draw;
+
 import samoJ.Shape;
 
 public class Global_var {
@@ -84,16 +87,51 @@ public class Global_var {
 	public static Interface_base_draw current_function = null;
 	
 	/**
-	 * General linked list of Shapes - Lines, Circles, Dimensions... Any new Shape must be linked here.
+	 * Shape under cursor for select with mouse left button click
+	 */
+	public static Shape current_Shape = null;
+	
+	/**
+	 * General HashMap of Shapes - Lines, Circles, Dimensions... Any new Shape must be put here. 
+	 * Key Integer is Shape ID 
 	 * All of Shapes will be passed to OpenGL VBO
 	 */
-	public static List<Shape> theShapes = new LinkedList<Shape>();
+	public static Map<Integer, Shape> theShapes = new HashMap<Integer, Shape>();
+	//public static Map<Integer, Shape> theShapes = new HashMap<Integer, Shape>();
+	//public static List<Shape> theShapes = new LinkedList<Shape>();
 	
 	/**
 	 * Selective rectangle vertices for draw on canvas and select Shapes
 	 */
 	public static int[] select_rect_vertices = new int[8];
 	
+	/**
+	 * Array for draw indication current Shape under cursor
+	 */
+	public static int[] current_Shape_vertices = null;
+	
+	/**
+	 * For draw snap sign, it depend from snap type
+	 */
+	public static int[] snap_sign_vertices = null;
+	
 	// COLORES  
 	public static int[] select_rect_color = new int[3];
+	
+	/**
+	 * Keys for adjust snaps. 0 - off, 1 - on. Positions:
+	 * 0 - end_point,
+	 * 1 - midpoint,
+	 * 2 - intersection point,
+	 * 3 - near_point.
+	 */
+	public static int[] snap_keys = new int[]{1, 1, 1, 1};
+	
+	/**
+	 * ID of Shape next for creation. It use as key in theShapes HashMap. 
+	 * After put Shape to theShapes - ID++
+	 */
+	public static Integer current_ID = 0;
+	
+	
 }
