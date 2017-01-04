@@ -2,6 +2,8 @@ package samoJ;
 
 import java.util.LinkedList;
 
+import core.Global_var;
+
 /**
  * General class for all shapes
  * 
@@ -11,12 +13,18 @@ import java.util.LinkedList;
 
 public class Shape {
 	// Displayed Lines
-	LinkedList<PrimitiveLine> PrimLines;
+	public LinkedList<PrimitiveLine> PrimLines;
+	public LinkedList<PrimitiveLine> SnapLines;
+	public LinkedList<Coord> SnapPoints;
 	double factor;
 	int[] mask;
 
 	public Shape() {
 		PrimLines = new LinkedList<PrimitiveLine>();
+		SnapLines = new LinkedList<PrimitiveLine>();
+		SnapPoints= new LinkedList<Coord>();
+		Global_var.theShapes.put(Global_var.current_ID, this);
+		Global_var.current_ID++;
 		//System.out.println("The constructor Shape()");
 	}
 
@@ -31,6 +39,21 @@ public class Shape {
 
 	public void add(PrimitiveLine theP) {
 		PrimLines.add(theP);
+	}
+	
+	/**
+	 * Method for add new snap line for this Shape. Middle point of line will be 
+	 * calculated automatically and will be add to SnapPoints
+	 * @param new_snap_line
+	 */
+	public void add_snap_line(PrimitiveLine new_snap_line) {
+		SnapLines.add(new_snap_line);
+		
+		//Coord of line middle point
+		int xc = (new_snap_line.c1.x + new_snap_line.c2.x)/2;
+		int yc = (new_snap_line.c1.y + new_snap_line.c2.y)/2;
+		int zc =  (new_snap_line.c1.z + new_snap_line.c2.z)/2;
+		SnapPoints.add(new Coord(xc, yc, zc));
 	}
 
 	// EXAMPLE

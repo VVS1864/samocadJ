@@ -2,13 +2,20 @@ package core.GUI.mouse_event_listeners;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.LinkedList;
 
+import org.apache.commons.lang3.ArrayUtils;
 
+import core.Clip_algorithm;
+import core.Draw_snap_sign;
 import core.GL_base;
+import core.Get_snap;
 import core.Global_var;
 import core.Select_objects;
+import core.Values;
 import core.navigation.Plan_motion;
 import core.navigation.Zoom;
+import samoJ.Shape;
 
 /**
  * Mouse listener for all mouse actions
@@ -79,19 +86,47 @@ public class normal_state extends mouse_state{
 	public void mouseMoved(MouseEvent e) {		
 		Global_var.cursor_coords = GL_base.get_real_coords(Global_var.glcanvas, e.getX(),
 				e.getY());
-		double[] xy = Global_var.cursor_coords;
+		double x = Global_var.cursor_coords[0];
+		double y = Global_var.cursor_coords[1];
 		//TO-DO snap to Shapes
 		Global_var.cursor_snap_coords = Global_var.cursor_coords.clone();
 		if (Global_var.mouse_plan_motion == false){
-			Global_var.info_down.setText("Coordinates: X "+ String.format("%.2f", xy[0]) + "; Y "
-				+ String.format("%.2f", xy[1]) + ";");
+			Global_var.info_down.setText("Coordinates: X "+ String.format("%.2f", x) + "; Y "
+				+ String.format("%.2f", y) + ";");
 			
 			if (Global_var.select_mode == true){
 				Select_objects.draw_selective_rect();
 			}
+			
+			// If only cursor motion - find Shapes under cursor and snap
+			// Get snap_distance as real in gl world:
+			double real_snap_distance = Values.snap_distance*Values.current_scale;
+			//Get Shapes under cursor
+			LinkedList<Shape> current_Shapes = Clip_algorithm.simple_clip(
+					(int)(x-real_snap_distance), 
+					(int)(y-real_snap_distance), 
+					(int)(x+real_snap_distance), 
+					(int)(y+real_snap_distance), 
+					Global_var.theShapes
+					);
+			//Current Shape indication - if not (select_mode, draw_new_object) and there are any Shapes under cursor
+			if (!Global_var.select_mode && !Global_var.draw_new_object && !current_Shapes.isEmpty()){
+			Global_var.current_Shape = current_Shapes.get(0);
+			//Make current shapeInteger for click-selecting
+			LinkedList<Integer>list1 = Global_var.current_Shape.toList();
+			Global_var.current_Shape_vertices = ArrayUtils.toPrimitive(list1.toArray(new Integer[list1
+			                                            				.size()]));
+			}
+			else {
+				Global_var.current_Shape_vertices = null;
+			}
+			
+			//Find snap
+			int[] snap = Get_snap.get_snap(Global_var.cursor_coords, current_Shapes, Global_var.snap_keys);
+			if (snap[0] != 0){ // If snap[0] == 0 - NO snap
+				Global_var.snap_sign_vertices = Draw_snap_sign.draw(snap, (int)real_snap_distance);
+			}
+			Global_var.glcanvas.display();
 		}
-		
 	}
-	
-
 }

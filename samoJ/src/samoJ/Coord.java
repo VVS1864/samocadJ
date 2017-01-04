@@ -12,7 +12,7 @@ import java.util.LinkedList;
  */
 
 public class Coord {
-	int x, y, z;
+	public int x, y, z;
 
 	// Integer c[];
 
