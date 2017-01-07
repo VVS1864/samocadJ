@@ -16,7 +16,7 @@ public class Coord {
 
 	// Integer c[];
 
-	Coord(int x, int y) {
+	public Coord(int x, int y) {
 		this(x, y, 0);
 	}
 

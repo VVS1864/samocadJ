@@ -3,6 +3,7 @@ package core;
 import java.util.LinkedList;
 import java.util.Map;
 
+import samoJ.Coord;
 import samoJ.PrimitiveLine;
 import samoJ.Shape;
 
@@ -25,10 +26,12 @@ public class Clip_algorithm{
 		
 		for (Shape shape : theShapes.values()){
 			for (PrimitiveLine snap_line : shape.SnapLines){
-				int x1 = snap_line.c1.x;
-				int y1 = snap_line.c1.y;
-				int x2 = snap_line.c2.x;
-				int y2 = snap_line.c2.y;
+				Coord c1 = snap_line.getC1();
+				int x1 = c1.x;
+				int y1 = c1.y;
+				Coord c2 = snap_line.getC2();
+				int x2 = c2.x;
+				int y2 = c2.y;
 				
 				if (x1 > xTR && x2 > xTR) continue;
 				if (x1 < xBL && x2 < xBL) continue;
@@ -51,7 +54,7 @@ public class Clip_algorithm{
 					break;
 				}
 				
-				int r2 = a * xBL + b * yBL + c;
+				int r2 = a*xBL + b*yBL + c;
 				if (r2 == 0){
 					ReturnableShapes.add(shape);
 					break;

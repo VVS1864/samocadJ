@@ -50,9 +50,10 @@ public class Shape {
 		SnapLines.add(new_snap_line);
 		
 		//Coord of line middle point
-		int xc = (new_snap_line.c1.x + new_snap_line.c2.x)/2;
-		int yc = (new_snap_line.c1.y + new_snap_line.c2.y)/2;
-		int zc =  (new_snap_line.c1.z + new_snap_line.c2.z)/2;
+		
+		int xc = (new_snap_line.getC1().x + new_snap_line.getC2().x)/2;
+		int yc = (new_snap_line.getC1().y + new_snap_line.getC2().y)/2;
+		int zc = (new_snap_line.getC1().z + new_snap_line.getC2().z)/2;
 		SnapPoints.add(new Coord(xc, yc, zc));
 	}
 
