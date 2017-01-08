@@ -51,21 +51,28 @@ public class Get_snap {
 						Integer Distance =  Math.max(
 								Math.abs(c.x - cursor.x),
 								Math.abs(c.y - cursor.y));
-						if (Distance < min_Distance) {
-							min_Distance = Distance;
+						if (Distance < snap_distance) {
+							//min_Distance = Distance;
 							retShapes.clear();
 							retShapes.add(sh);
 							retSC = new SnapCoord(SnapType.EndPoint, c);
+							////
+							Shapes = retShapes; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+							return retSC;
+							////
 						}
 					}
 				}
 			}
+			/*
 			if (min_Distance < snap_distance) {
-				Shapes = retShapes; // Возвращаем список фигур
+				System.out.println("end snap");
+				Shapes = retShapes; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				return retSC;
-			}
+				
+			}*/
 		}
-
+		
 		if (snap_keys.contains(SnapType.MidPoint)) {
 			for (Shape sh : Shapes) {
 				for (Coord c : sh.SnapPoints) {
@@ -81,7 +88,7 @@ public class Get_snap {
 				}
 			}
 			if (min_Distance < snap_distance) {
-				Shapes = retShapes; // Возвращаем список фигур
+				Shapes = retShapes; // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 				return retSC;
 			}
 		}
