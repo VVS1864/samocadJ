@@ -6,21 +6,21 @@ import samoJ.SnapType;
 public class Draw_snap_sign{
 	/**
 	 * Method for draw snap sign 
-	 * @param snap - array int[4], first position is snap type (see {@link Get_snap}, 
+	 * @param snap - array double[4], first position is snap type (see {@link Get_snap}, 
 	 * other positions - coordinates of snap point
 	 * @param s - snap distance (sign size) in gl units
 	 * @return array of coordinates of snap_sign lines, ready to gl draw array
 	 */
-	public static int[] draw(SnapCoord snap, int s){
+	public static double[] draw(SnapCoord snap, double s){
 		
-		int x = snap.x;
-		int y = snap.y;
-		//int z = snap[3] 3D snap is not available now;
-		int[] snap_sing = {};
+		double x = snap.x;
+		double y = snap.y;
+		//double z = snap[3] 3D snap is not available now;
+		double[] snap_sing = {};
 		
 		// Snap type - end_point
 		if (snap.snap == SnapType.EndPoint){
-			snap_sing = new int[]{
+			snap_sing = new double[]{
 				x-s, y-s, x-s, y+s,
 				x-s, y-s, x+s, y-s,
 				x+s, y-s, x+s, y+s,
@@ -30,7 +30,7 @@ public class Draw_snap_sign{
 		
 		// Snap type - midpoint
 		if (snap.snap == SnapType.MidPoint){
-			snap_sing = new int[]{
+			snap_sing = new double[]{
 					x-s, y-s, x+s, y-s,
                     x-s, y-s, x,   y+s,
                     x,   y+s, x+s, y-s,  
@@ -39,7 +39,7 @@ public class Draw_snap_sign{
 		
 		// Snap type - intersection point
 		if (snap.snap == SnapType.Intersection){
-			snap_sing = new int[]{
+			snap_sing = new double[]{
 					x-s, y-s, x+s, y+s,
                     x+s, y-s, x-s, y+s, 
 			};
@@ -47,7 +47,7 @@ public class Draw_snap_sign{
 		
 		// Snap type - near point
 		if (snap.snap == SnapType.NearPoint){
-			snap_sing = new int[]{
+			snap_sing = new double[]{
 					x-s, y-s, x+s, y+s,
                     x+s, y-s, x-s, y+s,
                     x-s, y-s, x-s, y+s,

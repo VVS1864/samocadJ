@@ -20,18 +20,18 @@ public class Clip_algorithm{
 	 * @param theShapes - All Shapes or Shapes in active sector (with optimization)
 	 * @return - Shapes in rectangle
 	 */
-	public static LinkedList<Shape> simple_clip(int xBL, int yBL, int xTR, int yTR, Map<Integer, Shape> theShapes){
+	public static LinkedList<Shape> simple_clip(double xBL, double yBL, double xTR, double yTR, Map<Integer, Shape> theShapes){
 		
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
 		
 		for (Shape shape : theShapes.values()){
 			for (PrimitiveLine snap_line : shape.SnapLines){
 				Coord c1 = snap_line.getC1();
-				int x1 = c1.x;
-				int y1 = c1.y;
+				double x1 = c1.x;
+				double y1 = c1.y;
 				Coord c2 = snap_line.getC2();
-				int x2 = c2.x;
-				int y2 = c2.y;
+				double x2 = c2.x;
+				double y2 = c2.y;
 				
 				if (x1 > xTR && x2 > xTR) continue;
 				if (x1 < xBL && x2 < xBL) continue;
@@ -44,17 +44,17 @@ public class Clip_algorithm{
 					ReturnableShapes.add(shape);
 					break;
 				}
-				int c = x2*y1-x1*y2;
-				int b = x1-x2;
-				int a = y2-y1;
+				double c = x2*y1-x1*y2;
+				double b = x1-x2;
+				double a = y2-y1;
 				
-				int r1 = a*xBL + b*yTR + c;
+				double r1 = a*xBL + b*yTR + c;
 				if (r1 == 0){
 					ReturnableShapes.add(shape);
 					break;
 				}
 				
-				int r2 = a*xBL + b*yBL + c;
+				double r2 = a*xBL + b*yBL + c;
 				if (r2 == 0){
 					ReturnableShapes.add(shape);
 					break;

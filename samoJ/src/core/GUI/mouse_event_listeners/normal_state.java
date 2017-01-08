@@ -122,9 +122,9 @@ public class normal_state extends mouse_state {
 					&& !current_Shapes.isEmpty()) {
 				Global_var.current_Shape = current_Shapes.get(0);
 				// Make current shapeInteger for click-selecting
-				LinkedList<Integer> list1 = Global_var.current_Shape.toList();
+				LinkedList<Double> list1 = Global_var.current_Shape.toList();
 				Global_var.current_Shape_vertices = ArrayUtils
-						.toPrimitive(list1.toArray(new Integer[list1.size()]));
+						.toPrimitive(list1.toArray(new Double[list1.size()]));
 			} else {
 				Global_var.current_Shape_vertices = null;
 			}
@@ -138,7 +138,7 @@ public class normal_state extends mouse_state {
 
 				if (snap != null) { 
 					Global_var.snap_sign_vertices = Draw_snap_sign.draw(snap,
-							(int) real_snap_distance);
+							real_snap_distance);
 				}
 				else {
 					

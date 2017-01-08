@@ -108,17 +108,17 @@ public class Global_var {
 	/**
 	 * Selective rectangle vertices for draw on canvas and select Shapes
 	 */
-	public static int[] select_rect_vertices = new int[8];
+	public static double[] select_rect_vertices = new double[8];
 
 	/**
 	 * Array for draw indication current Shape under cursor
 	 */
-	public static int[] current_Shape_vertices = null;
+	public static double[] current_Shape_vertices = null;
 
 	/**
 	 * For draw snap sign, it depend from snap type
 	 */
-	public static int[] snap_sign_vertices = null;
+	public static double[] snap_sign_vertices = null;
 
 	// COLORES
 	public static int[] select_rect_color = new int[3];

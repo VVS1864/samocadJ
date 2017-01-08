@@ -28,8 +28,8 @@ public class Shape {
 		//System.out.println("The constructor Shape()");
 	}
 
-	public LinkedList<Integer> toList() {
-		LinkedList<Integer> ret = new LinkedList<Integer>();
+	public LinkedList<Double> toList() {
+		LinkedList<Double> ret = new LinkedList<Double>();
 		for (PrimitiveLine p : PrimLines) {
 			ret.addAll(p.toList());
 		}
@@ -51,9 +51,9 @@ public class Shape {
 		
 		//Coord of line middle point
 		
-		int xc = (new_snap_line.getC1().x + new_snap_line.getC2().x)/2;
-		int yc = (new_snap_line.getC1().y + new_snap_line.getC2().y)/2;
-		int zc = (new_snap_line.getC1().z + new_snap_line.getC2().z)/2;
+		double xc = (new_snap_line.getC1().x + new_snap_line.getC2().x)/2;
+		double yc = (new_snap_line.getC1().y + new_snap_line.getC2().y)/2;
+		double zc = (new_snap_line.getC1().z + new_snap_line.getC2().z)/2;
 		SnapPoints.add(new Coord(xc, yc, zc));
 	}
 
