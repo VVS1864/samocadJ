@@ -38,9 +38,12 @@ public class Get_snap {
 			double snap_distance, List<Shape> Shapes,
 			HashSet<SnapType> snap_keys) {
 		//
-		Coord cursor = new Coord(cursor_coords[0], cursor_coords[1]);
+		//System.out.println("get_snap, snap_distance="+ snap_distance);
+		//System.out.println("cursor_coords = "+cursor_coords[0]+ " "+cursor_coords[1]);
+		//Coord cursor = new Coord((int)cursor_coords[0], (int)cursor_coords[1]);
 		List<Shape> retShapes = new LinkedList<Shape>();
-		double min_Distance = snap_distance;
+		
+		Double min_Distance =  snap_distance;
 		SnapCoord retSC = null;
 
 		// ******* EndPoint **********
@@ -48,37 +51,37 @@ public class Get_snap {
 			for (Shape sh : Shapes) {
 				for (PrimitiveLine p : sh.SnapLines) {
 					for (Coord c : p.coords) {
-						double Distance =  Math.max(
-								Math.abs(c.x - cursor.x),
-								Math.abs(c.y - cursor.y));
-						if (Distance < snap_distance) {
-							//min_Distance = Distance;
+						Double Distance =  Math.max(
+								Math.abs(c.x - cursor_coords[0]),
+								Math.abs(c.y - cursor_coords[1]));
+						if (Distance < min_Distance) {
+							min_Distance = Distance;
 							retShapes.clear();
 							retShapes.add(sh);
 							retSC = new SnapCoord(SnapType.EndPoint, c);
 							////
-							Shapes = retShapes; // ���������� ������ �����
-							return retSC;
+							//Shapes = retShapes; // ���������� ������ �����
+							//return retSC;
 							////
 						}
 					}
 				}
 			}
-			/*
+			
 			if (min_Distance < snap_distance) {
-				System.out.println("end snap");
+				//System.out.println("end snap min_Distance="+min_Distance+" snap_distance="+snap_distance);
 				Shapes = retShapes; // ���������� ������ �����
 				return retSC;
 				
-			}*/
+			}
 		}
 		
 		if (snap_keys.contains(SnapType.MidPoint)) {
 			for (Shape sh : Shapes) {
 				for (Coord c : sh.SnapPoints) {
-					double Distance =  Math.max(
-							Math.abs(c.x - cursor.x),
-							Math.abs(c.y - cursor.y));
+					Double Distance =  Math.max(
+							Math.abs(c.x - cursor_coords[0]),
+							Math.abs(c.y - cursor_coords[1]));
 					if (Distance < min_Distance) {
 						min_Distance = Distance;
 						retShapes.clear();
