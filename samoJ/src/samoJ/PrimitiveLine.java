@@ -22,12 +22,12 @@ public class PrimitiveLine {
 
 	}
 
-	PrimitiveLine(int x1, int y1, int z1, int x2, int y2, int z2) {
+	PrimitiveLine(double x1, double y1, double z1, double x2, double y2, double z2) {
 		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2));
 	}
 
-	public LinkedList<Integer> toList() {
-		LinkedList<Integer> ret = new LinkedList<Integer>();
+	public LinkedList<Double> toList() {
+		LinkedList<Double> ret = new LinkedList<Double>();
 		// = c1.toList();
 		// ret.addAll(c2.toList());
 		for (Coord c : coords)

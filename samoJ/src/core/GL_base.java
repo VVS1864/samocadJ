@@ -1,5 +1,6 @@
 package core;
 
+import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -24,10 +25,10 @@ public class GL_base {
 
 	public static int N = 20;// number of vertices
 
-	static IntBuffer fbVertices;
+	static DoubleBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
-	static int[] vertices;
-	static IntBuffer fbDinamicVertices;
+	static double[] vertices;
+	static DoubleBuffer fbDinamicVertices;
 	//public static double[] dinamic_vertices = new double[4 * 3];
 
 	// public static LinkedList<Integer> list1 = new LinkedList<Integer>();
@@ -68,6 +69,7 @@ public class GL_base {
 			y2 = randomGenerator.nextInt(1200);
 			
 			new Line(x1, y1, 0, x2, y2, 0);
+			//new Circle(x1, y1, 0, x2, y2, 0);
 			//Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//Global_var.theShapes.put(new Line(x1, y1, 0, x2, y2, 0));
 			// Global_var.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new int[]{1,1}));
@@ -111,20 +113,20 @@ public class GL_base {
 	public static void update_data() {
 		gl2 = Global_var.glcanvas.getGL().getGL2();
 
-		LinkedList<Integer> list1 = new LinkedList<Integer>();
+		LinkedList<Double> list1 = new LinkedList<Double>();
 
 		for (Shape sh : Global_var.theShapes.values()) {
 			list1.addAll(sh.toList());
 		}
 
-		vertices = ArrayUtils.toPrimitive(list1.toArray(new Integer[list1
+		vertices = ArrayUtils.toPrimitive(list1.toArray(new Double[list1
 				.size()]));
 
-		fbVertices = Buffers.newDirectIntBuffer(vertices);
+		fbVertices = Buffers.newDirectDoubleBuffer(vertices);
 		gl2.glGenBuffers(1, vbo_buffer, 0);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
 
-		int numBytes = fbVertices.capacity() * Buffers.SIZEOF_INT;
+		int numBytes = fbVertices.capacity() * Buffers.SIZEOF_DOUBLE;
 		gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbVertices,
 				GL2.GL_STATIC_DRAW);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
@@ -182,7 +184,7 @@ public class GL_base {
 
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
 
-		gl2.glVertexPointer(3, GL2.GL_INT, 0, 0);
+		gl2.glVertexPointer(3, GL2.GL_DOUBLE, 0, 0);
 
 		gl2.glDrawArrays(GL2.GL_LINES, 0, (int) vertices.length / 3);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
@@ -216,12 +218,12 @@ public class GL_base {
 	 * @param vertices_array - array of coordinates xy-only.
 	 * @param color - color for this vertices
 	 */
-	static void gl_draw_array(int[] vertices_array, int[] color, int dimensions){
+	static void gl_draw_array(double[] vertices_array, int[] color, int dimensions){
 		
 		gl2.glColor3f(color[0], color[1], color[2]);
 		
-		fbDinamicVertices = Buffers.newDirectIntBuffer(vertices_array);
-		gl2.glVertexPointer(dimensions, GL2.GL_INT, 0, fbDinamicVertices);
+		fbDinamicVertices = Buffers.newDirectDoubleBuffer(vertices_array);
+		gl2.glVertexPointer(dimensions, GL2.GL_DOUBLE, 0, fbDinamicVertices);
 		gl2.glDrawArrays(GL2.GL_LINES, 0, vertices_array.length / dimensions);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 	}

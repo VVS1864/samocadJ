@@ -38,9 +38,9 @@ public class Get_snap {
 			double snap_distance, List<Shape> Shapes,
 			HashSet<SnapType> snap_keys) {
 		//
-		Coord cursor = new Coord((int)cursor_coords[0], (int)cursor_coords[1]);
+		Coord cursor = new Coord(cursor_coords[0], cursor_coords[1]);
 		List<Shape> retShapes = new LinkedList<Shape>();
-		Integer min_Distance = (int) snap_distance;
+		double min_Distance = snap_distance;
 		SnapCoord retSC = null;
 
 		// ******* EndPoint **********
@@ -48,7 +48,7 @@ public class Get_snap {
 			for (Shape sh : Shapes) {
 				for (PrimitiveLine p : sh.SnapLines) {
 					for (Coord c : p.coords) {
-						Integer Distance =  Math.max(
+						double Distance =  Math.max(
 								Math.abs(c.x - cursor.x),
 								Math.abs(c.y - cursor.y));
 						if (Distance < snap_distance) {
@@ -76,7 +76,7 @@ public class Get_snap {
 		if (snap_keys.contains(SnapType.MidPoint)) {
 			for (Shape sh : Shapes) {
 				for (Coord c : sh.SnapPoints) {
-					Integer Distance =  Math.max(
+					double Distance =  Math.max(
 							Math.abs(c.x - cursor.x),
 							Math.abs(c.y - cursor.y));
 					if (Distance < min_Distance) {

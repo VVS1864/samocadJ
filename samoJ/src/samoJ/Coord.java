@@ -12,15 +12,15 @@ import java.util.LinkedList;
  */
 
 public class Coord {
-	public int x, y, z;
+	public double x, y, z;
 
 	// Integer c[];
 
-	public Coord(int x, int y) {
+	public Coord(double x, double y) {
 		this(x, y, 0);
 	}
 
-	Coord(int x, int y, int z) {
+	Coord(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -32,8 +32,8 @@ public class Coord {
 	 * 
 	 * @return list for GL rendering
 	 */
-	public LinkedList<Integer> toList() {
-		LinkedList<Integer> ret = new LinkedList<Integer>();
+	public LinkedList<Double> toList() {
+		LinkedList<Double> ret = new LinkedList<Double>();
 		ret.add(x);
 		ret.add(y);
 		ret.add(z);
