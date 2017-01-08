@@ -130,13 +130,20 @@ public class normal_state extends mouse_state {
 			}
 
 			// Find snap
-		
-			SnapCoord snap = Get_snap.get_snap(Global_var.cursor_coords,
-					real_snap_distance, current_Shapes, Global_var.snap_keys);
-			
-			if (snap != null) { // If snap[0] == 0 - NO snap
-				Global_var.snap_sign_vertices = Draw_snap_sign.draw(snap,
-						(int) real_snap_distance);
+			SnapCoord snap = null;
+			if (!current_Shapes.isEmpty()){
+				snap = Get_snap.get_snap(Global_var.cursor_coords,
+						real_snap_distance, current_Shapes, Global_var.snap_keys);
+
+
+				if (snap != null) { 
+					Global_var.snap_sign_vertices = Draw_snap_sign.draw(snap,
+							(int) real_snap_distance);
+				}
+				else {
+					
+					Global_var.snap_sign_vertices = null;
+				}
 			}
 			
 			Global_var.glcanvas.display();
