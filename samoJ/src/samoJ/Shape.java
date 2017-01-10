@@ -1,5 +1,8 @@
 package samoJ;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import core.Global_var;
@@ -22,39 +25,42 @@ public class Shape {
 	public Shape() {
 		PrimLines = new LinkedList<PrimitiveLine>();
 		SnapLines = new LinkedList<PrimitiveLine>();
-		SnapPoints= new LinkedList<Coord>();
+		SnapPoints = new LinkedList<Coord>();
 		Global_var.theShapes.put(Global_var.current_ID, this);
 		Global_var.current_ID++;
-		//System.out.println("The constructor Shape()");
+		// System.out.println("The constructor Shape()");
 	}
 
-	public LinkedList<Double> toList() {
-		LinkedList<Double> ret = new LinkedList<Double>();
-		for (PrimitiveLine p : PrimLines) {
+	public ArrayList<Double> toList() {
+		ArrayList<Double> ret = new ArrayList<Double>();
+		for (PrimitiveLine p : PrimLines)
 			ret.addAll(p.toList());
-		}
 		return ret;
 	}
-	
+
+	public DoubleArrayList toListDouble() {
+		DoubleArrayList ret = new DoubleArrayList();
+		for (PrimitiveLine p : PrimLines)
+			ret.addAll(p.toListDouble());
+		return ret;
+	}
 
 	public void add(PrimitiveLine theP) {
 		PrimLines.add(theP);
 	}
-	
+
 	/**
-	 * Method for add new snap line for this Shape. Middle point of line will be 
+	 * Method for add new snap line for this Shape. Middle point of line will be
 	 * calculated automatically and will be add to SnapPoints
+	 * 
 	 * @param new_snap_line
 	 */
 	public void add_snap_line(PrimitiveLine new_snap_line) {
 		SnapLines.add(new_snap_line);
-		
-		//Coord of line middle point
-		
-		double xc = (new_snap_line.getC1().x + new_snap_line.getC2().x)/2;
-		double yc = (new_snap_line.getC1().y + new_snap_line.getC2().y)/2;
-		double zc = (new_snap_line.getC1().z + new_snap_line.getC2().z)/2;
-		SnapPoints.add(new Coord(xc, yc, zc));
+
+		// Coord of line middle point
+
+		SnapPoints.add(new_snap_line.getMiddle());
 	}
 
 	// EXAMPLE

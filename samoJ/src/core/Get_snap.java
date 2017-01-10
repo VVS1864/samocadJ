@@ -52,8 +52,8 @@ public class Get_snap {
 				for (PrimitiveLine p : sh.SnapLines) {
 					for (Coord c : p.coords) {
 						Double Distance =  Math.max(
-								Math.abs(c.x - cursor_coords[0]),
-								Math.abs(c.y - cursor_coords[1]));
+								Math.abs(c.getX() - cursor_coords[0]),
+								Math.abs(c.getY() - cursor_coords[1]));
 						if (Distance < min_Distance) {
 							min_Distance = Distance;
 							retShapes.clear();
@@ -80,8 +80,8 @@ public class Get_snap {
 			for (Shape sh : Shapes) {
 				for (Coord c : sh.SnapPoints) {
 					Double Distance =  Math.max(
-							Math.abs(c.x - cursor_coords[0]),
-							Math.abs(c.y - cursor_coords[1]));
+							Math.abs(c.getX() - cursor_coords[0]),
+							Math.abs(c.getY() - cursor_coords[1]));
 					if (Distance < min_Distance) {
 						min_Distance = Distance;
 						retShapes.clear();

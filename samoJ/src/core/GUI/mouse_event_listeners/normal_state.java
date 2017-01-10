@@ -2,6 +2,7 @@ package core.GUI.mouse_event_listeners;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -122,7 +123,7 @@ public class normal_state extends mouse_state {
 					&& !current_Shapes.isEmpty()) {
 				Global_var.current_Shape = current_Shapes.get(0);
 				// Make current shapeInteger for click-selecting
-				LinkedList<Double> list1 = Global_var.current_Shape.toList();
+				ArrayList<Double> list1 = Global_var.current_Shape.toList();
 				Global_var.current_Shape_vertices = ArrayUtils
 						.toPrimitive(list1.toArray(new Double[list1.size()]));
 			} else {

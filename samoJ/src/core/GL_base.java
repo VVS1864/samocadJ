@@ -1,9 +1,14 @@
 package core;
 
-import java.nio.DoubleBuffer;
-import java.nio.IntBuffer;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 
-import org.apache.commons.lang3.ArrayUtils;
+import java.nio.DoubleBuffer;
+//import java.nio.IntBuffer;
+
+//import org.apache.commons.lang3.ArrayUtils;
+
+
+
 
 import samoJ.Circle;
 import samoJ.Line;
@@ -15,15 +20,19 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
+//import java.util.LinkedList;
+//import java.util.List;
 import java.util.Random;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	public static int N = 20;// number of vertices
+	public static int N = 2000;// number of vertices
 
 	static DoubleBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -56,12 +65,12 @@ public class GL_base {
 		gl2.glLoadIdentity();
 
 		Random randomGenerator = new Random();
-
-		long t1 = System.currentTimeMillis();
+		long t1, t2, t_total =0;
+		t1 = System.currentTimeMillis();
 
 		// List<Shape> theShapes = new LinkedList<Shape>();
 
-		for (int idx = 0; idx <= N - 1; ++idx) {
+		for (int idx = 0; idx < N ; ++idx) {
 			int x1, y1, x2, y2;
 			x1 = randomGenerator.nextInt(1200);
 			y1 = randomGenerator.nextInt(1200);
@@ -69,13 +78,28 @@ public class GL_base {
 			y2 = randomGenerator.nextInt(1200);
 			
 			new Line(x1, y1, 0, x2, y2, 0);
-			//new Circle(x1, y1, 0, x2, y2, 0);
+			
+			x1 = randomGenerator.nextInt(1200);
+			y1 = randomGenerator.nextInt(1200);
+			x2 = randomGenerator.nextInt(1200);
+			y2 = randomGenerator.nextInt(1200);
+			
+			new Circle(x1, y1, 0, x2, y2, 0);
+			
 			//Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//Global_var.theShapes.put(new Line(x1, y1, 0, x2, y2, 0));
 			// Global_var.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new int[]{1,1}));
 
 		}
+		t2 = System.currentTimeMillis();
+		System.out.println("Generation: " + N + " figures, time=" +(t2 - t1)+ " ms.");
+		t_total += t2-t1;
+		
+		t1 = System.currentTimeMillis();
 		update_data();
+		t2 = System.currentTimeMillis();
+		System.out.println("upate_data(): " +(t2 - t1)+ " ms.");
+		t_total += t2-t1;
 		/*
 		 * System.out.println( N + " �����"); long t2 =
 		 * System.currentTimeMillis();
@@ -103,7 +127,13 @@ public class GL_base {
 		 * t2 = System.currentTimeMillis(); System.out.println("before render: "
 		 * + (t2 - t1)+ " ms.");
 		 */
+		t1 = System.currentTimeMillis();
 		render(gl2, width, height);
+		t2 = System.currentTimeMillis();
+		System.out.println("render(): " +(t2 - t1)+ " ms.");
+		t_total += t2-t1;
+		
+		System.out.println("TOTAL: "+ t_total+ " ms.");
 		
 	}
 
@@ -112,16 +142,43 @@ public class GL_base {
 	 */
 	public static void update_data() {
 		gl2 = Global_var.glcanvas.getGL().getGL2();
-
-		LinkedList<Double> list1 = new LinkedList<Double>();
+		
+		//        OLD release with linked list  and ArrayUtils 
+		// ------------------------------------------------
+		// Generation: 2000 figures, time=168 ms.
+		// upate_data(): 2485 ms.
+		// render(): 4 ms.  
+		// ------------------------------------------------
+		
+		/*
+		ArrayList<Double> list1 = new ArrayList<Double>(N*200);
 
 		for (Shape sh : Global_var.theShapes.values()) {
 			list1.addAll(sh.toList());
 		}
-
+		
 		vertices = ArrayUtils.toPrimitive(list1.toArray(new Double[list1
 				.size()]));
-
+		
+		*/
+		// END OLD RELEASE 
+		
+		/////////////////NEW REALISE with DoubleArrayList (it.unimi.dsi.fastutil.doubles) 
+		// ------------------------------------------------
+		//		Generation: 2000 figures, time=142 ms.
+		//				upate_data(): 153 ms.
+		//				render(): 5 ms.
+		// ------------------------------------------------	
+		
+		DoubleArrayList listDouble = new DoubleArrayList(N*200);
+		for (Shape sh : Global_var.theShapes.values()) {
+			listDouble.addAll(sh.toListDouble());
+		}
+			
+		vertices = listDouble.elements(); // Easy without ArrayUtils
+		
+		///////////////////////////////// END NEW REALISE 
+		
 		fbVertices = Buffers.newDirectDoubleBuffer(vertices);
 		gl2.glGenBuffers(1, vbo_buffer, 0);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);

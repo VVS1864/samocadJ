@@ -45,8 +45,8 @@ public class Circle extends Shape {
 
 		// Crossers in center of circle
 		double s = Radius / 20;
-		add(new PrimitiveLine(theCenter.x - s, theCenter.y, 0, theCenter.x + s, theCenter.y, 0));
-		add(new PrimitiveLine(theCenter.x, theCenter.y - s, 0, theCenter.x, theCenter.y + s, 0));
+		add(new PrimitiveLine(theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0));
+		add(new PrimitiveLine(theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0));
 
 	}
 
@@ -67,8 +67,8 @@ public class Circle extends Shape {
 
 		for (int i = 0; i < segments; i++) {
 
-			lines[i * 2] = (double) (Radius * Math.cos(theta) + theCenter.x);
-			lines[i * 2 + 1] = (double) (Radius * Math.sin(theta) + theCenter.y);
+			lines[i * 2] = (double) (Radius * Math.cos(theta) + theCenter.getX());
+			lines[i * 2 + 1] = (double) (Radius * Math.sin(theta) + theCenter.getY());
 
 			theta += angle_increment;
 		}

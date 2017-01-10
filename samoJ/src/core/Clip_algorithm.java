@@ -27,11 +27,11 @@ public class Clip_algorithm{
 		for (Shape shape : theShapes.values()){
 			for (PrimitiveLine snap_line : shape.SnapLines){
 				Coord c1 = snap_line.getC1();
-				double x1 = c1.x;
-				double y1 = c1.y;
+				double x1 = c1.getX();
+				double y1 = c1.getY();
 				Coord c2 = snap_line.getC2();
-				double x2 = c2.x;
-				double y2 = c2.y;
+				double x2 = c2.getX();
+				double y2 = c2.getY();
 				
 				if (x1 > xTR && x2 > xTR) continue;
 				if (x1 < xBL && x2 < xBL) continue;

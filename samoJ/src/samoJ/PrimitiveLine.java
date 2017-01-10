@@ -1,5 +1,8 @@
 package samoJ;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -26,13 +29,20 @@ public class PrimitiveLine {
 		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2));
 	}
 
-	public LinkedList<Double> toList() {
-		LinkedList<Double> ret = new LinkedList<Double>();
-		// = c1.toList();
-		// ret.addAll(c2.toList());
+	public ArrayList<Double> toList() {
+		ArrayList<Double> ret = new ArrayList<Double>();
+
 		for (Coord c : coords)
 			ret.addAll(c.toList());
 		return ret;
+	}
+	
+	public DoubleArrayList toListDouble(){
+		DoubleArrayList ret = new DoubleArrayList();
+		for (Coord coord : coords)
+			ret.addAll(coord.toListDouble());
+		return ret;
+		
 	}
 
 	public Coord getC1() {
@@ -45,8 +55,8 @@ public class PrimitiveLine {
 	
 	// Get middle point (Coord)
 	public Coord getMiddle() {
-		return new Coord((getC1().x + getC2().x) / 2,
-				(getC1().y + getC2().y) / 2, (getC1().z+getC2().z)/2);
+		return new Coord((getC1().getX() + getC2().getX()) / 2,
+				(getC1().getY() + getC2().getY()) / 2, (getC1().getZ()+getC2().getZ())/2);
 	}
 
 }
