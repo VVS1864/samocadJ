@@ -58,5 +58,9 @@ public class PrimitiveLine {
 		return new Coord((getC1().getX() + getC2().getX()) / 2,
 				(getC1().getY() + getC2().getY()) / 2, (getC1().getZ()+getC2().getZ())/2);
 	}
-
+	
+	@Override
+	public String toString(){
+		return coords.toString();
+	}
 }

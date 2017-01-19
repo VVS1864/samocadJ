@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 
 import java.util.ArrayList;
 //import java.util.Arrays;
-import java.util.LinkedList;
+//import java.util.LinkedList;
 
 /**
  * It is an point, non-graphical, with 3 coordinates x,y,z Currently Integer is
@@ -18,7 +18,7 @@ import java.util.LinkedList;
 public class Coord {
 	//public double x, y, z;
 	
-	public DoubleArrayList c;
+	DoubleArrayList c;
 	// Integer c[];
 
 	public Coord(double x, double y) {
@@ -26,8 +26,7 @@ public class Coord {
 	}
 
 	Coord(double x, double y, double z) {
-		double[] a = {x, y, z};
-		c = DoubleArrayList.wrap(a);
+		c = DoubleArrayList.wrap(new double[] {x, y, z});
 		/*this.x = x;
 		this.y = y;
 		this.z = z;*/
@@ -69,11 +68,21 @@ public class Coord {
 		return c.getDouble(2);
 	}
 	
-	// Simple testing
+	public String toString(){
+		String ret="[";
+		for (double d:c)
+		{
+			ret += d+" ";
+		}
+		return ret+"]";
+	}
+	// ***************Simple testing
 	public static void main(String[] args) {
 
 		Coord c = new Coord(1, 2, 3);
 		System.out.println(c.toList());
 	}
+	
+
 
 }
