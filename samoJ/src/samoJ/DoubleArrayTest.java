@@ -1,6 +1,7 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 public class DoubleArrayTest {
 	static void print(Object x){
@@ -19,18 +20,44 @@ public class DoubleArrayTest {
 		Double d2 = 12.0;
 		Double d3 = 13.0;
 		Double d2_2 = 12.0;
-		DoubleArrayList dal= new DoubleArrayList(da);
-		print("dal="+dal);
-		dal.add(d1);
-		dal.add(d2);
-		dal.add(d2);
-		print("dal="+dal);
-		print("dal.contain(d1)="+dal.contains(d1));
-		print("dal.contain(d2)="+dal.contains(d2));
-		print("dal.contain(d3)="+dal.contains(d3));
-		print("dal.contain(d2_2)="+dal.contains(d2_2));
-		// TODO Auto-generated method stub
-
+		DoubleArrayList dal1= new DoubleArrayList(da);
+		//print("dal1="+dal1);
+		dal1.add(d1);
+		dal1.add(d2);
+		dal1.add(d2);
+		
+		//print("dal1="+dal1);
+		/*
+		print("dal1.contain(d1)="+dal1.contains(d1));
+		print("dal1.contain(d2)="+dal1.contains(d2));
+		print("dal1.contain(d3)="+dal1.contains(d3));
+		print("dal1.contain(d2_2)="+dal1.contains(d2_2));
+		*/
+		
+		DoubleList dal2 =  dal1.subList(1, 5);
+		DoubleList dal3 =  dal1.subList(2, 6);
+		print("dal1="+dal1);
+		print("dal2="+dal2);
+		print("dal3="+dal3);
+		
+		dal1.removeDouble(dal1.size()-1);
+		
+		//dal2.set(0, 77777);
+		print("dal1="+dal1);
+		print("dal2="+dal2);
+		print("dal3="+dal3);
+		
+		dal2.add(333);
+		print("dal1="+dal1);
+		print("dal2="+dal2);
+		print("dal3="+dal3);
+		
+		dal3.remove(0);
+		print("dal1="+dal1);
+		print("dal2="+dal2);
+		print("dal3="+dal3);
+		
+		
 	}
 
 }
