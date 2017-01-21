@@ -10,7 +10,9 @@ import java.nio.DoubleBuffer;
 
 
 
+
 import samoJ.Circle;
+import samoJ.GroupShape;
 import samoJ.Line;
 import samoJ.Shape;
 
@@ -32,7 +34,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	public static int N = 2000;// number of vertices
+	public static int N = 5000;// number of vertices
 
 	static DoubleBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -69,7 +71,7 @@ public class GL_base {
 		t1 = System.currentTimeMillis();
 
 		// List<Shape> theShapes = new LinkedList<Shape>();
-
+		
 		for (int idx = 0; idx < N ; ++idx) {
 			int x1, y1, x2, y2;
 			x1 = randomGenerator.nextInt(1200);
@@ -79,18 +81,32 @@ public class GL_base {
 			
 			new Line(x1, y1, 0, x2, y2, 0);
 			
+			/*
 			x1 = randomGenerator.nextInt(1200);
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
 			
 			new Circle(x1, y1, 0, x2, y2, 0);
-			
+			*/
 			//Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//Global_var.theShapes.put(new Line(x1, y1, 0, x2, y2, 0));
 			// Global_var.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new int[]{1,1}));
 
 		}
+		
+		for (Shape sh:Global_var.theShapes.values())
+		{
+			System.out.println(" " +sh.getClass() + sh.ID);
+		}
+		LinkedList<Shape> ss = new LinkedList<Shape>(Global_var.theShapes.values());
+		GroupShape grShape  = new GroupShape(ss);
+		
+		for (Shape sh:Global_var.theShapes.values())
+		{
+			System.out.println(" " +sh.getClass() + sh.ID);
+		}
+		
 		t2 = System.currentTimeMillis();
 		System.out.println("Generation: " + N + " figures, time=" +(t2 - t1)+ " ms.");
 		t_total += t2-t1;

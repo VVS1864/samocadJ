@@ -54,8 +54,8 @@ public class PrimitiveLine {
 	}
 	
 	// Get middle point (Coord)
-	public Coord getMiddle() {
-		return new Coord((getC1().getX() + getC2().getX()) / 2,
+	public SnapCoord getMiddle() {
+		return new SnapCoord(SnapType.MidPoint,(getC1().getX() + getC2().getX()) / 2,
 				(getC1().getY() + getC2().getY()) / 2, (getC1().getZ()+getC2().getZ())/2);
 	}
 	

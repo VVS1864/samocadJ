@@ -1,5 +1,7 @@
 package core.GUI.mouse_event_listeners;
 
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
@@ -123,9 +125,10 @@ public class normal_state extends mouse_state {
 					&& !current_Shapes.isEmpty()) {
 				Global_var.current_Shape = current_Shapes.get(0);
 				// Make current shapeInteger for click-selecting
-				ArrayList<Double> list1 = Global_var.current_Shape.toList();
-				Global_var.current_Shape_vertices = ArrayUtils
-						.toPrimitive(list1.toArray(new Double[list1.size()]));
+				DoubleArrayList list1 = Global_var.current_Shape.toListDouble();
+				/*Global_var.current_Shape_vertices = ArrayUtils
+						.toPrimitive(list1.toArray(new Double[list1.size()]));*/
+				Global_var.current_Shape_vertices = list1.elements();
 			} else {
 				Global_var.current_Shape_vertices = null;
 			}

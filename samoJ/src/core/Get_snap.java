@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import samoJ.Coord;
-import samoJ.PrimitiveLine;
 import samoJ.Shape;
 import samoJ.SnapCoord;
 import samoJ.SnapType;
@@ -18,7 +17,6 @@ import samoJ.SnapType;
  */
 public class Get_snap {
 
-	
 	/**
 	 * Method get_snap for find snap point and snap type. There are 4 types of
 	 * snap:
@@ -38,69 +36,36 @@ public class Get_snap {
 			double snap_distance, List<Shape> Shapes,
 			HashSet<SnapType> snap_keys) {
 		//
-		//System.out.println("get_snap, snap_distance="+ snap_distance);
-		//System.out.println("cursor_coords = "+cursor_coords[0]+ " "+cursor_coords[1]);
-		//Coord cursor = new Coord((int)cursor_coords[0], (int)cursor_coords[1]);
+		// System.out.println("get_snap, snap_distance="+ snap_distance);
+		// System.out.println("cursor_coords = "+cursor_coords[0]+
+		// " "+cursor_coords[1]);
+		// Coord cursor = new Coord((int)cursor_coords[0],
+		// (int)cursor_coords[1]);
 		List<Shape> retShapes = new LinkedList<Shape>();
-		
-		Double min_Distance =  snap_distance;
+
+		Double min_Distance = snap_distance;
 		SnapCoord retSC = null;
 
-		// ******* EndPoint **********
-		if (snap_keys.contains(SnapType.EndPoint)) {
+		for (SnapType st : snap_keys) {
 			for (Shape sh : Shapes) {
-				for (PrimitiveLine p : sh.SnapLines) {
-					for (Coord c : p.coords) {
-						Double Distance =  Math.max(
-								Math.abs(c.getX() - cursor_coords[0]),
-								Math.abs(c.getY() - cursor_coords[1]));
-						if (Distance < min_Distance) {
-							min_Distance = Distance;
-							retShapes.clear();
-							retShapes.add(sh);
-							retSC = new SnapCoord(SnapType.EndPoint, c);
-							////
-							//Shapes = retShapes; // ���������� ������ �����
-							//return retSC;
-							////
-						}
-					}
-				}
-			}
-			
-			if (min_Distance < snap_distance) {
-				//System.out.println("end snap min_Distance="+min_Distance+" snap_distance="+snap_distance);
-				Shapes = retShapes; // ���������� ������ �����
-				return retSC;
-				
-			}
-		}
-		
-		if (snap_keys.contains(SnapType.MidPoint)) {
-			for (Shape sh : Shapes) {
-				for (Coord c : sh.SnapPoints) {
-					Double Distance =  Math.max(
+				for (Coord c : sh.getSnapPoints(st)) {
+					Double Distance = Math.max(
 							Math.abs(c.getX() - cursor_coords[0]),
 							Math.abs(c.getY() - cursor_coords[1]));
 					if (Distance < min_Distance) {
 						min_Distance = Distance;
 						retShapes.clear();
 						retShapes.add(sh);
-						retSC = new SnapCoord(SnapType.MidPoint, c);
+						retSC = new SnapCoord(st, c);
 					}
 				}
 			}
 			if (min_Distance < snap_distance) {
-				Shapes = retShapes; // ���������� ������ �����
+				Shapes = retShapes; // ����������
+									// ������ �����
 				return retSC;
 			}
 		}
-		
-		
-		if(snap_keys.contains(SnapType.Intersection)){
-			
-		}
-
 		return retSC;
 	}
 }

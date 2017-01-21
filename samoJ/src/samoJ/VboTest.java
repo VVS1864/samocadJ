@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 
-public class Vbo {
+public class VboTest {
 	ArrayList<PrimitiveLine> primLines;
 	DoubleArrayList vertDouble;
 
-	public Vbo() {
+	public VboTest() {
 		// TODO Auto-generated constructor stub
 		primLines = new ArrayList<PrimitiveLine>();
 		vertDouble = new DoubleArrayList();
@@ -60,7 +60,7 @@ public class Vbo {
 		System.out.println(p2.toString());
 		System.out.println(p1.toListDouble());
 		System.out.println(p2.toListDouble());
-		Vbo vbo1 = new Vbo();
+		VboTest vbo1 = new VboTest();
 		vbo1.add(p2);
 		vbo1.add(p1);
 		System.out.println(vbo1);

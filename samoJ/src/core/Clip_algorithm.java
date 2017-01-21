@@ -25,7 +25,7 @@ public class Clip_algorithm{
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
 		
 		for (Shape shape : theShapes.values()){
-			for (PrimitiveLine snap_line : shape.SnapLines){
+			for (PrimitiveLine snap_line : shape.getSnapLines()){
 				Coord c1 = snap_line.getC1();
 				double x1 = c1.getX();
 				double y1 = c1.getY();
