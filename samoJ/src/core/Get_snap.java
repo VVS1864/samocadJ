@@ -23,14 +23,14 @@ public class Get_snap {
 	 * @return point of intersection
 	 */
 
-	public static SnapCoord getLinesIntersection(
+	public static Coord getLinesIntersection(
 			LinkedList<PrimitiveLine> snapLines) {
 		if (snapLines.size() != 2)
 			return null;
 		return getLinesIntersection(snapLines.getFirst(), snapLines.getLast());
 	}
 
-	public static SnapCoord getLinesIntersection(PrimitiveLine s1,
+	public static Coord getLinesIntersection(PrimitiveLine s1,
 			PrimitiveLine s2) {
 
 		double x1 = s1.getC1().getX();
@@ -70,7 +70,7 @@ public class Get_snap {
 		double x = x1 + Ua * x21;
 		double y = y1 + Ua * y21;
 
-		return new SnapCoord(SnapType.Intersection, x, y);
+		return new Coord(x, y);
 
 	}
 
@@ -82,7 +82,7 @@ public class Get_snap {
 	 * 0 - NO SNAP.
 	 * 
 	 * @param cursor_coords
-	 * @param Shapes
+	 * @param shapes
 	 *            - List of Shapes for find snap_point among them
 	 * @param snap_keys
 	 *            from Global_var - {end_point, midpoint, intersection,
@@ -90,7 +90,7 @@ public class Get_snap {
 	 * @return - {number of snap_type, x, y, z} xyz of snap point
 	 */
 	public static SnapCoord get_snap(double[] cursor_coords,
-			double snap_distance, List<Shape> Shapes,
+			double snap_distance, List<Shape> shapes,
 			LinkedList<SnapType> snap_keys) {
 
 		List<Shape> retShapes = new LinkedList<Shape>();
@@ -99,33 +99,47 @@ public class Get_snap {
 		SnapCoord retSnapCoord = null;
 
 		for (SnapType snapType : snap_keys) {
+
 			if (snapType == SnapType.Intersection) {
-				LinkedList<PrimitiveLine> theS = new LinkedList<PrimitiveLine>();
-				for (Shape sh : Shapes) {
-					theS.addAll(sh.getSnapLines());
-				}
-				for (PrimitiveLine p1 : theS) {
-					for (PrimitiveLine p2 : theS.subList(theS.indexOf(p1),
-							theS.size())) {
-						retSnapCoord = getLinesIntersection(p1, p2);
 
-						if (retSnapCoord != null) {
-							// System.out.println(retSnapCoord.toString());
-							Double Distance = Math.max(
-									Math.abs(retSnapCoord.getX()
-											- cursor_coords[0]),
-									Math.abs(retSnapCoord.getY()
-											- cursor_coords[1]));
-							if (Distance < min_Distance)
-								return retSnapCoord;
+				if (shapes.size() < 2)
+					return null;
 
-						}
+				LinkedList<PrimitiveLine> theOtherSnapLines = new LinkedList<PrimitiveLine>();
+				for (Shape sh : shapes) {
+
+					// get SnapLines from other Shapes
+					for (Shape sh2 : shapes.subList(shapes.indexOf(sh) + 1,
+							shapes.size())) {
+						theOtherSnapLines.addAll(sh2.getSnapLines());
 					}
+					// Find Intersection
+					for (PrimitiveLine p1 : sh.getSnapLines())
+						// from current shape
 
+						for (PrimitiveLine p2 : theOtherSnapLines) { // List
+																		// from
+																		// other
+																		// shapes
+							Coord с = getLinesIntersection(p1, p2);
+							if (с != null) {
+								Double Distance = Math.max(
+										Math.abs(с.getX()
+												- cursor_coords[0]),
+										Math.abs(с.getY()
+												- cursor_coords[1]));
+								if (Distance < min_Distance) {
+									min_Distance = Distance;
+									retShapes.clear();
+									retShapes.add(sh);
+									retSnapCoord = new SnapCoord(snapType, с);
+								}
+							}
+						}
 				}
 
 			} else
-				for (Shape sh : Shapes) {
+				for (Shape sh : shapes) {
 					for (Coord c : sh.getSnapPoints(snapType)) {
 						Double Distance = Math.max(
 								Math.abs(c.getX() - cursor_coords[0]),
@@ -138,8 +152,9 @@ public class Get_snap {
 						}
 					}
 				}
+			
 			if (min_Distance < snap_distance) {
-				Shapes = retShapes;
+				shapes = retShapes; /// Это бесполезно..
 				return retSnapCoord;
 			}
 		}
@@ -150,7 +165,7 @@ public class Get_snap {
 
 		PrimitiveLine p1 = new PrimitiveLine(1, 1, 0, 5, 5, 0);
 		PrimitiveLine p2 = new PrimitiveLine(1, 10, 0, 6, 4, 0);
-		SnapCoord sc = getLinesIntersection(p1, p2);
+		Coord sc = getLinesIntersection(p1, p2);
 		System.out.println(sc);
 
 	}
