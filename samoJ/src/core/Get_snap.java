@@ -106,13 +106,12 @@ public class Get_snap {
 					return null;
 
 				LinkedList<PrimitiveLine> theOtherSnapLines = new LinkedList<PrimitiveLine>();
-				for (Shape sh : shapes) {
-
+				for (Shape sh1: shapes.subList(0, shapes.size())) // without last element
+				    {
+					Shape sh = shapes.get(shapes.indexOf(sh1));
 					// get SnapLines from other Shapes
-					for (Shape sh2 : shapes.subList(shapes.indexOf(sh) + 1,
-							shapes.size())) {
-						theOtherSnapLines.addAll(sh2.getSnapLines());
-					}
+					theOtherSnapLines.addAll(sh.getSnapLines());
+					
 					// Find Intersection
 					for (PrimitiveLine p1 : sh.getSnapLines())
 						// from current shape
