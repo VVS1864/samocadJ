@@ -34,7 +34,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	public static int N = 5000;// number of vertices
+	public static int N = 20;// number of vertices
 
 	static DoubleBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -95,10 +95,12 @@ public class GL_base {
 
 		}
 		
+		/*  Group of Shape
 		for (Shape sh:Global_var.theShapes.values())
 		{
 			System.out.println(" " +sh.getClass() + sh.ID);
 		}
+		
 		LinkedList<Shape> ss = new LinkedList<Shape>(Global_var.theShapes.values());
 		GroupShape grShape  = new GroupShape(ss);
 		
@@ -106,6 +108,7 @@ public class GL_base {
 		{
 			System.out.println(" " +sh.getClass() + sh.ID);
 		}
+		*/
 		
 		t2 = System.currentTimeMillis();
 		System.out.println("Generation: " + N + " figures, time=" +(t2 - t1)+ " ms.");

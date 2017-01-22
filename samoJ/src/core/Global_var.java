@@ -128,7 +128,7 @@ public class Global_var {
 	 * midpoint, 2 - intersection point, 3 - near_point.
 	 */
 	// public static int[] snap_keys = new int[]{1, 1, 1, 1};
-	public static HashSet<SnapType> snap_keys = new HashSet<SnapType>(
+	public static LinkedList<SnapType> snap_keys = new LinkedList<SnapType>(
 			Arrays.asList(SnapType.EndPoint, SnapType.MidPoint,
 					SnapType.Intersection, SnapType.NearPoint));
 
