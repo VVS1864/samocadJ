@@ -69,13 +69,14 @@ public class Coord {
 	}
 	
 	public String toString(){
+		
 		String ret="[";
 		for (double d:c)
 		{
 			ret += d+" ";
 		}
-		return ret+"]";
-	}
+		return ret+"]";}
+	
 	// ***************Simple testing
 	public static void main(String[] args) {
 

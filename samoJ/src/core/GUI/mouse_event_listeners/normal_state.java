@@ -115,10 +115,10 @@ public class normal_state extends mouse_state {
 					* Values.current_scale;
 			// Get Shapes under cursor
 			LinkedList<Shape> current_Shapes = Clip_algorithm.simple_clip(
-					(int) (x - real_snap_distance),
-					(int) (y - real_snap_distance),
-					(int) (x + real_snap_distance),
-					(int) (y + real_snap_distance), Global_var.theShapes);
+					 (x - real_snap_distance),
+					 (y - real_snap_distance),
+					 (x + real_snap_distance),
+					 (y + real_snap_distance), Global_var.theShapes);
 			// Current Shape indication - if not (select_mode, draw_new_object)
 			// and there are any Shapes under cursor
 			if (!Global_var.select_mode && !Global_var.draw_new_object

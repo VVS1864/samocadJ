@@ -34,7 +34,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	public static int N = 2000;// number of vertices
+	public static int N = 20000;// number of vertices
 
 	static DoubleBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];

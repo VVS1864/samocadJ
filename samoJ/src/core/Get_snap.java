@@ -101,19 +101,19 @@ public class Get_snap {
 		for (SnapType snapType : snap_keys) {
 
 			if (snapType == SnapType.Intersection) {
-
+				//System.out.println("shapes.size()=" + shapes.size());
 				if (shapes.size() < 2)
 					return null;
 
 				LinkedList<PrimitiveLine> theOtherSnapLines = new LinkedList<PrimitiveLine>();
-				for (Shape sh1: shapes.subList(0, shapes.size())) // without last element
+				for (Shape sh1: shapes.subList(1, shapes.size())) // without last element
 				    {
-					Shape sh = shapes.get(shapes.indexOf(sh1));
+					Shape sh = shapes.get(shapes.indexOf(sh1)-1);
 					// get SnapLines from other Shapes
 					theOtherSnapLines.addAll(sh.getSnapLines());
 					
 					// Find Intersection
-					for (PrimitiveLine p1 : sh.getSnapLines())
+					for (PrimitiveLine p1 : sh1.getSnapLines())
 						// from current shape
 
 						for (PrimitiveLine p2 : theOtherSnapLines) { // List
@@ -121,13 +121,17 @@ public class Get_snap {
 																		// other
 																		// shapes
 							Coord ñ = getLinesIntersection(p1, p2);
+							
 							if (ñ != null) {
+								//System.out.println("cursor_coords=["+cursor_coords[0]+" ,"+cursor_coords[1]+"] ñ="+ñ.toString()+" , min_Distance="+min_Distance);
 								Double Distance = Math.max(
 										Math.abs(ñ.getX()
 												- cursor_coords[0]),
 										Math.abs(ñ.getY()
 												- cursor_coords[1]));
+								//System.out.println(" Distance="+Distance+" , min_Distance="+min_Distance);
 								if (Distance < min_Distance) {
+									
 									min_Distance = Distance;
 									retShapes.clear();
 									retShapes.add(sh);
