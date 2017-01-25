@@ -120,14 +120,14 @@ public class Get_snap {
 																		// from
 																		// other
 																		// shapes
-							Coord с = getLinesIntersection(p1, p2);
+							Coord c = getLinesIntersection(p1, p2);
 							
-							if (с != null) {
-								//System.out.println("cursor_coords=["+cursor_coords[0]+" ,"+cursor_coords[1]+"] с="+с.toString()+" , min_Distance="+min_Distance);
+							if (c != null) {
+								//System.out.println("cursor_coords=["+cursor_coords[0]+" ,"+cursor_coords[1]+"] пїЅ="+пїЅ.toString()+" , min_Distance="+min_Distance);
 								Double Distance = Math.max(
-										Math.abs(с.getX()
+										Math.abs(c.getX()
 												- cursor_coords[0]),
-										Math.abs(с.getY()
+										Math.abs(c.getY()
 												- cursor_coords[1]));
 								//System.out.println(" Distance="+Distance+" , min_Distance="+min_Distance);
 								if (Distance < min_Distance) {
@@ -135,7 +135,7 @@ public class Get_snap {
 									min_Distance = Distance;
 									retShapes.clear();
 									retShapes.add(sh);
-									retSnapCoord = new SnapCoord(snapType, с);
+									retSnapCoord = new SnapCoord(snapType, c);
 								}
 							}
 						}
@@ -157,7 +157,7 @@ public class Get_snap {
 				}
 			
 			if (min_Distance < snap_distance) {
-				shapes = retShapes; /// Это бесполезно..
+				shapes = retShapes; /// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ..
 				return retSnapCoord;
 			}
 		}
