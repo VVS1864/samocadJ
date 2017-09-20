@@ -68,6 +68,12 @@ public class Coord {
 		return c.getDouble(2);
 	}
 	
+	public double[] getXYZ(){
+		 double[] XYZ = {getX(), getY(), getZ()};
+		return XYZ;
+		
+	}
+	
 	public String toString(){
 		
 		String ret="[";

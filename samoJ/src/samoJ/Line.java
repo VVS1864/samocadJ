@@ -1,21 +1,29 @@
 package samoJ;
-
+import core.Global_var;
 public class Line extends Shape {
 	// Not dashed line
-	public Line(double x1, double y1, double z1, double x2, double y2, double z2) {
+	public Line(ObjectMode mode, double x1, double y1, double z1, double x2, double y2, double z2) {
+		super(mode);
 		PrimitiveLine line = new PrimitiveLine(x1, y1, z1, x2, y2, z2);
 		add(line);
 		add_snap_line(line);
+		if(mode == ObjectMode.Preview_object){
+			Global_var.preview_object_vertices = super.getPreviewData();
+		}
 		//System.out.println("factor="+ factor);
 		//System.out.println("mask="+mask);
 	}
-	// 
-	public Line(double  x1, double y1, double z1, double x2, double y2, double z2, double factor,
+	// Dashed line
+	public Line(ObjectMode mode, double  x1, double y1, double z1, double x2, double y2, double z2, double factor,
 			int[] mask) {
+		super(mode);
 		this.factor = factor;
 		this.mask = mask;
 		formPrimitiveLines(x1, y1, z1, x2, y2, z2);
 		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
+		if(mode == ObjectMode.Preview_object){
+			Global_var.preview_object_vertices = super.getPreviewData();
+		}
 	}
 
 	void formPrimitiveLines(double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -74,12 +82,12 @@ public class Line extends Shape {
 		} while (continue_flag);
 
 	}
-
+	/*
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Line l1 = new Line(1, 2, 3, 5, 7, 9);
 		System.out.println(l1.toList());
 		Line l2 = new Line(100, 200, 0, 500, 700, 0, 50, new int[]{1,1});
 		System.out.println(l2.toList());
-	}
+	}*/
 }

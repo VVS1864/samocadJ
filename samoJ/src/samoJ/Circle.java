@@ -13,14 +13,15 @@ public class Circle extends Shape {
 	 * @param z1
 	 */
 
-	public Circle(double r, double x1, double y1, double z1) {
+	public Circle(ObjectMode mode, double r, double x1, double y1, double z1) {
+		super(mode);
 		theCenter = new Coord(x1, y1, z1);
 		Radius = r;
 		create_circle();
 	}
 
-	public Circle(double rx, double ry, double rz, double x2, double y2, double z2) {
-		this((double)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2);
+	public Circle(ObjectMode mode, double rx, double ry, double rz, double x2, double y2, double z2) {
+		this(mode, (double)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2);
 		/*int xd = rx - x2;
 		int yd = ry - y2;
 		int r = (int) Math.sqrt(xd * xd + yd * yd);
@@ -74,11 +75,11 @@ public class Circle extends Shape {
 		}
 		return lines;
 	}
-
+	/*
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Circle c = new Circle(5, 15, 0, 25, 30, 0);
 		System.out.println(c.toList());
-	}
+	}*/
 
 }

@@ -99,6 +99,7 @@ public class normal_state extends mouse_state {
 		double x = Global_var.cursor_coords[0];
 		double y = Global_var.cursor_coords[1];
 		// TO-DO snap to Shapes
+		
 		Global_var.cursor_snap_coords = Global_var.cursor_coords.clone();
 		if (Global_var.mouse_plan_motion == false) {
 			Global_var.info_down.setText("Coordinates: X "
@@ -129,10 +130,13 @@ public class normal_state extends mouse_state {
 				/*Global_var.current_Shape_vertices = ArrayUtils
 						.toPrimitive(list1.toArray(new Double[list1.size()]));*/
 				Global_var.current_Shape_vertices = list1.elements();
+				
 			} else {
-				Global_var.current_Shape_vertices = null;
+				Global_var.current_Shape_vertices = null;	
 			}
-
+			
+			//Delete old snap sign 
+			Global_var.snap_sign_vertices = null;
 			// Find snap
 			SnapCoord snap = null;
 			if (!current_Shapes.isEmpty()){
@@ -143,13 +147,15 @@ public class normal_state extends mouse_state {
 				if (snap != null) { 
 					Global_var.snap_sign_vertices = Draw_snap_sign.draw(snap,
 							real_snap_distance);
-				}
-				else {
-					
-					Global_var.snap_sign_vertices = null;
+					Global_var.cursor_snap_coords = snap.getXYZ();
 				}
 			}
 			
+			//if program in state Draw new object - 
+			//display new position of this object on current coords of cursor
+			if (Global_var.draw_new_object == true){//==ObjectMode.New_object??
+				Global_var.current_function.mouse_move_event();
+			}
 			Global_var.glcanvas.display();
 		}
 	}

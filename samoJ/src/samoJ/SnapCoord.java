@@ -16,4 +16,5 @@ public class SnapCoord extends Coord {
 	public SnapCoord(SnapType snap, Coord c) {
 		this(snap, c.getX(), c.getY(), c.getZ());
 	}
+	
 }

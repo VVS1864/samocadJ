@@ -15,14 +15,14 @@ public class Class_base_draw
 {
 	
 	//Points for create object
-	public int x1;
-	public int y1;
+	public double x1;
+	public double y1;
 	
-	public int x2;
-	public int y2;
+	public double x2;
+	public double y2;
 	
-	public int x3;//for Dimensions and mirror function
-	public int y3;	
+	public double x3;//for Dimensions and mirror function
+	public double y3;	
 	
 	/**
 	 * Initial method of Shape-creating process or any function. 
@@ -38,15 +38,14 @@ public class Class_base_draw
 	}
 	
 	/**
-	 * First method Shape-creating process - remember cad_demo.point_1_coords - 
-	 * coordinates of point 1
+	 * First method Shape-creating process - remember coordinates of point 1
 	 * @param message1
 	 * @param message2
 	 * @param next_class
 	 */
 	public void draw_1(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
-		Global_var.point_1_coords = Global_var.cursor_coords.clone();
+		Global_var.point_1_coords = Global_var.cursor_snap_coords.clone();
 	}
 	
 	/**
@@ -58,14 +57,23 @@ public class Class_base_draw
 	public void draw_2(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		
-		Global_var.point_2_coords = Global_var.cursor_coords.clone();
+		Global_var.point_2_coords = Global_var.cursor_snap_coords.clone();
 		
-		x1 = (int)Global_var.point_1_coords[0];
-		y1 = (int)Global_var.point_1_coords[1];
+		x1 = (double)Global_var.point_1_coords[0];
+		y1 = (double)Global_var.point_1_coords[1];
 		
-		x2 = (int)Global_var.point_2_coords[0];
-		y2 = (int)Global_var.point_2_coords[1];
-		Global_var.point_1_coords = Global_var.cursor_coords.clone();
+		x2 = (double)Global_var.point_2_coords[0];
+		y2 = (double)Global_var.point_2_coords[1];
+		Global_var.point_1_coords = Global_var.cursor_snap_coords.clone();
+	}
+	public void dynamic_draw(){
+		Global_var.point_2_coords = Global_var.cursor_snap_coords.clone();
+		x1 = (double)Global_var.point_1_coords[0];
+		y1 = (double)Global_var.point_1_coords[1];
+		
+		x2 = (double)Global_var.point_2_coords[0];
+		y2 = (double)Global_var.point_2_coords[1];
+		
 	}
 	
 	/**

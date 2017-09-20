@@ -47,7 +47,14 @@ public class Values {
 	public static int snap_distance = 10;
 	
 	//Colors 
+	/**
+	 * Color for new object
+	 */
+	public static int[] color = {255, 0, 0};
 	public static int[] snap_color = {0, 255, 255};
+	/**
+	 * Color for object under cursor
+	 */
 	public static int[] current_shape_color = {0, 255, 0};
 	
 }

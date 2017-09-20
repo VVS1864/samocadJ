@@ -9,6 +9,7 @@ import java.util.List;
 
 import core.Global_var;
 
+
 /**
  * General class for all shapes
  * 
@@ -19,23 +20,29 @@ import core.Global_var;
 public class Shape {
 	// Displayed Lines
 	LinkedList<PrimitiveLine> PrimLines;
+	// Snap lines
 	LinkedList<PrimitiveLine> SnapLines;
+	// Snap points
 	LinkedList<SnapCoord> SnapPoints;
-	double factor;
-	int[] mask;
+	// Properties
+	protected double factor;
+	protected int[] mask;
+	// Unique object ID
 	public int ID;
 
-	public Shape() {
+	public Shape(ObjectMode mode) {
 		PrimLines = new LinkedList<PrimitiveLine>();
 		SnapLines = new LinkedList<PrimitiveLine>();
 		SnapPoints = new LinkedList<SnapCoord>();
-		Global_var.theShapes.put(Global_var.current_ID, this);
-		this.ID = Global_var.current_ID;
-		Global_var.current_ID++;
+		if(mode == ObjectMode.New_object){
+			Global_var.theShapes.put(Global_var.current_ID, this);
+			this.ID = Global_var.current_ID;
+			Global_var.current_ID++;
+		}
 		// System.out.println("The constructor Shape()");
 	}
 
-	ArrayList<Double> toList() {
+	protected ArrayList<Double> toList() {
 		ArrayList<Double> ret = new ArrayList<Double>();
 		for (PrimitiveLine p : PrimLines)
 			ret.addAll(p.toList());
@@ -49,7 +56,7 @@ public class Shape {
 		return ret;
 	}
 
-	void add(PrimitiveLine theP) {
+	protected void add(PrimitiveLine theP) {
 		PrimLines.add(theP);
 	}
 
@@ -59,7 +66,7 @@ public class Shape {
 	 * 
 	 * @param new_snap_line
 	 */
-	void add_snap_line(PrimitiveLine new_snap_line) {
+	protected void add_snap_line(PrimitiveLine new_snap_line) {
 		SnapLines.add(new_snap_line);
 		/*
 		 * for (Coord c : new_snap_line.coords) SnapPoints.add(new
@@ -94,8 +101,14 @@ public class Shape {
 		}
 
 	}
+	public double[] getPreviewData(){
+		DoubleArrayList listDouble = new DoubleArrayList(PrimLines.size()*6);
+		listDouble.addAll(toListDouble());
+		return listDouble.elements();
+	}
 
 	// EXAMPLE
+	/*
 	public static void main(String[] args) {
 
 		Shape theShape = new Shape();
@@ -105,5 +118,5 @@ public class Shape {
 		System.out.println(theShape.getSnapPoints(SnapType.MidPoint));
 		System.out.println(theShape.getSnapPoints(SnapType.EndPoint));
 
-	}
+	}*/
 }

@@ -14,6 +14,7 @@ public class program_state {
 	public static void set_default(){
 		Global_var.current_function = null;
 		Global_var.select_rect_vertices = null;
+		Global_var.preview_object_vertices = null;
 		Global_var.draw_new_object = false;
 		Global_var.select_mode = false;
 		Global_var.info.setText("Comand:");

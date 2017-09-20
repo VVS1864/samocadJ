@@ -11,4 +11,10 @@ public  class draw_line_2 extends Class_base_draw implements Interface_base_draw
 		super.draw_1("Line - next point:","Escape - stop", next_class);
 	}
 	
+	@Override
+	public void mouse_move_event() {
+		
+		
+	}
+	
 }

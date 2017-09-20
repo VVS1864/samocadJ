@@ -12,7 +12,8 @@ public class GroupShape extends Shape {
 	
 	List<Shape> shapes;
 	
-	public GroupShape(List<Shape> shapes) {
+	public GroupShape(ObjectMode mode, List<Shape> shapes) {
+		super(mode);
 		this.shapes = shapes;
 		for (Shape sh:shapes)
 		{

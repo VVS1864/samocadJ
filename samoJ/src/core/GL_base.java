@@ -14,6 +14,7 @@ import java.nio.DoubleBuffer;
 import samoJ.Circle;
 import samoJ.GroupShape;
 import samoJ.Line;
+import samoJ.ObjectMode;
 import samoJ.Shape;
 
 import com.jogamp.common.nio.Buffers;
@@ -34,7 +35,7 @@ public class GL_base {
 
 	static int[] vbo_buffer = new int[1];
 
-	public static int N = 20000;// number of vertices
+	public static int N = 100000;// number of vertices
 
 	static DoubleBuffer fbVertices;
 	// static double[] vertices = new double[N * 3];
@@ -79,7 +80,7 @@ public class GL_base {
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
 			
-			new Line(x1, y1, 0, x2, y2, 0);
+			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0);
 			
 			/*
 			x1 = randomGenerator.nextInt(1200);
@@ -189,7 +190,7 @@ public class GL_base {
 		//				render(): 5 ms.
 		// ------------------------------------------------	
 		
-		DoubleArrayList listDouble = new DoubleArrayList(N*200);
+		DoubleArrayList listDouble = new DoubleArrayList();//(N*200);
 		for (Shape sh : Global_var.theShapes.values()) {
 			listDouble.addAll(sh.toListDouble());
 		}
@@ -244,7 +245,7 @@ public class GL_base {
 		// If updating VBOs is necessary
 		if (update_data_flag == true) {
 			update_data();
-			System.out.println("N vertices" + vertices.length / 3);
+			System.out.println("N vertices " + vertices.length / 3);
 			update_data_flag = false;
 		}
 		gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
@@ -254,7 +255,7 @@ public class GL_base {
 		gl2.glMultMatrixd(general_matrix, 0);
 		general_matrix = identity_matrix.clone();
 
-		gl2.glColor3f(100, 0, 0);
+		gl2.glColor3f(Values.color[0], Values.color[1], Values.color[2]);
 
 		gl2.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 
@@ -287,6 +288,10 @@ public class GL_base {
 		if (Global_var.snap_sign_vertices != null){
 			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color, 2);
 		}
+		if (Global_var.preview_object_vertices != null){
+			gl_draw_array(Global_var.preview_object_vertices, Values.color, 3);
+		}
+		
 	}
 	
 	/**

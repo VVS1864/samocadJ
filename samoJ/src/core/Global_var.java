@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import modules.base_draw_entities.Interface_base_draw;
+import modules.base_draw_entities.Interface_mouse_move;
 import samoJ.Shape;
 import samoJ.SnapType;
 
@@ -89,7 +90,7 @@ public class Global_var {
 	 * left mouse button and draw_new_object == true
 	 */
 	public static Interface_base_draw current_function = null;
-
+	
 	/**
 	 * Shape under cursor for select with mouse left button click
 	 */
@@ -119,6 +120,8 @@ public class Global_var {
 	 * For draw snap sign, it depend from snap type
 	 */
 	public static double[] snap_sign_vertices = null;
+	
+	public static double[] preview_object_vertices = null;
 
 	// COLORES
 	public static int[] select_rect_color = new int[3];
