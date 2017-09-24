@@ -1,6 +1,8 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import open_dxf_lib.Color_rgb;
+import open_dxf_lib.DXF_file;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import core.Global_var;
+import core.Values;
 
 
 /**
@@ -26,10 +29,12 @@ public class Shape {
 	LinkedList<SnapCoord> SnapPoints;
 	// Properties
 	protected double factor;
-	protected int[] mask;
+	protected Dash dash;
+	protected Color_rgb color;
+	protected int width;
 	// Unique object ID
 	public int ID;
-
+	
 	public Shape(ObjectMode mode) {
 		PrimLines = new LinkedList<PrimitiveLine>();
 		SnapLines = new LinkedList<PrimitiveLine>();
@@ -105,6 +110,10 @@ public class Shape {
 		DoubleArrayList listDouble = new DoubleArrayList(PrimLines.size()*6);
 		listDouble.addAll(toListDouble());
 		return listDouble.elements();
+	}
+	
+	public void save_to_DXF(DXF_file f){
+		
 	}
 
 	// EXAMPLE

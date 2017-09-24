@@ -1,6 +1,7 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class Coord {
 	//public double x, y, z;
-	
+	IntArrayList color;
 	DoubleArrayList c;
 	// Integer c[];
 

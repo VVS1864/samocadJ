@@ -15,9 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import modules.base_draw_entities.Interface_base_draw;
-import modules.base_draw_entities.Interface_mouse_move;
+import samoJ.Dash_base;
 import samoJ.Shape;
 import samoJ.SnapType;
+import core.GUI.Save_dialog;
 
 public class Global_var {
 	// Important elements of GUI
@@ -31,6 +32,7 @@ public class Global_var {
 	public static JDialog dim_style;
 	public static JDialog line_style;
 	public static JDialog text_style;
+	//public static Save_dialog save_dialog;
 
 	// Program state variables
 	/**
@@ -104,8 +106,8 @@ public class Global_var {
 	public static Map<Integer, Shape> theShapes = new HashMap<Integer, Shape>();
 	// public static Map<Integer, Shape> theShapes = new HashMap<Integer,
 	// Shape>();
-	// public static List<Shape> theShapes = new LinkedList<Shape>();
-
+	// public static List<Shape> theShapes = new LinkedList<Shape>(); 
+	public static Dash_base dashes = new Dash_base();
 	/**
 	 * Selective rectangle vertices for draw on canvas and select Shapes
 	 */

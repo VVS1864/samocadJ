@@ -1,15 +1,10 @@
 package core;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
-
+import open_dxf_lib.Color_rgb;
+import open_dxf_lib.dash_type;
 import java.nio.DoubleBuffer;
-//import java.nio.IntBuffer;
-
-//import org.apache.commons.lang3.ArrayUtils;
-
-
-
-
+import java.nio.IntBuffer;
 
 import samoJ.Circle;
 import samoJ.GroupShape;
@@ -23,22 +18,19 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-//import java.util.LinkedList;
-//import java.util.List;
 import java.util.Random;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 public class GL_base {
 
-	static int[] vbo_buffer = new int[1];
+	static int[] vbo_buffer = new int[2];
+	//static int[] color_buffer = new int[1];
 
-	public static int N = 100000;// number of vertices
+	public static int N = 10;// number of vertices
 
 	static DoubleBuffer fbVertices;
+	static DoubleBuffer fbColores;
 	// static double[] vertices = new double[N * 3];
+	static double[] colores;
 	static double[] vertices;
 	static DoubleBuffer fbDinamicVertices;
 	//public static double[] dinamic_vertices = new double[4 * 3];
@@ -79,9 +71,11 @@ public class GL_base {
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
-			
-			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0);
-			
+			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, 
+					Values.stipple_factor, dash_type.Continuous, Values.color);
+			Color_rgb c = new Color_rgb(200, 0, 100);
+			new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
+					Values.stipple_factor, dash_type.Continuous, c);
 			/*
 			x1 = randomGenerator.nextInt(1200);
 			y1 = randomGenerator.nextInt(1200);
@@ -196,18 +190,33 @@ public class GL_base {
 		}
 			
 		vertices = listDouble.elements(); // Easy without ArrayUtils
-		
+		colores = new double[vertices.length];
+		for(int i = 0; i<colores.length-2; i+=3){
+			colores[i] = 120.0;
+			colores[i+1] = 120.0;
+			colores[i+2] = 0.0;
+		}
 		///////////////////////////////// END NEW REALISE 
 		
 		fbVertices = Buffers.newDirectDoubleBuffer(vertices);
-		gl2.glGenBuffers(1, vbo_buffer, 0);
+		fbColores= Buffers.newDirectDoubleBuffer(colores);
+		
+		gl2.glGenBuffers(2, vbo_buffer, 0);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
 
 		int numBytes = fbVertices.capacity() * Buffers.SIZEOF_DOUBLE;
 		gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbVertices,
 				GL2.GL_STATIC_DRAW);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+/////////// Color buffer
+		//gl2.glGenBuffers(1, color_buffer, 0);
+		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[1]);
 
+		numBytes = fbColores.capacity() * Buffers.SIZEOF_DOUBLE;
+		gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbColores,
+				GL2.GL_STATIC_DRAW);
+		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+////////////
 	}
 
 	/**
@@ -249,27 +258,33 @@ public class GL_base {
 			update_data_flag = false;
 		}
 		gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
+	    
 		gl2.glMatrixMode(GL2.GL_MODELVIEW);
 
 		gl2.glMultMatrixd(general_matrix, 0);
 		general_matrix = identity_matrix.clone();
 
-		gl2.glColor3f(Values.color[0], Values.color[1], Values.color[2]);
+		//gl2.glColor3f(Values.color.get_r(), Values.color.get_g(), Values.color.get_b());
 
 		gl2.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-
+		gl2.glEnableClientState(GL2.GL_COLOR_ARRAY);
+		// Bind color buffer
+		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[1]);
+		gl2.glColorPointer(3, GL2.GL_DOUBLE, 0, 0);
+		// Bind vertex buffer
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
-
 		gl2.glVertexPointer(3, GL2.GL_DOUBLE, 0, 0);
-
+		
 		gl2.glDrawArrays(GL2.GL_LINES, 0, (int) vertices.length / 3);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 
+		gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
+		
 		dinamic_render(gl2);
 
 		gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-
+		
+		
 		gl2.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
 
 		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
@@ -283,13 +298,13 @@ public class GL_base {
 			gl_draw_array(Global_var.select_rect_vertices, Global_var.select_rect_color, 2);			
 		}
 		if (Global_var.current_Shape_vertices != null){
-			gl_draw_array(Global_var.current_Shape_vertices, Values.current_shape_color, 3);	
+			gl_draw_array(Global_var.current_Shape_vertices, Values.current_shape_color.get_rgb(), 3);	
 		}
 		if (Global_var.snap_sign_vertices != null){
-			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color, 2);
+			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color.get_rgb(), 2);
 		}
 		if (Global_var.preview_object_vertices != null){
-			gl_draw_array(Global_var.preview_object_vertices, Values.color, 3);
+			gl_draw_array(Global_var.preview_object_vertices, Values.color.get_rgb(), 3);
 		}
 		
 	}

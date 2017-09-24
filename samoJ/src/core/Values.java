@@ -1,5 +1,7 @@
 package core;
 
+import open_dxf_lib.Color_rgb;
+import open_dxf_lib.dash_type;
 
 public class Values {
 
@@ -11,7 +13,8 @@ public class Values {
 	public static double min_scale = 0.0011;
 
 	public static int circle_segments = 64;
-
+	
+	public static dash_type current_dash = dash_type.Continuous;
 	public static int[] stipple = {4,1,1,1};
 	public static double stipple_factor = 20;
 
@@ -48,13 +51,21 @@ public class Values {
 	
 	//Colors 
 	/**
-	 * Color for new object
+	 * Color for new object (Class Color_rgb!)
 	 */
-	public static int[] color = {255, 0, 0};
-	public static int[] snap_color = {0, 255, 255};
+	public static Color_rgb color = new Color_rgb(255, 0, 0);//{255, 0, 0};
+	public static Color_rgb snap_color = new Color_rgb(0, 255, 255);//{0, 255, 255};
 	/**
 	 * Color for object under cursor
 	 */
-	public static int[] current_shape_color = {0, 255, 0};
+	public static Color_rgb current_shape_color = new Color_rgb(0, 255, 0);//{0, 255, 0};
+	
+// Paths
+	public static String current_file_name = "New_drawing.dxf";
+	/**
+	 * path for save/open dialog and auto save
+	 */
+	public static String current_working_dir = System.getProperty("user.dir");
+	
 	
 }

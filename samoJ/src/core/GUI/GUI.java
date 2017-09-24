@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.Timer;
+import javax.swing.JFileChooser;
 
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
@@ -80,7 +81,7 @@ public class GUI {
 		
 //Frame for all elements
 		Global_var.jframe = new JFrame("Cad_demo, display " + GL_base.N
-				+ " vertices");
+				+ " lines");
 
 		Global_var.jframe.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
@@ -98,6 +99,14 @@ public class GUI {
 			ImageIcon img = new ImageIcon(imageURL);
 			Global_var.jframe.setIconImage(img.getImage());
 		}
+		
+//Action listeners
+		ActionListener save_action_listener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				new Save_action();
+			}
+		};
 		
 //Addition standard button bars
 		Standart.addButtonsBar(Global_var.jframe);
@@ -144,6 +153,7 @@ public class GUI {
 		//top_panel.setLayout(new BoxLayout(top_panel, BoxLayout.X_AXIS));
 		//Elements for North container
 		JButton button_save = MakeButton.makeButton("saveas.gif", "Save", "Save");
+		button_save.addActionListener(save_action_listener);
 		JButton button_open = MakeButton.makeButton("open.gif", "Open", "Open");
 		JButton button_color = MakeButton.makeButton("none", "Current color", " ");
 		button_color.setBackground(new Color(255, 255, 255));
@@ -229,6 +239,8 @@ public class GUI {
 		JMenuItem item_exit = new JMenuItem("Exit");
 		
 		//Actions menu File
+		item_saveas.addActionListener(save_action_listener);
+		
 		item_exit.addActionListener(new ActionListener()
 		  {
 			@Override

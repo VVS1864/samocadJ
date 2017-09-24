@@ -1,6 +1,19 @@
 package samoJ;
 import core.Global_var;
+import open_dxf_lib.Color_rgb;
+import open_dxf_lib.DXF_file;
+import open_dxf_lib.dash_type;
+
 public class Line extends Shape {
+	// Vars of Line
+	protected double x1;
+	protected double y1;
+	protected double z1;
+	protected double x2;
+	protected double y2;
+	protected double z2;
+	
+	/*
 	// Not dashed line
 	public Line(ObjectMode mode, double x1, double y1, double z1, double x2, double y2, double z2) {
 		super(mode);
@@ -12,13 +25,21 @@ public class Line extends Shape {
 		}
 		//System.out.println("factor="+ factor);
 		//System.out.println("mask="+mask);
-	}
-	// Dashed line
+	}*/
+	// Dashed or solid line
 	public Line(ObjectMode mode, double  x1, double y1, double z1, double x2, double y2, double z2, double factor,
-			int[] mask) {
+			dash_type dash, Color_rgb color) {
 		super(mode);
+		this.x1 = x1;
+		this.y1 = y1;
+		this.z1 = z1;
+		this.x2 = x2;
+		this.y2 = y2;
+		this.z2 = z2;
 		this.factor = factor;
-		this.mask = mask;
+		this.dash = new Dash(dash);
+		this.color = color;
+		
 		formPrimitiveLines(x1, y1, z1, x2, y2, z2);
 		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
 		if(mode == ObjectMode.Preview_object){
@@ -27,13 +48,13 @@ public class Line extends Shape {
 	}
 
 	void formPrimitiveLines(double x1, double y1, double z1, double x2, double y2, double z2) {
-		if (mask == null || mask.length == 0) {
+		if (dash.mask == null || dash.mask.length == 0) {
 			add(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
 			return;
 		}
-		double factor_mask[] = new double[mask.length];
-		for (int i = 0; i < mask.length; i++) {
-			factor_mask[i] = mask[i] * factor;
+		double factor_mask[] = new double[dash.mask.length];
+		for (int i = 0; i < dash.mask.length; i++) {
+			factor_mask[i] = dash.mask[i] * factor;
 
 		}
 		double dx = x2 - x1;
@@ -72,7 +93,7 @@ public class Line extends Shape {
 						y_end, z2));
 			}
 			i++;
-			if (i >= mask.length) {
+			if (i >= dash.mask.length) {
 				i = 0;
 			}
 			// i = i % (mask.length - 1);
@@ -81,6 +102,12 @@ public class Line extends Shape {
 
 		} while (continue_flag);
 
+	}
+	
+	@Override
+	public void save_to_DXF(DXF_file f) {
+		f.put_line(x1, y1, x2, y2, dash.dash, factor, color, width);
+		
 	}
 	/*
 	public static void main(String[] args) {
