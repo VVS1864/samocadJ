@@ -16,7 +16,7 @@ public  class draw_line_3 extends Class_base_draw implements Interface_base_draw
 		super.draw_2("Line - next point:","Escape - stop", this);
 		//Global_var.theShapes.add(new Line(x1, y1, 0, x2, y2, 0));
 		create(ObjectMode.New_object);
-		System.out.println("New Line coordinates: " + x1 + " " + y1 + " " + x2 + " " + y2);
+		
 		
 		GL_base.redraw_buffer();
 		
@@ -30,4 +30,5 @@ public  class draw_line_3 extends Class_base_draw implements Interface_base_draw
 	public void create(ObjectMode mode){
 		new Line(mode, x1, y1, 0, x2, y2, 0, Values.stipple_factor, Values.current_dash, Values.color);
 	}
+	
 }

@@ -3,6 +3,7 @@ package core.GUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import core.Global_var;
 import core.program_state;
 import core.navigation.Zoom;
 
@@ -24,9 +25,14 @@ public class gl_key_listener implements KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE){
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_ESCAPE || (key == KeyEvent.VK_ENTER && Global_var.draw_new_object == true)){
 			System.out.println("Kill");
 			program_state.set_default();
+		}
+		else if(e.getKeyCode() == KeyEvent.VK_ENTER && Global_var.draw_new_object == false){
+			Global_var.old_function.run();
+			
 		}
 		
 	}

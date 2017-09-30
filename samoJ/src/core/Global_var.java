@@ -94,6 +94,11 @@ public class Global_var {
 	public static Interface_base_draw current_function = null;
 	
 	/**
+	 * Class for repeat last user action  
+	 */
+	public static Interface_base_draw old_function = null;
+	
+	/**
 	 * Shape under cursor for select with mouse left button click
 	 */
 	public static Shape current_Shape = null;

@@ -8,4 +8,5 @@ package modules.base_draw_entities;
 public interface Interface_base_draw {
 	public void run();
 	public void mouse_move_event();
+	//public Interface_base_draw get_old_function();
 }

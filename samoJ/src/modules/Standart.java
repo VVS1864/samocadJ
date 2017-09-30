@@ -50,6 +50,7 @@ public class Standart {
 			public void actionPerformed(ActionEvent e) {
 				
 				draw_line draw_action = new draw_line();
+				draw_action.run();
 			}
 			});
 		

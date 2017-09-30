@@ -9,12 +9,17 @@ import modules.base_draw_entities.Class_base_draw;
  * @author vlad
  *
  */
-public class draw_line extends Class_base_draw {
+public class draw_line extends Class_base_draw implements Interface_base_draw{
 	
-	public draw_line(){
+	@Override
+	public void run(){
 		Interface_base_draw next_class = new draw_line_2();
 		program_state.set_default(); // Kill another processes if they are.
 		super.init_draw("Line - First point:","Escape - stop", next_class);
+	}
+
+	@Override
+	public void mouse_move_event() {		
 	}
 	
 }

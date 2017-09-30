@@ -36,7 +36,6 @@ public class normal_state extends mouse_state {
 	public void mousePressed(MouseEvent e) {
 		// Middle button
 		if (e.getButton() == MouseEvent.BUTTON2) {
-			System.out.println("Button 2 pressed...");
 			Global_var.mouse_plan_motion = true;
 			Global_var.mouse = Global_var.cursor_coords.clone();
 		}
@@ -57,7 +56,6 @@ public class normal_state extends mouse_state {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON2) {
-			System.out.println("Button 2 released...");
 			double x = Global_var.cursor_coords[0];
 			double y = Global_var.cursor_coords[1];
 			Plan_motion.plan_motion(Global_var.glcanvas, x, y);

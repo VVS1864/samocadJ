@@ -154,7 +154,7 @@ public class GL_base {
 	/**
 	 * Method for update (remove and create new) VBO from theShapes
 	 */
-	public static void update_data() {
+	public static void update_data(){
 		gl2 = Global_var.glcanvas.getGL().getGL2();
 		
 		//        OLD release with linked list  and ArrayUtils 
@@ -254,7 +254,7 @@ public class GL_base {
 		// If updating VBOs is necessary
 		if (update_data_flag == true) {
 			update_data();
-			System.out.println("N vertices " + vertices.length / 3);
+			//System.out.println("N vertices " + vertices.length / 3);
 			update_data_flag = false;
 		}
 		gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
