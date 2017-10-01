@@ -30,8 +30,13 @@ public class gl_key_listener implements KeyListener{
 			System.out.println("Kill");
 			program_state.set_default();
 		}
-		else if(e.getKeyCode() == KeyEvent.VK_ENTER && Global_var.draw_new_object == false){
-			Global_var.old_function.run();
+		else if(key == KeyEvent.VK_ENTER && Global_var.draw_new_object == false){
+			if(Global_var.old_function == null) {
+				System.out.println("Old function indefinite yet");
+			}
+			else{
+				Global_var.old_function.run();
+				}
 			
 		}
 		

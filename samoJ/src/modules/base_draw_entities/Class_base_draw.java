@@ -1,6 +1,7 @@
 package modules.base_draw_entities;
 
 import core.Global_var;
+import modules.standard_objects.line.draw_line;
 
 /**
  * Base "entity"-class for process of creating any Shape (line, circle, etc.) 
@@ -30,11 +31,13 @@ public class Class_base_draw
 	 * @param message1 text value for first label (before command line)
 	 * @param message2 text value for second label (after command line)
 	 * @param next_class next class for next draw action
+	 * @param init_class class for 'old_function'
 	 */
-	public void init_draw(String message1, String message2, Interface_base_draw next_class){
+	public void init_draw(String message1, String message2, Interface_base_draw next_class, 
+			Interface_base_draw init_class){
 		set_next(message1, message2, next_class);
 		Global_var.draw_new_object = true;
-
+		Global_var.old_function = init_class;
 	}
 	
 	/**

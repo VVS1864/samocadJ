@@ -14,8 +14,9 @@ public class draw_line extends Class_base_draw implements Interface_base_draw{
 	@Override
 	public void run(){
 		Interface_base_draw next_class = new draw_line_2();
+		Interface_base_draw init_class = new draw_line();
 		program_state.set_default(); // Kill another processes if they are.
-		super.init_draw("Line - First point:","Escape - stop", next_class);
+		super.init_draw("Line - First point:","Escape - stop", next_class, init_class);
 	}
 
 	@Override
