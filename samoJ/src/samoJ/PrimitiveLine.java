@@ -54,8 +54,10 @@ public class PrimitiveLine {
 	
 	public DoubleArrayList toListDoubleColor() {
 		DoubleArrayList ret = new DoubleArrayList();
-		ret.addAll(color_1.toListDoubleColor());
-		ret.addAll(color_2.toListDoubleColor());
+		DoubleArrayList c1 = DoubleArrayList.wrap(new double[] {color_1.get_r(), color_1.get_g(), color_1.get_b()});
+		DoubleArrayList c2 = DoubleArrayList.wrap(new double[] {color_2.get_r(), color_2.get_g(), color_2.get_b()});
+		ret.addAll(c1);
+		ret.addAll(c2);
 		return ret;
 
 	}
