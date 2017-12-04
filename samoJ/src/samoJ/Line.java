@@ -40,16 +40,16 @@ public class Line extends Shape {
 		this.dash = new Dash(dash);
 		this.color = color;
 		
-		formPrimitiveLines(x1, y1, z1, x2, y2, z2);
-		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
+		formPrimitiveLines();
+		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color));
 		if(mode == ObjectMode.Preview_object){
 			Global_var.preview_object_vertices = super.getPreviewData();
 		}
 	}
 
-	void formPrimitiveLines(double x1, double y1, double z1, double x2, double y2, double z2) {
+	void formPrimitiveLines() {
 		if (dash.mask == null || dash.mask.length == 0) {
-			add(new PrimitiveLine(x1, y1, z1, x2, y2, z2));
+			add(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color));
 			return;
 		}
 		double factor_mask[] = new double[dash.mask.length];
@@ -90,7 +90,7 @@ public class Line extends Shape {
 			if ((i % 2) == 0) {
 				// System.out.println("draw");
 				add(new PrimitiveLine(x_begin, y_begin, z1, x_end,
-						y_end, z2));
+						y_end, z2, color));
 			}
 			i++;
 			if (i >= dash.mask.length) {

@@ -30,6 +30,10 @@ public class Shape {
 	// Properties
 	protected double factor;
 	protected Dash dash;
+	/**
+	 * One color of all lines of Shape. TODO - Every primitive line of Shape must have own color, 
+	 * then this value is null.
+	 */
 	protected Color_rgb color;
 	protected int width;
 	// Unique object ID
@@ -58,6 +62,13 @@ public class Shape {
 		DoubleArrayList ret = new DoubleArrayList();
 		for (PrimitiveLine p : PrimLines)
 			ret.addAll(p.toListDouble());
+		return ret;
+	}
+	
+	public DoubleArrayList toListDoubleColor() {
+		DoubleArrayList ret = new DoubleArrayList();
+		for (PrimitiveLine p : PrimLines)
+			ret.addAll(p.toListDoubleColor());
 		return ret;
 	}
 

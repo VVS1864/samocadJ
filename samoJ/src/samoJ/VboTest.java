@@ -52,7 +52,7 @@ public class VboTest {
 		}
 		return ret;
 	}
-
+/*
 	public static void main(String[] args) {
 		PrimitiveLine p1 = new PrimitiveLine(1, 2, 3, 4, 5, 6);
 		PrimitiveLine p2 = new PrimitiveLine(11, 12, 13, 14, 15, 16);
@@ -77,5 +77,5 @@ public class VboTest {
 		System.out.println(p2.toString());
 		
 	}
-
+*/
 }

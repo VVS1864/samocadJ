@@ -53,7 +53,7 @@ public class Values {
 	/**
 	 * Color for new object (Class Color_rgb!)
 	 */
-	public static Color_rgb color = new Color_rgb(255, 0, 0);//{255, 0, 0};
+	public static Color_rgb color = new Color_rgb(0, 0, 255);//{255, 0, 0};
 	public static Color_rgb snap_color = new Color_rgb(0, 255, 255);//{0, 255, 255};
 	/**
 	 * Color for object under cursor

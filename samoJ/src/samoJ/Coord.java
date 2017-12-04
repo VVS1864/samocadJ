@@ -1,12 +1,8 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-
-
 import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.LinkedList;
+
 
 /**
  * It is an point, non-graphical, with 3 coordinates x,y,z Currently Integer is
@@ -17,10 +13,7 @@ import java.util.ArrayList;
  */
 
 public class Coord {
-	//public double x, y, z;
-	IntArrayList color;
 	DoubleArrayList c;
-	// Integer c[];
 
 	public Coord(double x, double y) {
 		this(x, y, 0);
@@ -28,35 +21,27 @@ public class Coord {
 
 	Coord(double x, double y, double z) {
 		c = DoubleArrayList.wrap(new double[] {x, y, z});
-		/*this.x = x;
-		this.y = y;
-		this.z = z;*/
-		// c = new Integer[] {x,y,z};
 
 	}
 
 	/**
 	 * 
-	 * @return list for GL rendering
+	 * @return lists for GL rendering
 	 */
 	
 	public ArrayList<Double> toList() {
-		/*LinkedList<Double> ret = new LinkedList<Double>();
-		
-		ret.add(x);
-		ret.add(y);
-		ret.add(z);
-		return ret;*/
 		return new ArrayList<Double>(c);
-		
-		// for (Integer theC:c) ret.add(theC);
-		// return (LinkedList)Arrays.asList(c);
+
 	}
 
 	public DoubleArrayList toListDouble(){
 		return c;
 	}
 	
+	/**
+	 * double only coordinates
+	 * @return
+	 */
 	public double getX(){
 		return c.getDouble(0);
 	}

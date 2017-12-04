@@ -25,7 +25,7 @@ public class GL_base {
 	static int[] vbo_buffer = new int[2];
 	//static int[] color_buffer = new int[1];
 
-	public static int N = 10;// number of vertices
+	public static int N = 100;// number of vertices
 
 	static DoubleBuffer fbVertices;
 	static DoubleBuffer fbColores;
@@ -71,19 +71,21 @@ public class GL_base {
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
+			
 			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, 
 					Values.stipple_factor, dash_type.Continuous, Values.color);
 			Color_rgb c = new Color_rgb(200, 0, 100);
 			new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
 					Values.stipple_factor, dash_type.Continuous, c);
+			
 			/*
 			x1 = randomGenerator.nextInt(1200);
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
-			
-			new Circle(x1, y1, 0, x2, y2, 0);
 			*/
+			//new Circle(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, Values.color);
+			
 			//Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//Global_var.theShapes.put(new Line(x1, y1, 0, x2, y2, 0));
 			// Global_var.theShapes.add(new Line(x1, y1, 0, x2, y2, 0, 10, new int[]{1,1}));
@@ -188,14 +190,20 @@ public class GL_base {
 		for (Shape sh : Global_var.theShapes.values()) {
 			listDouble.addAll(sh.toListDouble());
 		}
-			
+		
+		DoubleArrayList listDoubleColors = new DoubleArrayList();
+		for (Shape sh : Global_var.theShapes.values()) {
+			listDoubleColors.addAll(sh.toListDoubleColor());
+		}
+		
 		vertices = listDouble.elements(); // Easy without ArrayUtils
-		colores = new double[vertices.length];
+		colores = listDoubleColors.elements();
+		/*
 		for(int i = 0; i<colores.length-2; i+=3){
-			colores[i] = 120.0;
+			colores[i] = 0.0;
 			colores[i+1] = 120.0;
 			colores[i+2] = 0.0;
-		}
+		}*/
 		///////////////////////////////// END NEW REALISE 
 		
 		fbVertices = Buffers.newDirectDoubleBuffer(vertices);

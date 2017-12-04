@@ -7,6 +7,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -49,6 +51,8 @@ public class GUI {
 	public GUI(){
 		
 // GL CANVAS
+		final JToolBar top_panel;
+		
 		GLProfile glprofile = GLProfile.getDefault();
 		GLCapabilities glcapabilities = new GLCapabilities(glprofile);
 		Global_var.glcanvas = new GLCanvas(glcapabilities);
@@ -65,7 +69,7 @@ public class GUI {
 		Global_var.glcanvas.addMouseWheelListener(mouse_listener);
 		
 		//Key listener for glcanvas
-		Global_var.glcanvas.addKeyListener(new gl_key_listener());
+		//Global_var.glcanvas.addKeyListener(new gl_key_listener());
 
 // Info labels
 		Global_var.info = new JLabel();
@@ -78,6 +82,7 @@ public class GUI {
 		
 //Command line
 		Global_var.cmd = new JTextField(6);
+		//Global_var.cmd.addKeyListener(new gl_key_listener());
 		
 //Frame for all elements
 		Global_var.jframe = new JFrame("Cad_demo, display " + GL_base.N
@@ -149,7 +154,7 @@ public class GUI {
 		
 		//North container 
 		//final JPanel top_panel = new JPanel();
-		JToolBar top_panel = new JToolBar("Still draggable", JToolBar.HORIZONTAL);
+		top_panel = new JToolBar("Still draggable", JToolBar.HORIZONTAL);
 		//top_panel.setLayout(new BoxLayout(top_panel, BoxLayout.X_AXIS));
 		//Elements for North container
 		JButton button_save = MakeButton.makeButton("saveas.gif", "Save", "Save");
@@ -374,5 +379,14 @@ public class GUI {
 		
 		
 		Global_var.jframe.setVisible(true);
+		gl_key_listener l = new gl_key_listener();
+		for(Component c: top_panel.getComponents()) {
+			c.addKeyListener(l);
+		}
+		for(Component c: trace_panel.getComponents()) {
+			c.addKeyListener(l);
+		}
+		Global_var.glcanvas.addKeyListener(l);
+		
 	}
 }

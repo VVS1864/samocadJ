@@ -1,6 +1,7 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import open_dxf_lib.Color_rgb;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,18 +14,20 @@ import java.util.LinkedList;
  */
 public class PrimitiveLine {
 	public LinkedList<Coord> coords;
-
-	private PrimitiveLine(Coord c1, Coord c2) {
-
+	//2 colors for 2 coords
+	private Color_rgb color_1;
+	private Color_rgb color_2;
+	private PrimitiveLine(Coord c1, Coord c2, Color_rgb color) {
+		this.color_1 = this.color_2 = color;
 		coords = new LinkedList<Coord>();
 		coords.add(c1);
 		coords.add(c2);
-
+		
 	}
 
 	public PrimitiveLine(double x1, double y1, double z1, double x2, double y2,
-			double z2) {
-		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2));
+			double z2, Color_rgb color) {
+		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2), color);
 	}
 
 	public ArrayList<Double> toList() {
@@ -45,6 +48,14 @@ public class PrimitiveLine {
 		DoubleArrayList ret = new DoubleArrayList();
 		for (Coord coord : coords)
 			ret.addAll(coord.toListDouble());
+		return ret;
+
+	}
+	
+	public DoubleArrayList toListDoubleColor() {
+		DoubleArrayList ret = new DoubleArrayList();
+		ret.addAll(color_1.toListDoubleColor());
+		ret.addAll(color_2.toListDoubleColor());
 		return ret;
 
 	}

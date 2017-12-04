@@ -164,12 +164,12 @@ public class Get_snap {
 		return retSnapCoord;
 	}
 
-	public static void main(String[] args) {
+	//public static void main(String[] args) {
 
-		PrimitiveLine p1 = new PrimitiveLine(1, 1, 0, 5, 5, 0);
-		PrimitiveLine p2 = new PrimitiveLine(1, 10, 0, 6, 4, 0);
-		Coord sc = getLinesIntersection(p1, p2);
-		System.out.println(sc);
+		//PrimitiveLine p1 = new PrimitiveLine(1, 1, 0, 5, 5, 0);
+		//PrimitiveLine p2 = new PrimitiveLine(1, 10, 0, 6, 4, 0);
+		//Coord sc = getLinesIntersection(p1, p2);
+		//System.out.println(sc);
 
-	}
+	//}
 }
