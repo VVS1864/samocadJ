@@ -1,18 +1,21 @@
 package samoJ;
 import core.Global_var;
+import core.Values;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
 import open_dxf_lib.dash_type;
+import java.lang.Math;
 
 public class Line extends Shape {
 	// Vars of Line
-	protected double x1;
-	protected double y1;
-	protected double z1;
-	protected double x2;
-	protected double y2;
-	protected double z2;
-	
+	protected float x1;
+	protected float y1;
+	protected float z1;
+	protected float x2;
+	protected float y2;
+	protected float z2;
+	protected int width; //!!!;
+	protected ObjectMode mode; //!!!;
 	/*
 	// Not dashed line
 	public Line(ObjectMode mode, double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -27,8 +30,8 @@ public class Line extends Shape {
 		//System.out.println("mask="+mask);
 	}*/
 	// Dashed or solid line
-	public Line(ObjectMode mode, double  x1, double y1, double z1, double x2, double y2, double z2, double factor,
-			dash_type dash, Color_rgb color) {
+	public Line(ObjectMode mode, float  x1, float y1, float z1, float x2, float y2, float z2, float factor,
+			dash_type dash, Color_rgb color, int width) {
 		super(mode);
 		this.x1 = x1;
 		this.y1 = y1;
@@ -39,9 +42,10 @@ public class Line extends Shape {
 		this.factor = factor;
 		this.dash = new Dash(dash);
 		this.color = color;
-		
+		this.width = width;
+		this.mode = mode;
 		formPrimitiveLines();
-		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color));
+		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color, width));
 		if(mode == ObjectMode.Preview_object){
 			Global_var.preview_object_vertices = super.getPreviewData();
 		}
@@ -49,35 +53,59 @@ public class Line extends Shape {
 
 	void formPrimitiveLines() {
 		if (dash.mask == null || dash.mask.length == 0) {
-			add(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color));
+			
+			add(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color, width));
+			if(mode == ObjectMode.New_object) Global_var.N_primLines++;
+			/*
+			float h = 4 * Values.current_scale;
+			float x = x2 - x1;
+			float y = y2 - y1;
+			double a = Math.atan2(x, y);
+			
+			float dx = h*(float)Math.cos(a);
+			float dy = h*(float)Math.sin(a);
+			float p11x = x1-dx;
+			float p11y = y1+dy;
+			float p12x = x1+dx;
+			float p12y = y1-dy;
+			
+			float p21x = x2-dx;
+			float p21y = y2+dy;
+			float p22x = x2+dx;
+			float p22y = y2-dy;
+			
+			add(new PrimitiveLine(p11x, p11y, z1, p21x, p21y, z2, color, width));
+			add(new PrimitiveLine(p12x, p12y, z1, p22x, p22y, z2, color, width));
+			*/
 			return;
+			
 		}
-		double factor_mask[] = new double[dash.mask.length];
+		float factor_mask[] = new float[dash.mask.length];
 		for (int i = 0; i < dash.mask.length; i++) {
 			factor_mask[i] = dash.mask[i] * factor;
 
 		}
-		double dx = x2 - x1;
-		double dy = y2 - y1;
-		double sq = Math.sqrt(dx * dx + dy * dy); // ��������� �� ����
-		double den_x = (dx / sq);// * factor;
-		double den_y = (dy / sq);// * factor;
+		float dx = x2 - x1;
+		float dy = y2 - y1;
+		float sq = (float)Math.sqrt(dx * dx + dy * dy); // ��������� �� ����
+		float den_x = (dx / sq);// * factor;
+		float den_y = (dy / sq);// * factor;
 		int i = 0;
 		int sum_stipple = 0;
-		double x_begin = x1;
-		double y_begin = y1;
-		double x_min = Math.min(x1, x2);
-		double x_max = Math.max(x1, x2);
-		double y_min = Math.min(y1, y2);
-		double y_max = Math.max(y1, y2);
+		float x_begin = x1;
+		float y_begin = y1;
+		float x_min = Math.min(x1, x2);
+		float x_max = Math.max(x1, x2);
+		float y_min = Math.min(y1, y2);
+		float y_max = Math.max(y1, y2);
 		boolean continue_flag = true;
 
 		do {
 
-			double d = factor_mask[i];
+			float d = factor_mask[i];
 			sum_stipple += d;
-			double x_end = (double) Math.round(x1 + den_x * sum_stipple);
-			double y_end = (double) Math.round(y1 + den_y * sum_stipple);
+			float x_end = (float) Math.round(x1 + den_x * sum_stipple);
+			float y_end = (float) Math.round(y1 + den_y * sum_stipple);
 			// System.out.println(x_begin + " " + y_begin + " "+ x_end + " "+
 			// y_end);
 			if ((x_end < x_min) || (x_end > x_max) || (y_end < y_min)
@@ -90,7 +118,7 @@ public class Line extends Shape {
 			if ((i % 2) == 0) {
 				// System.out.println("draw");
 				add(new PrimitiveLine(x_begin, y_begin, z1, x_end,
-						y_end, z2, color));
+						y_end, z2, color, width));
 			}
 			i++;
 			if (i >= dash.mask.length) {

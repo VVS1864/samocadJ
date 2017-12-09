@@ -48,8 +48,7 @@ public class GUI {
 	
 //Dialogs
 	 	 
-	public GUI(){
-		
+	public GUI(){		
 // GL CANVAS
 		final JToolBar top_panel;
 		

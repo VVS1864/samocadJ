@@ -1,6 +1,6 @@
 package samoJ;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -44,11 +44,11 @@ public class GroupShape extends Shape {
 	}
 	
 	@Override
-	public DoubleArrayList toListDouble()
+	public FloatArrayList toListFloat()
 	{
-		DoubleArrayList ret = new DoubleArrayList();
+		FloatArrayList ret = new FloatArrayList();
 		for (Shape sh:shapes)
-			ret.addAll(sh.toListDouble());
+			ret.addAll(sh.toListFloat());
 		return ret;
 		
 	}

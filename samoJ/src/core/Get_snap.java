@@ -33,42 +33,42 @@ public class Get_snap {
 	public static Coord getLinesIntersection(PrimitiveLine s1,
 			PrimitiveLine s2) {
 
-		double x1 = s1.getC1().getX();
-		double y1 = s1.getC1().getY();
-		double x2 = s1.getC2().getX();
-		double y2 = s1.getC2().getY();
+		float x1 = s1.getC1().getX();
+		float y1 = s1.getC1().getY();
+		float x2 = s1.getC2().getX();
+		float y2 = s1.getC2().getY();
 
-		double x3 = s2.getC1().getX();
-		double y3 = s2.getC1().getY();
-		double x4 = s2.getC2().getX();
-		double y4 = s2.getC2().getY();
+		float x3 = s2.getC1().getX();
+		float y3 = s2.getC1().getY();
+		float x4 = s2.getC2().getX();
+		float y4 = s2.getC2().getY();
 
-		double y43 = (y4 - y3);
-		double x21 = (x2 - x1);
-		double y21 = (y2 - y1);
-		double x43 = (x4 - x3);
-		double x13 = (x1 - x3);
-		double y13 = (y1 - y3);
+		float y43 = (y4 - y3);
+		float x21 = (x2 - x1);
+		float y21 = (y2 - y1);
+		float x43 = (x4 - x3);
+		float x13 = (x1 - x3);
+		float y13 = (y1 - y3);
 
-		double znam = y43 * x21 - x43 * y21;
+		float znam = y43 * x21 - x43 * y21;
 		// System.out.println("znam = "+znam);
 		if (znam == 0)
 			return null;
 
-		double Ua = (x43 * y13 - y43 * x13) / znam;
+		float Ua = (x43 * y13 - y43 * x13) / znam;
 		// System.out.println("Ua = "+Ua);
 		if ((Ua < 0) || (Ua > 1)) // intersection out of line end points of line
 									// 1
 			return null;
 
-		double Ub = (x21 * y13 - y21 * x13) / znam;
+		float Ub = (x21 * y13 - y21 * x13) / znam;
 		// System.out.println("Ub = "+Ub);
 		if ((Ub > 1) || (Ub < 0)) // intersection out of line end points of line
 									// 2
 			return null;
 
-		double x = x1 + Ua * x21;
-		double y = y1 + Ua * y21;
+		float x = x1 + Ua * x21;
+		float y = y1 + Ua * y21;
 
 		return new Coord(x, y);
 
@@ -89,13 +89,13 @@ public class Get_snap {
 	 *            near_point}, 1 - snap on, 0 - snap off
 	 * @return - {number of snap_type, x, y, z} xyz of snap point
 	 */
-	public static SnapCoord get_snap(double[] cursor_coords,
-			double snap_distance, List<Shape> shapes,
+	public static SnapCoord get_snap(float[] cursor_coords,
+			float snap_distance, List<Shape> shapes,
 			LinkedList<SnapType> snap_keys) {
 
 		List<Shape> retShapes = new LinkedList<Shape>();
 
-		Double min_Distance = snap_distance;
+		Float min_Distance = snap_distance;
 		SnapCoord retSnapCoord = null;
 
 		for (SnapType snapType : snap_keys) {
@@ -124,7 +124,7 @@ public class Get_snap {
 							
 							if (c != null) {
 								//System.out.println("cursor_coords=["+cursor_coords[0]+" ,"+cursor_coords[1]+"] �="+�.toString()+" , min_Distance="+min_Distance);
-								Double Distance = Math.max(
+								float Distance = (float)Math.max(
 										Math.abs(c.getX()
 												- cursor_coords[0]),
 										Math.abs(c.getY()
@@ -144,7 +144,7 @@ public class Get_snap {
 			} else
 				for (Shape sh : shapes) {
 					for (Coord c : sh.getSnapPoints(snapType)) {
-						Double Distance = Math.max(
+						float Distance =  (float)Math.max(
 								Math.abs(c.getX() - cursor_coords[0]),
 								Math.abs(c.getY() - cursor_coords[1]));
 						if (Distance < min_Distance) {

@@ -16,14 +16,14 @@ public class Class_base_draw
 {
 	
 	//Points for create object
-	public double x1;
-	public double y1;
+	public float x1;
+	public float y1;
 	
-	public double x2;
-	public double y2;
+	public float x2;
+	public float y2;
 	
-	public double x3;//for Dimensions and mirror function
-	public double y3;	
+	public float x3;//for Dimensions and mirror function
+	public float y3;	
 	
 	/**
 	 * Initial method of Shape-creating process or any function. 
@@ -62,20 +62,20 @@ public class Class_base_draw
 		
 		Global_var.point_2_coords = Global_var.cursor_snap_coords.clone();
 		
-		x1 = (double)Global_var.point_1_coords[0];
-		y1 = (double)Global_var.point_1_coords[1];
+		x1 = Global_var.point_1_coords[0];
+		y1 = Global_var.point_1_coords[1];
 		
-		x2 = (double)Global_var.point_2_coords[0];
-		y2 = (double)Global_var.point_2_coords[1];
+		x2 = Global_var.point_2_coords[0];
+		y2 = Global_var.point_2_coords[1];
 		Global_var.point_1_coords = Global_var.cursor_snap_coords.clone();
 	}
 	public void dynamic_draw(){
 		Global_var.point_2_coords = Global_var.cursor_snap_coords.clone();
-		x1 = (double)Global_var.point_1_coords[0];
-		y1 = (double)Global_var.point_1_coords[1];
+		x1 = Global_var.point_1_coords[0];
+		y1 = Global_var.point_1_coords[1];
 		
-		x2 = (double)Global_var.point_2_coords[0];
-		y2 = (double)Global_var.point_2_coords[1];
+		x2 = Global_var.point_2_coords[0];
+		y2 = Global_var.point_2_coords[1];
 		
 	}
 	

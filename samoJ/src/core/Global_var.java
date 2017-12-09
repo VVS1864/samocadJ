@@ -15,9 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import modules.base_draw_entities.Interface_base_draw;
+import open_dxf_lib.Color_rgb;
 import samoJ.Dash_base;
 import samoJ.Shape;
 import samoJ.SnapType;
+import core.GUI.GUI;
 import core.GUI.Save_dialog;
 
 public class Global_var {
@@ -55,37 +57,37 @@ public class Global_var {
 	/**
 	 * Coords of mouse when mouse_plan_motion
 	 */
-	public static double[] mouse = new double[2];
+	public static float[] mouse = new float[2];
 
 	/**
 	 * latest coords of cursor
 	 */
-	public static double[] cursor_coords = new double[2];
+	public static float[] cursor_coords = new float[2];
 
 	/**
 	 * latest coords of cursor with snap
 	 */
-	public static double[] cursor_snap_coords = new double[2];
+	public static float[] cursor_snap_coords = new float[2];
 
 	/**
 	 * coords of point 1 for draw objects or make actions with them
 	 */
-	public static double[] point_1_coords = new double[2];
+	public static float[] point_1_coords = new float[2];
 
 	/**
 	 * Coords of point 2 for draw objects or make actions with them
 	 */
-	public static double[] point_2_coords = new double[2];
+	public static float[] point_2_coords = new float[2];
 
 	/**
 	 * Point 1 of selective rectangle
 	 */
-	public static double[] select_rect_1 = new double[2];
+	public static float[] select_rect_1 = new float[2];
 
 	/**
 	 * Point 2 of selective rectangle
 	 */
-	public static double[] select_rect_2 = new double[2];
+	public static float[] select_rect_2 = new float[2];
 
 	/**
 	 * Class implements Interface_base_draw for run an action if user clicks
@@ -116,22 +118,22 @@ public class Global_var {
 	/**
 	 * Selective rectangle vertices for draw on canvas and select Shapes
 	 */
-	public static double[] select_rect_vertices = new double[8];
+	public static float[] select_rect_vertices = new float[12];
 
 	/**
 	 * Array for draw indication current Shape under cursor
 	 */
-	public static double[] current_Shape_vertices = null;
+	public static float[] current_Shape_vertices = null;
 
 	/**
 	 * For draw snap sign, it depend from snap type
 	 */
-	public static double[] snap_sign_vertices = null;
+	public static float[] snap_sign_vertices = null;
 	
-	public static double[] preview_object_vertices = null;
+	public static float[] preview_object_vertices = null;
 
 	// COLORES
-	public static int[] select_rect_color = new int[3];
+	public static Color_rgb select_rect_color = new Color_rgb(1.0f, 1.0f, 1.0f);
 
 	/**
 	 * Keys for adjust snaps. 0 - off, 1 - on. Positions: 0 - end_point, 1 -
@@ -148,4 +150,6 @@ public class Global_var {
 	 */
 	public static Integer current_ID = 0;
 
+	public static int N_primLines = 0;
+	public static int N_dynamic_lines = 0;
 }

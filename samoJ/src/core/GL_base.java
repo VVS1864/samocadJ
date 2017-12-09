@@ -1,9 +1,9 @@
 package core;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.dash_type;
-import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import samoJ.Circle;
@@ -13,51 +13,150 @@ import samoJ.ObjectMode;
 import samoJ.Shape;
 
 import com.jogamp.common.nio.Buffers;
-import com.jogamp.opengl.GL;
+import com.jogamp.opengl.util.GLArrayDataServer;
+import com.jogamp.opengl.util.GLBuffers;
+import com.jogamp.opengl.util.PMVMatrix;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GL2ES2;
+import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.GLException;
+import com.jogamp.opengl.GLUniformData;
 import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.util.glsl.ShaderCode;
+import com.jogamp.opengl.util.glsl.ShaderProgram;
+import com.jogamp.opengl.util.glsl.ShaderState;
 
 import java.util.Random;
 
 public class GL_base {
-
-	static int[] vbo_buffer = new int[2];
+	static public final ShaderProgram sp0 = new ShaderProgram();
+	static public ShaderState st;
+	static private GLArrayDataServer interleavedVBO;
+	static private GLArrayDataServer dynamic_interleavedVBO;
+	///static public IntBuffer bufferName = GLBuffers.newDirectIntBuffer(1);
+	///static public IntBuffer vertexArrayName = GLBuffers.newDirectIntBuffer(1);
+	///static public IntBuffer DbufferName = GLBuffers.newDirectIntBuffer(1);
+	///static public IntBuffer DvertexArrayName = GLBuffers.newDirectIntBuffer(1);
+	/**
+	 * Variable for uniform location in shader program
+	 */
+	///static private int current_scale_location;
+	///static private int general_matrix_location;
+	//static int[] vbo_buffer = new int[2];
 	//static int[] color_buffer = new int[1];
 
-	public static int N = 100;// number of vertices
+	public static int N = 100000;// number of vertices
 
-	static DoubleBuffer fbVertices;
-	static DoubleBuffer fbColores;
+	//static DoubleBuffer fbVertices;
+	//static DoubleBuffer fbColores;
 	// static double[] vertices = new double[N * 3];
-	static double[] colores;
-	static double[] vertices;
-	static DoubleBuffer fbDinamicVertices;
+	/**
+	 * Array for coordinates, colors and widths:
+	 * [x1,y1,z1, r1,g1,b1, w1]  
+	 */
+	static float[] colors;
+	static float[] vertices;
+	static float[] widths;
+	
+	static float[] dynamic_colores;
+	static float[] dynamic_vertices;
+	static float[] dynamic_widths;
+	static FloatBuffer fbDinamicVertices;
 	//public static double[] dinamic_vertices = new double[4 * 3];
 
 	// public static LinkedList<Integer> list1 = new LinkedList<Integer>();
 	// public static double[] list1 = {};
-	public static double[] general_matrix = { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
-			0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
+	
+	public static float[] general_matrix = { 1, 0, 0, 0, 0, 1,
+			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
-	public static double[] identity_matrix = { 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
-			0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 };
-
+	public static float[] identity_matrix = { 1, 0, 0, 0, 0, 1,
+			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+	
+	public static PMVMatrix pmvMatrix;
+	public static GLUniformData pmvMatrixUniform;
+	public static GLUniformData current_scaleUniform;
+	//public static PMVMatrix general_matrix;
+	//public static GLUniformData general_matrixUniform;
+	
+	
 	public static boolean unproject_flag = false;
-	public static double[] unproject = new double[2];
-	public static double[] project = new double[2];
+	public static float[] unproject = new float[2];
+	public static float[] project = new float[2];
 
-	public static double mvmatrix[] = new double[16];
-	public static double projmatrix[] = new double[16];
+	public static float mvmatrix[] = new float[16];
+	public static float projmatrix[] = new float[16];
 	public static int viewport[] = new int[4];
-
-	public static GL2 gl2;
+	
+	//public static GL2 gl2;
+	public static GL3 gl3;
+	public static boolean gl_init = false;
 	public static boolean update_data_flag = false;
+	
+	public void make_shaders(ShaderState st) {
+		final ShaderCode vp0 = ShaderCode.create(gl3, GL2ES2.GL_VERTEX_SHADER, this.getClass(), "shaders",
+                "shaders/bin", "vertex", true);
+		final ShaderCode gp0 = ShaderCode.create(gl3, GL3.GL_GEOMETRY_SHADER, this.getClass(), "shaders",
+                "shaders/bin", "geometry", true);
+		final ShaderCode fp0 = ShaderCode.create(gl3, GL2ES2.GL_FRAGMENT_SHADER, this.getClass(), "shaders",
+                "shaders/bin", "fragment", true);
+		
+		
+		vp0.defaultShaderCustomization(gl3, true, true);
+		gp0.defaultShaderCustomization(gl3, true, true);
+        fp0.defaultShaderCustomization(gl3, true, true);
+        
+        sp0.add(gl3, vp0, System.err);
+        sp0.add(gl3, gp0, System.err);
+        sp0.add(gl3, fp0, System.err);
+        if(!sp0.link(gl3, System.err)) {
+            throw new GLException("Couldn't link program: "+sp0);
+        }
+        st.attachShaderProgram(gl3, sp0, true);
+        
+        pmvMatrix = new PMVMatrix();   
+        pmvMatrix.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+        pmvMatrix.glLoadIdentity();
+        pmvMatrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        pmvMatrix.glLoadIdentity();
+        update_pmv_matrix();
+        /*
+        general_matrix = new PMVMatrix();
+        general_matrix.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+        general_matrix.glLoadIdentity();
+        general_matrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        general_matrix.glLoadIdentity();
+        */
+	}
+	
+	public static void update_pmv_matrix() { 
+		pmvMatrixUniform = new GLUniformData("mgl_PMVMatrix", 4, 4, pmvMatrix.glGetPMvMatrixf()); // P, Mv
+        st.ownUniform(pmvMatrixUniform);
+        st.uniform(gl3, pmvMatrixUniform);
 
-	public static void init(GL2 gl2, int width, int height) {
+        st.ownUniform(pmvMatrixUniform);
+        if(!st.uniform(gl3, pmvMatrixUniform)) {
+            throw new GLException("Error setting PMVMatrix in shader: "+st);
+        }
+	}
+	/*
+	public static void update_general_matrix() { 
+		general_matrixUniform = new GLUniformData("general_matrix", 4, 4, general_matrix.glGetPMvMatrixf()); // P, Mv
+        st.ownUniform(general_matrixUniform);
+        st.uniform(gl3, general_matrixUniform);
 
-		gl2.glMatrixMode(GL2.GL_MODELVIEW);
-		gl2.glLoadIdentity();
+        st.ownUniform(general_matrixUniform);
+        if(!st.uniform(gl3, general_matrixUniform)) {
+            throw new GLException("Error setting general_matrix in shader: "+st);
+        }
+	}
+	*/
+	public static void init(GL3 gl2, int width, int height) {
+		
+		//gl2.glMatrixMode(GL3.GL_MODELVIEW);
+		//gl2.glLoadIdentity();
 
 		Random randomGenerator = new Random();
 		long t1, t2, t_total =0;
@@ -67,16 +166,27 @@ public class GL_base {
 		
 		for (int idx = 0; idx < N ; ++idx) {
 			int x1, y1, x2, y2;
+			
 			x1 = randomGenerator.nextInt(1200);
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
-			
+			/*
+			x1 = 0;
+			y1 = 0;
+			x2 = 500;
+			y2 = 50;
 			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, 
-					Values.stipple_factor, dash_type.Continuous, Values.color);
-			Color_rgb c = new Color_rgb(200, 0, 100);
-			new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
-					Values.stipple_factor, dash_type.Continuous, c);
+					Values.stipple_factor, dash_type.Continuous, Values.color, Values.width);
+			x1 = 100;
+			y1 = 100;
+			x2 = 450;
+			y2 = 150;*/
+			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, 
+					Values.stipple_factor, dash_type.Continuous, Values.color, Values.width);
+			//Color_rgb c = new Color_rgb(200, 0, 100);
+			//new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
+			//		Values.stipple_factor, dash_type.Continuous, c, Values.width);
 			
 			/*
 			x1 = randomGenerator.nextInt(1200);
@@ -116,33 +226,7 @@ public class GL_base {
 		t2 = System.currentTimeMillis();
 		System.out.println("upate_data(): " +(t2 - t1)+ " ms.");
 		t_total += t2-t1;
-		/*
-		 * System.out.println( N + " �����"); long t2 =
-		 * System.currentTimeMillis();
-		 * System.out.println("���������: " + (t2 - t1)+
-		 * " ms.");
-		 * 
-		 * for (Shape sh: cad_demo.theShapes) { list1.addAll(sh.toList()); }
-		 * 
-		 * 
-		 * t1 = System.currentTimeMillis(); vertices = ArrayUtils
-		 * .toPrimitive(list1.toArray(new Integer[list1.size()]));
-		 * 
-		 * t2 = System.currentTimeMillis(); System.out.println("List to array: "
-		 * + (t2 - t1)+ " ms."); System.out.println("size of vertices  " +
-		 * vertices.length+ ", lines=" + vertices.length/6);
-		 * 
-		 * t1 = System.currentTimeMillis(); fbVertices =
-		 * Buffers.newDirectIntBuffer(vertices); gl2.glGenBuffers(1, vbo_buffer,
-		 * 0); gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
-		 * 
-		 * int numBytes = fbVertices.capacity() * Buffers.SIZEOF_INT;
-		 * gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbVertices,
-		 * GL2.GL_STATIC_DRAW); gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
-		 * 
-		 * t2 = System.currentTimeMillis(); System.out.println("before render: "
-		 * + (t2 - t1)+ " ms.");
-		 */
+		
 		t1 = System.currentTimeMillis();
 		render(gl2, width, height);
 		t2 = System.currentTimeMillis();
@@ -150,83 +234,99 @@ public class GL_base {
 		t_total += t2-t1;
 		
 		System.out.println("TOTAL: "+ t_total+ " ms.");
-		
 	}
 
 	/**
 	 * Method for update (remove and create new) VBO from theShapes
 	 */
 	public static void update_data(){
-		gl2 = Global_var.glcanvas.getGL().getGL2();
-		
-		//        OLD release with linked list  and ArrayUtils 
-		// ------------------------------------------------
-		// Generation: 2000 figures, time=168 ms.
-		// upate_data(): 2485 ms.
-		// render(): 4 ms.  
-		// ------------------------------------------------
-		
-		/*
-		ArrayList<Double> list1 = new ArrayList<Double>(N*200);
-
-		for (Shape sh : Global_var.theShapes.values()) {
-			list1.addAll(sh.toList());
+		gl3 = Global_var.glcanvas.getGL().getGL3();
+		if(!gl_init) {
+			GL_base glb = new GL_base();
+			
+			st = new ShaderState();
+			st.setVerbose(true);
+			glb.make_shaders(st);
+			
+			gl_init = true;
 		}
 		
-		vertices = ArrayUtils.toPrimitive(list1.toArray(new Double[list1
-				.size()]));
+		FloatArrayList listFloat = new FloatArrayList(Global_var.N_primLines*6);//(N*200);
+		FloatArrayList listFloatColor = new FloatArrayList(Global_var.N_primLines*3);
+		FloatArrayList listFloatWidth = new FloatArrayList(Global_var.N_primLines*2);
 		
+		for (Shape sh : Global_var.theShapes.values()) {
+			listFloat.addAll(sh.toListFloat());
+			listFloatColor.addAll(sh.toListFloatColor());
+			listFloatWidth.addAll(sh.toListFloatWidth());
+		}
+		vertices = listFloat.elements();
+		colors = listFloatColor.elements();
+		widths = listFloatWidth.elements();
+		interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, Global_var.N_primLines*2*3,
+				GL3.GL_STATIC_DRAW);
+		update_vao(interleavedVBO, vertices, colors, widths, Global_var.N_primLines);
+	}
+	
+	public static void update_dynamic_data(){
+		gl3 = Global_var.glcanvas.getGL().getGL3();
+		Global_var.N_dynamic_lines = 0;
+		Dynamic_data d = new Dynamic_data();
+		float[] vertices = d.get_vertices();
+		float[] colors = d.get_colors();
+		float[] widths = d.get_widths();
+		Global_var.N_dynamic_lines = vertices.length/6;
+		//print_a(vertices);
+		
+		dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, Global_var.N_dynamic_lines*2*3,
+				GL3.GL_STATIC_DRAW);
+		update_vao(dynamic_interleavedVBO, vertices, colors, widths, Global_var.N_dynamic_lines);
+	}
+	
+	public static void print_a(float[] a) {
+		for (int i =0; i<a.length; i++) {
+			System.out.print(" "+a[i] + " ");
+		}
+		System.out.println();
+	}
+	public static void update_vao(GLArrayDataServer iVBO, float[] vertices, float[] colors, float[] widths, int N_lines) {
+		st.useProgram(gl3, true);
+
+		iVBO.addGLSLSubArray("position", 3, GL3.GL_ARRAY_BUFFER);
+		iVBO.addGLSLSubArray("color", 3, GL3.GL_ARRAY_BUFFER);
+		iVBO.addGLSLSubArray("width", 1, GL3.GL_ARRAY_BUFFER);
+
+		final FloatBuffer ib = (FloatBuffer) iVBO.getBuffer();
+
+		for (int i = 0; i < N_lines*2; i++) {
+			ib.put(vertices, i * 3, 3);
+			ib.put(colors, i * 3, 3);
+			ib.put(widths, i * 1, 1);
+		}
+		/*
+		float[] e = new float[ib.capacity()];
+		
+		ib.get(e);
+		for (int i =0; i<e.length; i++) {
+			
+			System.out.print(" "+e[i] + " ");
+		}
 		*/
-		// END OLD RELEASE 
-		
-		/////////////////NEW REALISE with DoubleArrayList (it.unimi.dsi.fastutil.doubles) 
-		// ------------------------------------------------
-		//		Generation: 2000 figures, time=142 ms.
-		//				upate_data(): 153 ms.
-		//				render(): 5 ms.
-		// ------------------------------------------------	
-		
-		DoubleArrayList listDouble = new DoubleArrayList();//(N*200);
-		for (Shape sh : Global_var.theShapes.values()) {
-			listDouble.addAll(sh.toListDouble());
-		}
-		
-		DoubleArrayList listDoubleColors = new DoubleArrayList();
-		for (Shape sh : Global_var.theShapes.values()) {
-			listDoubleColors.addAll(sh.toListDoubleColor());
-		}
-		
-		vertices = listDouble.elements(); // Easy without ArrayUtils
-		colores = listDoubleColors.elements();
-		/*
-		for(int i = 0; i<colores.length-2; i+=3){
-			colores[i] = 0.0;
-			colores[i+1] = 120.0;
-			colores[i+2] = 0.0;
-		}*/
-		///////////////////////////////// END NEW REALISE 
-		
-		fbVertices = Buffers.newDirectDoubleBuffer(vertices);
-		fbColores= Buffers.newDirectDoubleBuffer(colores);
-		
-		gl2.glGenBuffers(2, vbo_buffer, 0);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
+		iVBO.seal(gl3, true);
+		iVBO.enableBuffer(gl3, false);
+		st.ownAttribute(iVBO, true);
 
-		int numBytes = fbVertices.capacity() * Buffers.SIZEOF_DOUBLE;
-		gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbVertices,
-				GL2.GL_STATIC_DRAW);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
-/////////// Color buffer
-		//gl2.glGenBuffers(1, color_buffer, 0);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[1]);
-
-		numBytes = fbColores.capacity() * Buffers.SIZEOF_DOUBLE;
-		gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbColores,
-				GL2.GL_STATIC_DRAW);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
-////////////
+		st.useProgram(gl3, false);
 	}
 
+	public static void draw_vao(GLArrayDataServer iVBO, int N_lines) {
+		if (null != st) {
+			iVBO.enableBuffer(gl3, true);
+			gl3.glDrawArrays(GL3.GL_LINES, 0, N_lines * 2);
+			iVBO.enableBuffer(gl3, false);
+		}
+	}
+	
 	/**
 	 * This method updates glcanvas if theShapes was changed.
 	 */
@@ -239,97 +339,126 @@ public class GL_base {
 										// method
 	}
 
-	public static void setup(GL2 gl2, int width, int height) {
+	public static void setup(GL3 gl3, int width, int height) {
+		//System.out.println("setup");
+		gl3.setSwapInterval(1);
+		if(null != st) {
+			pmvMatrix.glPushMatrix();
+            pmvMatrix.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+            pmvMatrix.glLoadIdentity();
+            pmvMatrix.glOrthof(0.0f, width, 0.0f, height, -100.0f, 100.0f);
 
-		gl2.glPushMatrix();
-
-		gl2.glMatrixMode(GL2.GL_PROJECTION);
-		gl2.glLoadIdentity();
-
-		GLU glu = new GLU();
-		glu.gluOrtho2D(0.0, width, 0.0, height);
-
-		gl2.glMatrixMode(GL2.GL_MODELVIEW);
-		gl2.glLoadIdentity();
-
-		gl2.glViewport(0, 0, width, height);
-		gl2.glPopMatrix();
-		//System.out.println("resize");
-
+            pmvMatrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+            pmvMatrix.glLoadIdentity();
+            pmvMatrix.glPopMatrix();
+            
+            gl3.glViewport(0, 0, width, height);
+            st.useProgram(gl3, true);
+            update_pmv_matrix();
+            //st.uniform(gl3, pmvMatrixUniform);//??
+            st.useProgram(gl3, false);
+        
+		}
 	}
 
-	public static void render(GL2 gl2, int width, int height) {
+	public static void render(GL3 gl2, int width, int height) {
 		// If updating VBOs is necessary
 		if (update_data_flag == true) {
 			update_data();
-			//System.out.println("N vertices " + vertices.length / 3);
 			update_data_flag = false;
 		}
-		gl2.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-	    
-		gl2.glMatrixMode(GL2.GL_MODELVIEW);
-
-		gl2.glMultMatrixd(general_matrix, 0);
-		general_matrix = identity_matrix.clone();
-
-		//gl2.glColor3f(Values.color.get_r(), Values.color.get_g(), Values.color.get_b());
-
-		gl2.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-		gl2.glEnableClientState(GL2.GL_COLOR_ARRAY);
-		// Bind color buffer
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[1]);
-		gl2.glColorPointer(3, GL2.GL_DOUBLE, 0, 0);
-		// Bind vertex buffer
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, vbo_buffer[0]);
-		gl2.glVertexPointer(3, GL2.GL_DOUBLE, 0, 0);
+		update_dynamic_data();
+		//System.out.println("render");
 		
-		gl2.glDrawArrays(GL2.GL_LINES, 0, (int) vertices.length / 3);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+		//if(gl_init) {
+			st.useProgram(gl3, true);            
+			gl3.glClearColor(0.0f, 0.0f, 0.0f, 1);
+			gl3.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+			pmvMatrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+			pmvMatrix.glMultMatrixf(general_matrix, 0);
+			general_matrix = identity_matrix.clone();
+			update_pmv_matrix();
+			
+			current_scaleUniform = new GLUniformData("current_scale", Values.current_scale);
+	        st.ownUniform(current_scaleUniform);
+	        st.uniform(gl3, current_scaleUniform);
 
-		gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
-		
-		dinamic_render(gl2);
-
-		gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-		
-		
-		gl2.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-
-		gl2.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
-
-		gl2.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
-
-	}
-
-	static void dinamic_render(GL2 gl2) {
+	        st.ownUniform(current_scaleUniform);
+	        if(!st.uniform(gl3, current_scaleUniform)) {
+	            throw new GLException("Error setting current_scale in shader: "+st);
+	        }
+	        /*
+	        interleavedVBO.enableBuffer(gl3, true);
+			gl3.glDrawArrays(GL3.GL_LINES, 0, Global_var.N_primLines * 2);
+			interleavedVBO.enableBuffer(gl3, false);
+			dynamic_interleavedVBO.enableBuffer(gl3, true);
+			gl3.glDrawArrays(GL3.GL_LINES, 0, Global_var.N_dynamic_lines * 2);
+			dynamic_interleavedVBO.enableBuffer(gl3, false);
+			*/
+            //st.useProgram(gl3, false);
+			
+			draw_vao(interleavedVBO, Global_var.N_primLines);
+			draw_vao(dynamic_interleavedVBO, Global_var.N_dynamic_lines);
+			//dinamic_render(gl2);
+			st.useProgram(gl3, false);
+			 
+			pmvMatrix.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+			pmvMatrix.glGetFloatv(GLMatrixFunc.GL_PROJECTION_MATRIX, projmatrix, 0);
+			gl3.glGetIntegerv(GL3.GL_VIEWPORT, viewport, 0);
+		//}
+    }
+	/*
+	static void dinamic_render(GL3 gl2) {
 		if (Global_var.select_mode){
-			gl_draw_array(Global_var.select_rect_vertices, Global_var.select_rect_color, 2);			
+			gl_draw_array(Global_var.select_rect_vertices, Global_var.select_rect_color);			
 		}
+		
 		if (Global_var.current_Shape_vertices != null){
-			gl_draw_array(Global_var.current_Shape_vertices, Values.current_shape_color.get_rgb(), 3);	
+			gl_draw_array(Global_var.current_Shape_vertices, Values.current_shape_color.get_rgb());	
 		}
 		if (Global_var.snap_sign_vertices != null){
-			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color.get_rgb(), 2);
+			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color.get_rgb());
 		}
 		if (Global_var.preview_object_vertices != null){
-			gl_draw_array(Global_var.preview_object_vertices, Values.color.get_rgb(), 3);
-		}
-		
+			gl_draw_array(Global_var.preview_object_vertices, Values.color.get_rgb());
+		}		
 	}
-	
+	*/
 	/**
 	 * Cover for glDrawArrays for draw it with a color
 	 * @param vertices_array - array of coordinates xy-only.
 	 * @param color - color for this vertices
 	 */
-	static void gl_draw_array(double[] vertices_array, int[] color, int dimensions){
+	static void gl_draw_array(float[] vertices, int[] color){
 		
-		gl2.glColor3f(color[0], color[1], color[2]);
+		int N_lines = vertices.length/6;
+		int N_verts = N_lines*2;
+		//float[] vertices_3d = new float[N_verts*3];
+		float[] colors = new float[N_verts*3];
+		float[] widths = new float[N_verts];
 		
-		fbDinamicVertices = Buffers.newDirectDoubleBuffer(vertices_array);
-		gl2.glVertexPointer(dimensions, GL2.GL_DOUBLE, 0, fbDinamicVertices);
-		gl2.glDrawArrays(GL2.GL_LINES, 0, vertices_array.length / dimensions);
-		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
+		int r = 0;
+		int w = 2;
+		for(int i = 0; i<vertices.length; i+=3) {
+			colors[i] = color[0];
+			colors[i+1] = color[1];
+			colors[i+2] = color[2];
+			widths[r] = w;
+			r++;
+		}
+		/*
+		System.out.println("--------------------------------");
+		print_a(vertices_2d);
+		print_a(vertices_3d);
+		print_a(colors);
+		print_a(widths);
+		*/
+		
+		dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, N_lines*2*3,
+				GL3.GL_STATIC_DRAW);
+		update_vao(dynamic_interleavedVBO, vertices, colors, widths, N_lines);
+		draw_vao(dynamic_interleavedVBO, N_lines);
+		
 	}
 
 	/**
@@ -343,14 +472,14 @@ public class GL_base {
 	 *            coordinate of gl window
 	 * @return gl world coordinates
 	 */
-	public static double[] get_real_coords(GLCanvas glcanvas, double x, double y) {
-		double wcoord[] = new double[4];
+	public static float[] get_real_coords(GLCanvas glcanvas, float x, float y) {
+		float wcoord[] = new float[4];
 
-		double realy_y = viewport[3] - y;
+		float realy_y = viewport[3] - y;
 		GLU glu2 = new GLU();
-		glu2.gluUnProject(x, realy_y, 0.0, mvmatrix, 0, projmatrix, 0,
+		glu2.gluUnProject(x, realy_y, 0, mvmatrix, 0, projmatrix, 0,
 				viewport, 0, wcoord, 0);
-		double[] returnable = wcoord.clone();
+		float[] returnable = wcoord.clone();
 		return returnable;
 	}
 }

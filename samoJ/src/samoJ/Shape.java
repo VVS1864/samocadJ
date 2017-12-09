@@ -1,6 +1,6 @@
 package samoJ;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
 
@@ -28,14 +28,13 @@ public class Shape {
 	// Snap points
 	LinkedList<SnapCoord> SnapPoints;
 	// Properties
-	protected double factor;
+	protected float factor;
 	protected Dash dash;
 	/**
 	 * One color of all lines of Shape. TODO - Every primitive line of Shape must have own color, 
 	 * then this value is null.
 	 */
 	protected Color_rgb color;
-	protected int width;
 	// Unique object ID
 	public int ID;
 	
@@ -51,24 +50,40 @@ public class Shape {
 		// System.out.println("The constructor Shape()");
 	}
 
-	protected ArrayList<Double> toList() {
-		ArrayList<Double> ret = new ArrayList<Double>();
+	protected ArrayList<Float> toList() {
+		ArrayList<Float> ret = new ArrayList<Float>();
 		for (PrimitiveLine p : PrimLines)
 			ret.addAll(p.toList());
 		return ret;
 	}
 
-	public DoubleArrayList toListDouble() {
-		DoubleArrayList ret = new DoubleArrayList();
-		for (PrimitiveLine p : PrimLines)
-			ret.addAll(p.toListDouble());
+	public FloatArrayList toListFloat() {
+		FloatArrayList ret = new FloatArrayList(PrimLines.size()*6);
+		for (PrimitiveLine p : PrimLines) {
+			ret.addAll(p.toListFloat());
+			
+		}
 		return ret;
 	}
 	
-	public DoubleArrayList toListDoubleColor() {
-		DoubleArrayList ret = new DoubleArrayList();
+	public FloatArrayList toListFloatColor() {
+		FloatArrayList ret = new FloatArrayList(PrimLines.size()*6);
 		for (PrimitiveLine p : PrimLines)
-			ret.addAll(p.toListDoubleColor());
+			ret.addAll(p.toListFloatColor());
+		return ret;
+	}
+	
+	public FloatArrayList toListFloatWidth() {
+		FloatArrayList ret = new FloatArrayList(PrimLines.size()*2);
+		for (PrimitiveLine p : PrimLines)
+			ret.addAll(p.toListFloatWidth());
+		return ret;
+	}
+	
+	public FloatArrayList toListFloatData() {
+		FloatArrayList ret = new FloatArrayList();
+		for (PrimitiveLine p : PrimLines)
+			ret.addAll(p.toListFloatData());
 		return ret;
 	}
 
@@ -117,10 +132,10 @@ public class Shape {
 		}
 
 	}
-	public double[] getPreviewData(){
-		DoubleArrayList listDouble = new DoubleArrayList(PrimLines.size()*6);
-		listDouble.addAll(toListDouble());
-		return listDouble.elements();
+	public float[] getPreviewData(){
+		FloatArrayList listFloat = new FloatArrayList(PrimLines.size()*6);
+		listFloat.addAll(toListFloat());
+		return listFloat.elements();
 	}
 	
 	public void save_to_DXF(DXF_file f){

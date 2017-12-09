@@ -2,16 +2,16 @@ package samoJ;
 
 import java.util.ArrayList;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 
 public class VboTest {
 	ArrayList<PrimitiveLine> primLines;
-	DoubleArrayList vertDouble;
+	FloatArrayList vertFloat;
 
 	public VboTest() {
 		// TODO Auto-generated constructor stub
 		primLines = new ArrayList<PrimitiveLine>();
-		vertDouble = new DoubleArrayList();
+		vertFloat = new FloatArrayList();
 
 	}
 
@@ -21,7 +21,7 @@ public class VboTest {
 		else {
 			// Here need transaction TO DO
 			
-			vertDouble.addAll(pp.toListDouble());
+			vertFloat.addAll(pp.toListFloat());
 			primLines.add(pp);
 			// End transaction; TO DO
 			return true;
@@ -32,7 +32,7 @@ public class VboTest {
 		int ind = primLines.indexOf(pp);
 		if (ind >= 0) {
 			// Here need transaction TO DO
-			vertDouble.removeElements(ind*6, (ind+1)* 6);
+			vertFloat.removeElements(ind*6, (ind+1)* 6);
 			primLines.remove(ind);
 			// End transaction; TO DO
 			return true;
@@ -48,7 +48,7 @@ public class VboTest {
 		String ret = "";
 		for (int i = 0; i < primLines.size(); i++) {
 			int ii = i * 6;
-			ret += String.valueOf(i) + ":" +vertDouble.subList(ii, ii+6).toString()+ "\n";
+			ret += String.valueOf(i) + ":" +vertFloat.subList(ii, ii+6).toString()+ "\n";
 		}
 		return ret;
 	}

@@ -16,10 +16,10 @@ public class Zoom {
 	 * System.out.print(" " + elem); System.out.println(); }
 	 * System.out.println("--------------"); }
 	 */
-	public static double[] get_real_coords_of_screen(){
-		double x = GL_base.viewport[2]/2;
-		double y = GL_base.viewport[3]/2;
-		double[] real_coords = GL_base.get_real_coords(Global_var.glcanvas, x, y);
+	public static float[] get_real_coords_of_screen(){
+		float x = GL_base.viewport[2]/2;
+		float y = GL_base.viewport[3]/2;
+		float[] real_coords = GL_base.get_real_coords(Global_var.glcanvas, x, y);
 
 		return real_coords;
 	}
@@ -35,35 +35,36 @@ public class Zoom {
 
 	// For "public static void button_zoom(char c)"
 	private static void button_zoom_doing(int nt) {
-		double [] real_centr_coords = get_real_coords_of_screen();
-		double x = real_centr_coords[0];
-		double y = real_centr_coords[1];
+		float [] real_centr_coords = get_real_coords_of_screen();
+		float x = real_centr_coords[0];
+		float y = real_centr_coords[1];
 		zoom(x, y, nt);
 	}
 
-	public static void zoom(double x, double y, int notches) {
+	public static void zoom(float x, float y, int notches) {
 		// s = scale ZoomIn or ZoomOut
-		double s = (notches > 0) ? Values.scale_size : 1.0 / Values.scale_size;
+		float s = (notches > 0) ? Values.scale_size : 1 / Values.scale_size;
 
-		double new_scale = Values.current_scale / s;		
+		float new_scale = Values.current_scale / s;		
 
-		double gl_x = x;
-		double gl_y = y;
+		float gl_x = x;
+		float gl_y = y;
 
 		if (Values.min_scale > new_scale) {
 			System.out.println("Minimal scale!");
 		}
 
-		else if(new_scale > Values.max_scale){
-			System.out.println("Maximal scale!");
-		}
+		//else if(new_scale > Values.max_scale){
+		//	System.out.println("Maximal scale!");
+		//}
 		
 		else {
 			// Optimized version AEROport 25/12/2016 No Matrix
-			double[] zoom_matrix = { s, 0.0, 0.0, 0.0, 0.0, s, 0.0, 0.0, 0.0,
-					0.0, 1.0, 0.0, gl_x - gl_x * s, gl_y - gl_y * s, 0.0, 1.0 };
+			float[] zoom_matrix = { s, 0, 0, 0, 0, s, 0, 0, 0,
+					0, 1, 0, gl_x - gl_x * s, gl_y - gl_y * s, 0, 1 };
 
-			GL_base.general_matrix = zoom_matrix;
+			//GL_base.general_matrix.glMultMatrixf(zoom_matrix, 0);
+			GL_base.general_matrix = zoom_matrix.clone();
 			Global_var.glcanvas.display();
 			System.out.println(new_scale);
 			Values.current_scale = new_scale;

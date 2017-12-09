@@ -1,22 +1,29 @@
 package core;
 
+import open_dxf_lib.Color_rgb;
+
 public class Select_objects{
 	public static void draw_selective_rect(){
 		Global_var.select_rect_2 = Global_var.cursor_snap_coords.clone();
-		double x1 = Global_var.select_rect_1[0];
-		double y1 = Global_var.select_rect_1[1];
-		double x2 = Global_var.select_rect_2[0];
-		double y2 = Global_var.select_rect_2[1];
-		Global_var.select_rect_vertices = new double[]{x1, y1, x2, y1,
-													x1, y2, x2, y2,
-													x2, y1, x2, y2,
-													x1, y1, x1, y2};
+		float x1 = Global_var.select_rect_1[0];
+		float y1 = Global_var.select_rect_1[1];
+		float x2 = Global_var.select_rect_2[0];
+		float y2 = Global_var.select_rect_2[1];
+		Global_var.select_rect_vertices = new float[]{
+				x1, y1, 0,
+				x2, y1, 0, 
+				x1, y2, 0,
+				x2, y2, 0,
+				x2, y1, 0,
+				x2, y2, 0,
+				x1, y1, 0,
+				x1, y2, 0};
 		if (x1 > x2){
-			Global_var.select_rect_color = new int[]{255, 0, 0};
+			Global_var.select_rect_color = new Color_rgb(255, 0, 0);
 		}
 		else
 		{
-			Global_var.select_rect_color = new int[]{0, 0, 255};
+			Global_var.select_rect_color = new Color_rgb(0, 0, 255);
 		}
 		Global_var.glcanvas.display();
 		

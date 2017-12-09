@@ -1,6 +1,6 @@
 package core.GUI.mouse_event_listeners;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -50,17 +50,17 @@ public class normal_state extends mouse_state {
 				Select_objects.mouse_select();
 			}
 		}
-
+		//Global_var.glcanvas.display();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON2) {
-			double x = Global_var.cursor_coords[0];
-			double y = Global_var.cursor_coords[1];
+			float x = Global_var.cursor_coords[0];
+			float y = Global_var.cursor_coords[1];
 			Plan_motion.plan_motion(Global_var.glcanvas, x, y);
 			Global_var.mouse_plan_motion = false;
-
+			Global_var.glcanvas.display();
 		}
 
 	}
@@ -68,20 +68,20 @@ public class normal_state extends mouse_state {
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		int notches = -e.getWheelRotation();
-		double x = Global_var.cursor_coords[0];
-		double y = Global_var.cursor_coords[1];
+		float x = Global_var.cursor_coords[0];
+		float y = Global_var.cursor_coords[1];
 		Zoom.zoom(x, y, notches);
-
+		Global_var.glcanvas.display();
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		mouseMoved(e);
 		if (Global_var.mouse_plan_motion == true) {
-			double x = Global_var.cursor_coords[0];
-			double y = Global_var.cursor_coords[1];
+			float x = Global_var.cursor_coords[0];
+			float y = Global_var.cursor_coords[1];
 			Plan_motion.plan_motion(Global_var.glcanvas, x, y);
-
+			Global_var.glcanvas.display();
 		}
 
 	}
@@ -94,8 +94,8 @@ public class normal_state extends mouse_state {
 	public void mouseMoved(MouseEvent e) {
 		Global_var.cursor_coords = GL_base.get_real_coords(Global_var.glcanvas,
 				e.getX(), e.getY());
-		double x = Global_var.cursor_coords[0];
-		double y = Global_var.cursor_coords[1];
+		float x = Global_var.cursor_coords[0];
+		float y = Global_var.cursor_coords[1];
 		// TO-DO snap to Shapes
 		
 		Global_var.cursor_snap_coords = Global_var.cursor_coords.clone();
@@ -110,7 +110,7 @@ public class normal_state extends mouse_state {
 
 			// If only cursor motion - find Shapes under cursor and snap
 			// Get snap_distance as real in gl world:
-			double real_snap_distance = Values.snap_distance
+			float real_snap_distance = Values.snap_distance
 					* Values.current_scale;
 			// Get Shapes under cursor
 			LinkedList<Shape> current_Shapes = Clip_algorithm.simple_clip(
@@ -124,7 +124,7 @@ public class normal_state extends mouse_state {
 					&& !current_Shapes.isEmpty()) {
 				Global_var.current_Shape = current_Shapes.get(0);
 				// Make current shapeInteger for click-selecting
-				DoubleArrayList list1 = Global_var.current_Shape.toListDouble();
+				FloatArrayList list1 = Global_var.current_Shape.toListFloat();
 				/*Global_var.current_Shape_vertices = ArrayUtils
 						.toPrimitive(list1.toArray(new Double[list1.size()]));*/
 				Global_var.current_Shape_vertices = list1.elements();

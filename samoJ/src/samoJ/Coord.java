@@ -1,6 +1,6 @@
 package samoJ;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import java.util.ArrayList;
 
 
@@ -13,14 +13,14 @@ import java.util.ArrayList;
  */
 
 public class Coord {
-	DoubleArrayList c;
+	FloatArrayList c;
 
-	public Coord(double x, double y) {
+	public Coord(float x, float y) {
 		this(x, y, 0);
 	}
 
-	Coord(double x, double y, double z) {
-		c = DoubleArrayList.wrap(new double[] {x, y, z});
+	Coord(float x, float y, float z) {
+		c = FloatArrayList.wrap(new float[] {x, y, z});
 
 	}
 
@@ -29,33 +29,33 @@ public class Coord {
 	 * @return lists for GL rendering
 	 */
 	
-	public ArrayList<Double> toList() {
-		return new ArrayList<Double>(c);
+	public ArrayList<Float> toList() {
+		return new ArrayList<Float>(c);
 
 	}
 
-	public DoubleArrayList toListDouble(){
+	public FloatArrayList toListFloat(){
 		return c;
 	}
 	
 	/**
-	 * double only coordinates
+	 * float only coordinates
 	 * @return
 	 */
-	public double getX(){
-		return c.getDouble(0);
+	public float getX(){
+		return c.getFloat(0);
 	}
 	
-	public double getY(){
-		return c.getDouble(1);
+	public float getY(){
+		return c.getFloat(1);
 	}
 	
-	public double getZ(){
-		return c.getDouble(2);
+	public float getZ(){
+		return c.getFloat(2);
 	}
 	
-	public double[] getXYZ(){
-		 double[] XYZ = {getX(), getY(), getZ()};
+	public float[] getXYZ(){
+		 float[] XYZ = {getX(), getY(), getZ()};
 		return XYZ;
 		
 	}
@@ -63,7 +63,7 @@ public class Coord {
 	public String toString(){
 		
 		String ret="[";
-		for (double d:c)
+		for (float d:c)
 		{
 			ret += d+" ";
 		}
