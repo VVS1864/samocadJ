@@ -8,7 +8,7 @@ import java.nio.IntBuffer;
 
 import samoJ.Circle;
 import samoJ.GroupShape;
-import samoJ.Line;
+import samoJ.ShapeLine;
 import samoJ.ObjectMode;
 import samoJ.Shape;
 
@@ -35,26 +35,11 @@ public class GL_base {
 	static public ShaderState st;
 	static private GLArrayDataServer interleavedVBO;
 	static private GLArrayDataServer dynamic_interleavedVBO;
-	///static public IntBuffer bufferName = GLBuffers.newDirectIntBuffer(1);
-	///static public IntBuffer vertexArrayName = GLBuffers.newDirectIntBuffer(1);
-	///static public IntBuffer DbufferName = GLBuffers.newDirectIntBuffer(1);
-	///static public IntBuffer DvertexArrayName = GLBuffers.newDirectIntBuffer(1);
-	/**
-	 * Variable for uniform location in shader program
-	 */
-	///static private int current_scale_location;
-	///static private int general_matrix_location;
-	//static int[] vbo_buffer = new int[2];
-	//static int[] color_buffer = new int[1];
 
-	public static int N = 100000;// number of vertices
+	public static int N = 10;// number of lines
 
-	//static DoubleBuffer fbVertices;
-	//static DoubleBuffer fbColores;
-	// static double[] vertices = new double[N * 3];
 	/**
-	 * Array for coordinates, colors and widths:
-	 * [x1,y1,z1, r1,g1,b1, w1]  
+	 * Arrays for coordinates, colors and widths:
 	 */
 	static float[] colors;
 	static float[] vertices;
@@ -64,10 +49,6 @@ public class GL_base {
 	static float[] dynamic_vertices;
 	static float[] dynamic_widths;
 	static FloatBuffer fbDinamicVertices;
-	//public static double[] dinamic_vertices = new double[4 * 3];
-
-	// public static LinkedList<Integer> list1 = new LinkedList<Integer>();
-	// public static double[] list1 = {};
 	
 	public static float[] general_matrix = { 1, 0, 0, 0, 0, 1,
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
@@ -76,11 +57,11 @@ public class GL_base {
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	
 	public static PMVMatrix pmvMatrix;
+	/**
+	 * Variable for uniform location in shader program
+	 */
 	public static GLUniformData pmvMatrixUniform;
 	public static GLUniformData current_scaleUniform;
-	//public static PMVMatrix general_matrix;
-	//public static GLUniformData general_matrixUniform;
-	
 	
 	public static boolean unproject_flag = false;
 	public static float[] unproject = new float[2];
@@ -90,7 +71,6 @@ public class GL_base {
 	public static float projmatrix[] = new float[16];
 	public static int viewport[] = new int[4];
 	
-	//public static GL2 gl2;
 	public static GL3 gl3;
 	public static boolean gl_init = false;
 	public static boolean update_data_flag = false;
@@ -102,7 +82,6 @@ public class GL_base {
                 "shaders/bin", "geometry", true);
 		final ShaderCode fp0 = ShaderCode.create(gl3, GL2ES2.GL_FRAGMENT_SHADER, this.getClass(), "shaders",
                 "shaders/bin", "fragment", true);
-		
 		
 		vp0.defaultShaderCustomization(gl3, true, true);
 		gp0.defaultShaderCustomization(gl3, true, true);
@@ -122,13 +101,6 @@ public class GL_base {
         pmvMatrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         pmvMatrix.glLoadIdentity();
         update_pmv_matrix();
-        /*
-        general_matrix = new PMVMatrix();
-        general_matrix.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
-        general_matrix.glLoadIdentity();
-        general_matrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        general_matrix.glLoadIdentity();
-        */
 	}
 	
 	public static void update_pmv_matrix() { 
@@ -141,22 +113,8 @@ public class GL_base {
             throw new GLException("Error setting PMVMatrix in shader: "+st);
         }
 	}
-	/*
-	public static void update_general_matrix() { 
-		general_matrixUniform = new GLUniformData("general_matrix", 4, 4, general_matrix.glGetPMvMatrixf()); // P, Mv
-        st.ownUniform(general_matrixUniform);
-        st.uniform(gl3, general_matrixUniform);
-
-        st.ownUniform(general_matrixUniform);
-        if(!st.uniform(gl3, general_matrixUniform)) {
-            throw new GLException("Error setting general_matrix in shader: "+st);
-        }
-	}
-	*/
+	
 	public static void init(GL3 gl2, int width, int height) {
-		
-		//gl2.glMatrixMode(GL3.GL_MODELVIEW);
-		//gl2.glLoadIdentity();
 
 		Random randomGenerator = new Random();
 		long t1, t2, t_total =0;
@@ -182,8 +140,8 @@ public class GL_base {
 			y1 = 100;
 			x2 = 450;
 			y2 = 150;*/
-			new Line(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, 
-					Values.stipple_factor, dash_type.Continuous, Values.color, Values.width);
+			new ShapeLine(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, 
+					Values.stipple_factor, dash_type.CENTER, Values.color, 2);
 			//Color_rgb c = new Color_rgb(200, 0, 100);
 			//new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
 			//		Values.stipple_factor, dash_type.Continuous, c, Values.width);
@@ -194,7 +152,7 @@ public class GL_base {
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
 			*/
-			//new Circle(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, Values.color);
+			new Circle(ObjectMode.New_object, x1, y1, 0, x2, y2, 0, Values.color, Values.width);
 			
 			//Global_var.theShapes.add(new Circle(x1, y1, 0, x2, y2, 0));
 			//Global_var.theShapes.put(new Line(x1, y1, 0, x2, y2, 0));
@@ -251,9 +209,9 @@ public class GL_base {
 			gl_init = true;
 		}
 		
-		FloatArrayList listFloat = new FloatArrayList(Global_var.N_primLines*6);//(N*200);
-		FloatArrayList listFloatColor = new FloatArrayList(Global_var.N_primLines*3);
-		FloatArrayList listFloatWidth = new FloatArrayList(Global_var.N_primLines*2);
+		FloatArrayList listFloat = new FloatArrayList(Global_var.N_DrawableLines*6);//(N*200);
+		FloatArrayList listFloatColor = new FloatArrayList(Global_var.N_DrawableLines*3);
+		FloatArrayList listFloatWidth = new FloatArrayList(Global_var.N_DrawableLines*2);
 		
 		for (Shape sh : Global_var.theShapes.values()) {
 			listFloat.addAll(sh.toListFloat());
@@ -263,9 +221,9 @@ public class GL_base {
 		vertices = listFloat.elements();
 		colors = listFloatColor.elements();
 		widths = listFloatWidth.elements();
-		interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, Global_var.N_primLines*2*3,
+		interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, Global_var.N_DrawableLines*2*3,
 				GL3.GL_STATIC_DRAW);
-		update_vao(interleavedVBO, vertices, colors, widths, Global_var.N_primLines);
+		update_vao(interleavedVBO, vertices, colors, widths, Global_var.N_DrawableLines);
 	}
 	
 	public static void update_dynamic_data(){
@@ -276,7 +234,6 @@ public class GL_base {
 		float[] colors = d.get_colors();
 		float[] widths = d.get_widths();
 		Global_var.N_dynamic_lines = vertices.length/6;
-		//print_a(vertices);
 		
 		dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, Global_var.N_dynamic_lines*2*3,
 				GL3.GL_STATIC_DRAW);
@@ -303,19 +260,10 @@ public class GL_base {
 			ib.put(colors, i * 3, 3);
 			ib.put(widths, i * 1, 1);
 		}
-		/*
-		float[] e = new float[ib.capacity()];
 		
-		ib.get(e);
-		for (int i =0; i<e.length; i++) {
-			
-			System.out.print(" "+e[i] + " ");
-		}
-		*/
 		iVBO.seal(gl3, true);
 		iVBO.enableBuffer(gl3, false);
 		st.ownAttribute(iVBO, true);
-
 		st.useProgram(gl3, false);
 	}
 
@@ -355,7 +303,6 @@ public class GL_base {
             gl3.glViewport(0, 0, width, height);
             st.useProgram(gl3, true);
             update_pmv_matrix();
-            //st.uniform(gl3, pmvMatrixUniform);//??
             st.useProgram(gl3, false);
         
 		}
@@ -370,60 +317,32 @@ public class GL_base {
 		update_dynamic_data();
 		//System.out.println("render");
 		
-		//if(gl_init) {
-			st.useProgram(gl3, true);            
-			gl3.glClearColor(0.0f, 0.0f, 0.0f, 1);
-			gl3.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
-			pmvMatrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-			pmvMatrix.glMultMatrixf(general_matrix, 0);
-			general_matrix = identity_matrix.clone();
-			update_pmv_matrix();
-			
-			current_scaleUniform = new GLUniformData("current_scale", Values.current_scale);
-	        st.ownUniform(current_scaleUniform);
-	        st.uniform(gl3, current_scaleUniform);
+		st.useProgram(gl3, true);
+		gl3.glClearColor(0.0f, 0.0f, 0.0f, 1);
+		gl3.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+		pmvMatrix.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+		pmvMatrix.glMultMatrixf(general_matrix, 0);
+		general_matrix = identity_matrix.clone();
+		update_pmv_matrix();
 
-	        st.ownUniform(current_scaleUniform);
-	        if(!st.uniform(gl3, current_scaleUniform)) {
-	            throw new GLException("Error setting current_scale in shader: "+st);
-	        }
-	        /*
-	        interleavedVBO.enableBuffer(gl3, true);
-			gl3.glDrawArrays(GL3.GL_LINES, 0, Global_var.N_primLines * 2);
-			interleavedVBO.enableBuffer(gl3, false);
-			dynamic_interleavedVBO.enableBuffer(gl3, true);
-			gl3.glDrawArrays(GL3.GL_LINES, 0, Global_var.N_dynamic_lines * 2);
-			dynamic_interleavedVBO.enableBuffer(gl3, false);
-			*/
-            //st.useProgram(gl3, false);
-			
-			draw_vao(interleavedVBO, Global_var.N_primLines);
-			draw_vao(dynamic_interleavedVBO, Global_var.N_dynamic_lines);
-			//dinamic_render(gl2);
-			st.useProgram(gl3, false);
-			 
-			pmvMatrix.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, mvmatrix, 0);
-			pmvMatrix.glGetFloatv(GLMatrixFunc.GL_PROJECTION_MATRIX, projmatrix, 0);
-			gl3.glGetIntegerv(GL3.GL_VIEWPORT, viewport, 0);
-		//}
+		current_scaleUniform = new GLUniformData("current_scale", Values.current_scale);
+		st.ownUniform(current_scaleUniform);
+		st.uniform(gl3, current_scaleUniform);
+
+		st.ownUniform(current_scaleUniform);
+		if (!st.uniform(gl3, current_scaleUniform)) {
+			throw new GLException("Error setting current_scale in shader: " + st);
+		}
+
+		draw_vao(interleavedVBO, Global_var.N_DrawableLines);
+		draw_vao(dynamic_interleavedVBO, Global_var.N_dynamic_lines);
+		st.useProgram(gl3, false);
+
+		pmvMatrix.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, mvmatrix, 0);
+		pmvMatrix.glGetFloatv(GLMatrixFunc.GL_PROJECTION_MATRIX, projmatrix, 0);
+		gl3.glGetIntegerv(GL3.GL_VIEWPORT, viewport, 0);
     }
-	/*
-	static void dinamic_render(GL3 gl2) {
-		if (Global_var.select_mode){
-			gl_draw_array(Global_var.select_rect_vertices, Global_var.select_rect_color);			
-		}
-		
-		if (Global_var.current_Shape_vertices != null){
-			gl_draw_array(Global_var.current_Shape_vertices, Values.current_shape_color.get_rgb());	
-		}
-		if (Global_var.snap_sign_vertices != null){
-			gl_draw_array(Global_var.snap_sign_vertices, Values.snap_color.get_rgb());
-		}
-		if (Global_var.preview_object_vertices != null){
-			gl_draw_array(Global_var.preview_object_vertices, Values.color.get_rgb());
-		}		
-	}
-	*/
+	
 	/**
 	 * Cover for glDrawArrays for draw it with a color
 	 * @param vertices_array - array of coordinates xy-only.
@@ -433,7 +352,6 @@ public class GL_base {
 		
 		int N_lines = vertices.length/6;
 		int N_verts = N_lines*2;
-		//float[] vertices_3d = new float[N_verts*3];
 		float[] colors = new float[N_verts*3];
 		float[] widths = new float[N_verts];
 		
@@ -446,19 +364,11 @@ public class GL_base {
 			widths[r] = w;
 			r++;
 		}
-		/*
-		System.out.println("--------------------------------");
-		print_a(vertices_2d);
-		print_a(vertices_3d);
-		print_a(colors);
-		print_a(widths);
-		*/
 		
 		dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false, N_lines*2*3,
 				GL3.GL_STATIC_DRAW);
 		update_vao(dynamic_interleavedVBO, vertices, colors, widths, N_lines);
 		draw_vao(dynamic_interleavedVBO, N_lines);
-		
 	}
 
 	/**

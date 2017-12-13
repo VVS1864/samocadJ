@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import samoJ.Coord;
-import samoJ.PrimitiveLine;
 import samoJ.Shape;
 import samoJ.SnapCoord;
 import samoJ.SnapType;
+import samoJ.PrimitiveLine.Line;
 
 /**
  * Method get_snap for find snap point and snap type. There are 4 types of snap:
@@ -24,14 +24,14 @@ public class Get_snap {
 	 */
 
 	public static Coord getLinesIntersection(
-			LinkedList<PrimitiveLine> snapLines) {
+			LinkedList<Line> snapLines) {
 		if (snapLines.size() != 2)
 			return null;
 		return getLinesIntersection(snapLines.getFirst(), snapLines.getLast());
 	}
 
-	public static Coord getLinesIntersection(PrimitiveLine s1,
-			PrimitiveLine s2) {
+	public static Coord getLinesIntersection(Line s1,
+			Line s2) {
 
 		float x1 = s1.getC1().getX();
 		float y1 = s1.getC1().getY();
@@ -105,7 +105,7 @@ public class Get_snap {
 				if (shapes.size() < 2)
 					return null;
 
-				LinkedList<PrimitiveLine> theOtherSnapLines = new LinkedList<PrimitiveLine>();
+				LinkedList<Line> theOtherSnapLines = new LinkedList<Line>();
 				for (Shape sh1: shapes.subList(1, shapes.size())) // without last element
 				    {
 					Shape sh = shapes.get(shapes.indexOf(sh1)-1);
@@ -113,10 +113,10 @@ public class Get_snap {
 					theOtherSnapLines.addAll(sh.getSnapLines());
 					
 					// Find Intersection
-					for (PrimitiveLine p1 : sh1.getSnapLines())
+					for (Line p1 : sh1.getSnapLines())
 						// from current shape
 
-						for (PrimitiveLine p2 : theOtherSnapLines) { // List
+						for (Line p2 : theOtherSnapLines) { // List
 																		// from
 																		// other
 																		// shapes

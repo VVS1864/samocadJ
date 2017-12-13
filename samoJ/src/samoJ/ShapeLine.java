@@ -4,9 +4,12 @@ import core.Values;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
 import open_dxf_lib.dash_type;
+import samoJ.PrimitiveLine.DrawableLine;
+import samoJ.PrimitiveLine.Line;
+
 import java.lang.Math;
 
-public class Line extends Shape {
+public class ShapeLine extends Shape {
 	// Vars of Line
 	protected float x1;
 	protected float y1;
@@ -30,7 +33,7 @@ public class Line extends Shape {
 		//System.out.println("mask="+mask);
 	}*/
 	// Dashed or solid line
-	public Line(ObjectMode mode, float  x1, float y1, float z1, float x2, float y2, float z2, float factor,
+	public ShapeLine(ObjectMode mode, float  x1, float y1, float z1, float x2, float y2, float z2, float factor,
 			dash_type dash, Color_rgb color, int width) {
 		super(mode);
 		this.x1 = x1;
@@ -45,7 +48,7 @@ public class Line extends Shape {
 		this.width = width;
 		this.mode = mode;
 		formPrimitiveLines();
-		add_snap_line(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color, width));
+		add_snap_line(new Line(x1, y1, z1, x2, y2, z2));
 		if(mode == ObjectMode.Preview_object){
 			Global_var.preview_object_vertices = super.getPreviewData();
 		}
@@ -54,8 +57,7 @@ public class Line extends Shape {
 	void formPrimitiveLines() {
 		if (dash.mask == null || dash.mask.length == 0) {
 			
-			add(new PrimitiveLine(x1, y1, z1, x2, y2, z2, color, width));
-			if(mode == ObjectMode.New_object) Global_var.N_primLines++;
+			add(new DrawableLine(x1, y1, z1, x2, y2, z2, color, width));
 			/*
 			float h = 4 * Values.current_scale;
 			float x = x2 - x1;
@@ -117,7 +119,7 @@ public class Line extends Shape {
 			}
 			if ((i % 2) == 0) {
 				// System.out.println("draw");
-				add(new PrimitiveLine(x_begin, y_begin, z1, x_end,
+				add(new DrawableLine(x_begin, y_begin, z1, x_end,
 						y_end, z2, color, width));
 			}
 			i++;
@@ -137,12 +139,5 @@ public class Line extends Shape {
 		f.put_line(x1, y1, x2, y2, dash.dash, factor, color, width);
 		
 	}
-	/*
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Line l1 = new Line(1, 2, 3, 5, 7, 9);
-		System.out.println(l1.toList());
-		Line l2 = new Line(100, 200, 0, 500, 700, 0, 50, new int[]{1,1});
-		System.out.println(l2.toList());
-	}*/
+	
 }

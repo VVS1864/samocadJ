@@ -4,7 +4,7 @@ import core.GL_base;
 
 import modules.base_draw_entities.Interface_base_draw;
 import open_dxf_lib.dash_type;
-import samoJ.Line;
+import samoJ.ShapeLine;
 import samoJ.ObjectMode;
 import modules.base_draw_entities.Class_base_draw;
 import core.Values;
@@ -28,7 +28,7 @@ public  class draw_line_3 extends Class_base_draw implements Interface_base_draw
 	}
 	
 	public void create(ObjectMode mode){
-		new Line(mode, x1, y1, 0, x2, y2, 0, Values.stipple_factor, Values.current_dash, Values.color, Values.width);
+		new ShapeLine(mode, x1, y1, 0, x2, y2, 0, Values.stipple_factor, Values.current_dash, Values.color, Values.width);
 	}
 	
 }

@@ -3,6 +3,8 @@ package samoJ;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
+import samoJ.PrimitiveLine.DrawableLine;
+import samoJ.PrimitiveLine.Line;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import core.Global_var;
-import core.Values;
 
 
 /**
@@ -22,9 +23,9 @@ import core.Values;
 
 public class Shape {
 	// Displayed Lines
-	LinkedList<PrimitiveLine> PrimLines;
+	LinkedList<DrawableLine> PrimLines;
 	// Snap lines
-	LinkedList<PrimitiveLine> SnapLines;
+	LinkedList<Line> SnapLines;
 	// Snap points
 	LinkedList<SnapCoord> SnapPoints;
 	// Properties
@@ -39,8 +40,8 @@ public class Shape {
 	public int ID;
 	
 	public Shape(ObjectMode mode) {
-		PrimLines = new LinkedList<PrimitiveLine>();
-		SnapLines = new LinkedList<PrimitiveLine>();
+		PrimLines = new LinkedList<DrawableLine>();
+		SnapLines = new LinkedList<Line>();
 		SnapPoints = new LinkedList<SnapCoord>();
 		if(mode == ObjectMode.New_object){
 			Global_var.theShapes.put(Global_var.current_ID, this);
@@ -52,14 +53,14 @@ public class Shape {
 
 	protected ArrayList<Float> toList() {
 		ArrayList<Float> ret = new ArrayList<Float>();
-		for (PrimitiveLine p : PrimLines)
+		for (DrawableLine p : PrimLines)
 			ret.addAll(p.toList());
 		return ret;
 	}
 
 	public FloatArrayList toListFloat() {
 		FloatArrayList ret = new FloatArrayList(PrimLines.size()*6);
-		for (PrimitiveLine p : PrimLines) {
+		for (DrawableLine p : PrimLines) {
 			ret.addAll(p.toListFloat());
 			
 		}
@@ -68,26 +69,19 @@ public class Shape {
 	
 	public FloatArrayList toListFloatColor() {
 		FloatArrayList ret = new FloatArrayList(PrimLines.size()*6);
-		for (PrimitiveLine p : PrimLines)
+		for (DrawableLine p : PrimLines)
 			ret.addAll(p.toListFloatColor());
 		return ret;
 	}
 	
 	public FloatArrayList toListFloatWidth() {
 		FloatArrayList ret = new FloatArrayList(PrimLines.size()*2);
-		for (PrimitiveLine p : PrimLines)
+		for (DrawableLine p : PrimLines)
 			ret.addAll(p.toListFloatWidth());
 		return ret;
 	}
 	
-	public FloatArrayList toListFloatData() {
-		FloatArrayList ret = new FloatArrayList();
-		for (PrimitiveLine p : PrimLines)
-			ret.addAll(p.toListFloatData());
-		return ret;
-	}
-
-	protected void add(PrimitiveLine theP) {
+	protected void add(DrawableLine theP) {
 		PrimLines.add(theP);
 	}
 
@@ -97,7 +91,7 @@ public class Shape {
 	 * 
 	 * @param new_snap_line
 	 */
-	protected void add_snap_line(PrimitiveLine new_snap_line) {
+	protected void add_snap_line(Line new_snap_line) {
 		SnapLines.add(new_snap_line);
 		/*
 		 * for (Coord c : new_snap_line.coords) SnapPoints.add(new
@@ -106,7 +100,7 @@ public class Shape {
 		SnapPoints.add(new_snap_line.getMiddle());
 	}
 
-	public List<PrimitiveLine> getSnapLines() {
+	public List<Line> getSnapLines() {
 		return Collections.unmodifiableList(SnapLines);
 	}
 
@@ -118,7 +112,7 @@ public class Shape {
 
 		case EndPoint: {
 
-			for (PrimitiveLine p : SnapLines) {
+			for (Line p : SnapLines) {
 				for (Coord c : p.coords) {
 					ll.add(new SnapCoord(st, c));
 				}
@@ -139,7 +133,13 @@ public class Shape {
 	}
 	
 	public void save_to_DXF(DXF_file f){
-		
+	}
+	
+	public void delShape(){
+		for (DrawableLine p : PrimLines) {
+			p.delDrawableLine();
+		}
+			
 	}
 
 	// EXAMPLE

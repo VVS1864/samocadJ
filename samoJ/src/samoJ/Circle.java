@@ -1,6 +1,7 @@
 package samoJ;
 
 import open_dxf_lib.Color_rgb;
+import samoJ.PrimitiveLine.DrawableLine;
 
 public class Circle extends Shape {
 	Coord theCenter;
@@ -41,18 +42,18 @@ public class Circle extends Shape {
 
 		for (int i = 0; i < points.length - 2; i += 2) {
 
-			add(new PrimitiveLine(points[i], points[i + 1], 0,
+			add(new DrawableLine(points[i], points[i + 1], 0,
 					points[i + 2], points[i + 3], 0, color, width));
 		}
 		// last segment from last to first point
-		add(new PrimitiveLine(points[points.length - 2],
+		add(new DrawableLine(points[points.length - 2],
 				points[points.length - 1], 0, points[0], points[1], 0, color, width));
 
 		// Crossers in center of circle
 		float s = Radius / 20;
-		add(new PrimitiveLine(theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0, color, width));
-		add(new PrimitiveLine(theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0, color, width));
-
+		add(new DrawableLine(theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0, color, width));
+		add(new DrawableLine(theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0, color, width));
+		
 	}
 
 	/**

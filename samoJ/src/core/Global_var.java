@@ -150,6 +150,6 @@ public class Global_var {
 	 */
 	public static Integer current_ID = 0;
 
-	public static int N_primLines = 0;
+	public static int N_DrawableLines = 0;
 	public static int N_dynamic_lines = 0;
 }

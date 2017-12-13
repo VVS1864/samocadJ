@@ -3,19 +3,20 @@ package samoJ;
 import java.util.ArrayList;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
+import samoJ.PrimitiveLine.DrawableLine;
 
 public class VboTest {
-	ArrayList<PrimitiveLine> primLines;
+	ArrayList<DrawableLine> primLines;
 	FloatArrayList vertFloat;
 
 	public VboTest() {
 		// TODO Auto-generated constructor stub
-		primLines = new ArrayList<PrimitiveLine>();
+		primLines = new ArrayList<DrawableLine>();
 		vertFloat = new FloatArrayList();
 
 	}
 
-	public boolean add(PrimitiveLine pp) {
+	public boolean add(DrawableLine pp) {
 		if (primLines.contains(pp))
 			return false;
 		else {
@@ -28,7 +29,7 @@ public class VboTest {
 		}
 	}
 
-	public boolean remove(PrimitiveLine pp) {
+	public boolean remove(DrawableLine pp) {
 		int ind = primLines.indexOf(pp);
 		if (ind >= 0) {
 			// Here need transaction TO DO
@@ -40,7 +41,7 @@ public class VboTest {
 			return false;
 	}
 
-	public boolean contains(PrimitiveLine pp) {
+	public boolean contains(DrawableLine pp) {
 		return primLines.contains(pp);
 	}
 

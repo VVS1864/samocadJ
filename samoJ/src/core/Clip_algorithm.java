@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import samoJ.Coord;
-import samoJ.PrimitiveLine;
 import samoJ.Shape;
+import samoJ.PrimitiveLine.Line;
 
 public class Clip_algorithm{
 	
@@ -25,7 +25,7 @@ public class Clip_algorithm{
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
 		
 		for (Shape shape : theShapes.values()){
-			for (PrimitiveLine snap_line : shape.getSnapLines()){
+			for (Line snap_line : shape.getSnapLines()){
 				Coord c1 = snap_line.getC1();
 				float x1 = c1.getX();
 				float y1 = c1.getY();

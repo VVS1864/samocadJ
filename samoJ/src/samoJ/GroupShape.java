@@ -1,6 +1,8 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
+import samoJ.PrimitiveLine.DrawableLine;
+import samoJ.PrimitiveLine.Line;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -24,8 +26,8 @@ public class GroupShape extends Shape {
 		
 	
 	@Override
-	public List<PrimitiveLine> getSnapLines() {
-		List<PrimitiveLine> retList = new LinkedList<PrimitiveLine>();
+	public List<Line> getSnapLines() {
+		List<Line> retList = new LinkedList<Line>();
 		for (Shape sh:shapes)
 		{
 			retList.addAll(sh.getSnapLines());

@@ -7,7 +7,7 @@ import javax.swing.JFileChooser;
 
 import open_dxf_lib.DXF_file;
 import open_dxf_lib.Mode;
-import samoJ.Line;
+import samoJ.ShapeLine;
 import samoJ.Shape;
 import core.Global_var;
 import core.Values;
@@ -34,7 +34,7 @@ public class Save_action {
 	}
 	public void shapes_to_DXF(DXF_file f) {
 		for(Shape sh: Global_var.theShapes.values()){
-			if(sh instanceof Line){
+			if(sh instanceof ShapeLine){
 				sh.save_to_DXF(f);
 			}
 		}

@@ -19,7 +19,7 @@ public class Coord {
 		this(x, y, 0);
 	}
 
-	Coord(float x, float y, float z) {
+	public Coord(float x, float y, float z) {
 		c = FloatArrayList.wrap(new float[] {x, y, z});
 
 	}
