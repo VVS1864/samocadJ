@@ -99,6 +99,10 @@ public class Shape {
 		 */
 		SnapPoints.add(new_snap_line.getMiddle());
 	}
+	
+	protected void add_snap_point(SnapCoord new_snap_point) {
+		SnapPoints.add(new_snap_point);
+	}
 
 	public List<Line> getSnapLines() {
 		return Collections.unmodifiableList(SnapLines);

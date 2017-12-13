@@ -1,10 +1,13 @@
 package core;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import samoJ.Coord;
 import samoJ.Shape;
+import samoJ.SnapCoord;
+import samoJ.SnapType;
 import samoJ.PrimitiveLine.Line;
 
 public class Clip_algorithm{
@@ -25,6 +28,17 @@ public class Clip_algorithm{
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
 		
 		for (Shape shape : theShapes.values()){
+			List<SnapCoord> midPoints = shape.getSnapPoints(SnapType.MidPoint);
+			if(midPoints.size()>0) {
+				SnapCoord snap_point = midPoints.get(0);
+				float x = snap_point.getX();
+				float y = snap_point.getY();
+				if ((xBL < x && x < xTR) && (yBL < y && y < yTR)) {
+					ReturnableShapes.add(shape);
+					continue;
+				}				
+			}
+			
 			for (Line snap_line : shape.getSnapLines()){
 				Coord c1 = snap_line.getC1();
 				float x1 = c1.getX();

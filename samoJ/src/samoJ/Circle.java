@@ -54,6 +54,8 @@ public class Circle extends Shape {
 		add(new DrawableLine(theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0, color, width));
 		add(new DrawableLine(theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0, color, width));
 		
+		// Snap center
+		add_snap_point(new SnapCoord(SnapType.MidPoint, theCenter));
 	}
 
 	/**
