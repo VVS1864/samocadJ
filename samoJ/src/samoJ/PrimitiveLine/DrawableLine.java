@@ -37,8 +37,8 @@ public class DrawableLine extends Line{
 	
 	public FloatArrayList toListFloatColor() {
 		FloatArrayList ret = new FloatArrayList(6);
-		FloatArrayList c1 = FloatArrayList.wrap(new float[] {color_1.get_r(), color_1.get_g(), color_1.get_b()});
-		FloatArrayList c2 = FloatArrayList.wrap(new float[] {color_2.get_r(), color_2.get_g(), color_2.get_b()});
+		FloatArrayList c1 = FloatArrayList.wrap(color_1.get_float_rgb());
+		FloatArrayList c2 = FloatArrayList.wrap(color_2.get_float_rgb());
 		ret.addAll(c1);
 		ret.addAll(c2);
 		return ret;

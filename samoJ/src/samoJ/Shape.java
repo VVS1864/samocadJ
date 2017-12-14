@@ -29,6 +29,7 @@ public class Shape {
 	// Snap points
 	LinkedList<SnapCoord> SnapPoints;
 	// Properties
+	protected int width;
 	protected float factor;
 	protected Dash dash;
 	/**
@@ -134,6 +135,10 @@ public class Shape {
 		FloatArrayList listFloat = new FloatArrayList(PrimLines.size()*6);
 		listFloat.addAll(toListFloat());
 		return listFloat.elements();
+	}
+	
+	public int get_width(){
+		return width;
 	}
 	
 	public void save_to_DXF(DXF_file f){

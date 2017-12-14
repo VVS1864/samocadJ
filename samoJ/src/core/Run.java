@@ -6,7 +6,8 @@ class Run {
 	public static void main(String[] args) {
 
 		// GUI initialization
-		final GUI graphical_interface = new GUI();
+		GUI graphical_interface = new GUI();
+		//GL_base glRender = new GL_base();
 		program_state.set_default();
 	}
 }

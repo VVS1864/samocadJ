@@ -8,6 +8,7 @@ import com.jogamp.opengl.GLEventListener;
 
 
 import core.GL_base;
+import core.Global_var;
 
 
 public class glcanvas_event_listener implements GLEventListener{
@@ -36,9 +37,11 @@ public class glcanvas_event_listener implements GLEventListener{
 		if(null != GL_base.st) {
 			GL_base.pmvMatrixUniform = null;
 			GL_base.pmvMatrix=null;
+			Global_var.theShapes = null;
 			
 			GL_base.st.destroy(gl);
 			GL_base.st=null;
+			drawable.destroy();
         }
 	}
 

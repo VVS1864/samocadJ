@@ -17,7 +17,7 @@ public class ShapeLine extends Shape {
 	protected float x2;
 	protected float y2;
 	protected float z2;
-	protected int width; //!!!;
+	//protected int width; //!!!;
 	protected ObjectMode mode; //!!!;
 	/*
 	// Not dashed line
