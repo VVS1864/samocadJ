@@ -121,7 +121,7 @@ public class Global_var {
 	public  int N_DrawableLines = 0;
 	public  int N_dynamic_lines = 0;
 	
-	public int N = 500;// number of test lines
+	public int N = 5000;// number of test lines
 	
 	public Global_var() {
 		

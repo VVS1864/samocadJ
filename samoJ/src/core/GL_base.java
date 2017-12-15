@@ -86,7 +86,7 @@ public class GL_base {
 
 	public void init_GL() {
 		GL_version = core.gui.glcanvas.getContext().getGLSLVersionNumber().getMajor();
-		GL_version = 3;
+		GL_version = 2;
 		System.out.println("OpenGL version " + GL_version);
 		if (GL_version == 3) {
 			gl3 = core.gui.glcanvas.getGL().getGL3();
@@ -97,10 +97,7 @@ public class GL_base {
 			gl2 = core.gui.glcanvas.getGL().getGL2();
 			gl2.glMatrixMode(GL2.GL_MODELVIEW);
 			gl2.glLoadIdentity();
-			// create data structure for 4 line width
-			for (int i = 0; i < 4; i++) {
-				GL2_dataArray[i] = new GL2_data(i + 1);
-			}
+			create_GL2_data();
 
 		} else if (GL_version == 1) {
 			return;
@@ -109,6 +106,14 @@ public class GL_base {
 		}
 		gl_init = true;
 		
+	}
+	
+	private void create_GL2_data() {
+		// create data structure for 4 line width
+		GL2_dataArray = new GL2_data[4];
+		for (int i = 0; i < 4; i++) {
+			GL2_dataArray[i] = new GL2_data(i + 1);
+		}
 	}
 	
 	public void make_shaders(ShaderState st) {
@@ -178,7 +183,7 @@ public class GL_base {
 			x2 = 450;
 			y2 = 150;*/
 			
-			new ShapeLine(core, ObjectMode.New_object, x1+20, y1+20, 0, x2+20, y2+20, 0, 
+			new ShapeLine(ObjectMode.New_object, x1+20, y1+20, 0, x2+20, y2+20, 0, 
 					core.values.stipple_factor, dash_type.CENTER, core.values.color, w);
 			//Color_rgb c = new Color_rgb(200, 0, 100);
 			//new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
@@ -245,7 +250,7 @@ public class GL_base {
 			FloatArrayList listFloat = new FloatArrayList(core.global.N_DrawableLines * 6);// (N*200);
 			FloatArrayList listFloatColor = new FloatArrayList(core.global.N_DrawableLines * 6);
 			FloatArrayList listFloatWidth = new FloatArrayList(core.global.N_DrawableLines * 2);
-
+			System.out.println(core.global.theShapes.size());
 			for (Shape sh : core.global.theShapes.values()) {
 				listFloat.addAll(sh.toListFloat());
 				listFloatColor.addAll(sh.toListFloatColor());
@@ -484,6 +489,7 @@ public class GL_base {
 	}
 	
 	public void update_data_GL2() {
+		create_GL2_data();
 		for (Shape sh : core.global.theShapes.values()) {
 			int w = sh.get_width();
 			GL2_dataArray[w-1].listFloat.addAll(sh.toListFloat());

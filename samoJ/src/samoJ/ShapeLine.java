@@ -11,6 +11,7 @@ import samoJ.PrimitiveLine.Line;
 import java.lang.Math;
 
 public class ShapeLine extends Shape {
+	private Core core = Core.c;
 	// Vars of Line
 	protected float x1;
 	protected float y1;
@@ -34,9 +35,9 @@ public class ShapeLine extends Shape {
 		//System.out.println("mask="+mask);
 	}*/
 	// Dashed or solid line
-	public ShapeLine(Core core, ObjectMode mode, float  x1, float y1, float z1, float x2, float y2, float z2, float factor,
+	public ShapeLine(ObjectMode mode, float  x1, float y1, float z1, float x2, float y2, float z2, float factor,
 			dash_type dash, Color_rgb color, int width) {
-		super(mode, core);
+		super(mode);
 		this.x1 = x1;
 		this.y1 = y1;
 		this.z1 = z1;
@@ -47,7 +48,6 @@ public class ShapeLine extends Shape {
 		this.dash = new Dash(dash);
 		this.color = color;
 		this.width = width;
-		this.mode = mode;
 		formPrimitiveLines();
 		add_snap_line(new Line(x1, y1, z1, x2, y2, z2));
 		if(mode == ObjectMode.Preview_object){
@@ -58,7 +58,7 @@ public class ShapeLine extends Shape {
 	void formPrimitiveLines() {
 		if (dash.mask == null || dash.mask.length == 0) {
 			
-			add(new DrawableLine(core, x1, y1, z1, x2, y2, z2, color, width));
+			add(new DrawableLine(x1, y1, z1, x2, y2, z2, color, width));
 			/*
 			float h = 4 * Values.current_scale;
 			float x = x2 - x1;
@@ -120,7 +120,7 @@ public class ShapeLine extends Shape {
 			}
 			if ((i % 2) == 0) {
 				// System.out.println("draw");
-				add(new DrawableLine(core, x_begin, y_begin, z1, x_end,
+				add(new DrawableLine(x_begin, y_begin, z1, x_end,
 						y_end, z2, color, width));
 			}
 			i++;

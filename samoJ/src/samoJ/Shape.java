@@ -23,6 +23,7 @@ import core.Global_var;
  */
 
 public class Shape {
+	private Core core = Core.c;
 	// Displayed Lines
 	LinkedList<DrawableLine> PrimLines;
 	// Snap lines
@@ -40,10 +41,8 @@ public class Shape {
 	protected Color_rgb color;
 	// Unique object ID
 	public int ID;
-	protected Core core;
 	
-	public Shape(ObjectMode mode, Core core) {
-		this.core = core;
+	public Shape(ObjectMode mode) {
 		PrimLines = new LinkedList<DrawableLine>();
 		SnapLines = new LinkedList<Line>();
 		SnapPoints = new LinkedList<SnapCoord>();

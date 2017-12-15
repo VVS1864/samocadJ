@@ -35,7 +35,7 @@ public  class draw_line_3 extends Class_base_draw implements Interface_base_draw
 	}
 	
 	public void create(ObjectMode mode){
-		new ShapeLine(core, mode, x1, y1, 0, x2, y2, 0, core.values.stipple_factor, core.values.current_dash, core.values.color, core.values.width);
+		new ShapeLine(mode, x1, y1, 0, x2, y2, 0, core.values.stipple_factor, core.values.current_dash, core.values.color, core.values.width);
 	}
 	
 }

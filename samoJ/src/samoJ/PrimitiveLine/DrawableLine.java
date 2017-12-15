@@ -14,7 +14,9 @@ import core.Global_var;
  * @author E.Askadullin
  * 
  */
+
 public class DrawableLine extends Line{
+	private Core core = Core.c;
 	//2 colors for 2 coords
 	private Color_rgb color_1;
 	private Color_rgb color_2;
@@ -22,19 +24,17 @@ public class DrawableLine extends Line{
 	 * line width
 	 */
 	private int width;
-	private Core core;
 	
-	private DrawableLine(Core core, Coord c1, Coord c2, Color_rgb color, int width) {
+	private DrawableLine(Coord c1, Coord c2, Color_rgb color, int width) {
 		super(c1, c2);
-		this.core = core;
 		this.color_1 = this.color_2 = color;
 		this.width = width;	
 		core.global.N_DrawableLines++;
 	}
 
-	public DrawableLine(Core core, float x1, float y1, float z1, float x2, float y2,
+	public DrawableLine(float x1, float y1, float z1, float x2, float y2,
 			float z2, Color_rgb color, int width) {
-		this(core, new Coord(x1, y1, z1), new Coord(x2, y2, z2), color, width);
+		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2), color, width);
 	}
 	
 	public FloatArrayList toListFloatColor() {

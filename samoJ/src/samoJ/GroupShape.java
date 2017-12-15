@@ -15,12 +15,12 @@ public class GroupShape extends Shape {
 	
 	List<Shape> shapes;
 	
-	public GroupShape(Core core, ObjectMode mode, List<Shape> shapes) {
-		super(mode, core);
+	public GroupShape(ObjectMode mode, List<Shape> shapes) {
+		super(mode);
 		this.shapes = shapes;
 		for (Shape sh:shapes)
 		{
-			core.global.theShapes.remove(sh.ID);
+			Core.c.global.theShapes.remove(sh.ID);
 		}
 	}
 
