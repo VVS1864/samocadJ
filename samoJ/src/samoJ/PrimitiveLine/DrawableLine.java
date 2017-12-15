@@ -3,7 +3,7 @@ package samoJ.PrimitiveLine;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import open_dxf_lib.Color_rgb;
 import samoJ.Coord;
-
+import core.Core;
 import core.Global_var;
 
 /**
@@ -22,17 +22,19 @@ public class DrawableLine extends Line{
 	 * line width
 	 */
 	private int width;
+	private Core core;
 	
-	private DrawableLine(Coord c1, Coord c2, Color_rgb color, int width) {
+	private DrawableLine(Core core, Coord c1, Coord c2, Color_rgb color, int width) {
 		super(c1, c2);
+		this.core = core;
 		this.color_1 = this.color_2 = color;
 		this.width = width;	
-		Global_var.N_DrawableLines++;
+		core.global.N_DrawableLines++;
 	}
 
-	public DrawableLine(float x1, float y1, float z1, float x2, float y2,
+	public DrawableLine(Core core, float x1, float y1, float z1, float x2, float y2,
 			float z2, Color_rgb color, int width) {
-		this(new Coord(x1, y1, z1), new Coord(x2, y2, z2), color, width);
+		this(core, new Coord(x1, y1, z1), new Coord(x2, y2, z2), color, width);
 	}
 	
 	public FloatArrayList toListFloatColor() {
@@ -56,6 +58,6 @@ public class DrawableLine extends Line{
 	}
 	
 	public void delDrawableLine() {
-		Global_var.N_DrawableLines--;
+		core.global.N_DrawableLines--;
 	}
 }

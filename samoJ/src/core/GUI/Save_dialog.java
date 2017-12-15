@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -14,7 +15,7 @@ public class Save_dialog extends JFileChooser{
 	public String selected_file;
 	public int userSelection;
 	
-	public Save_dialog(String title, int mode, String dir, String file_name) {
+	public Save_dialog(JFrame jframe, String title, int mode, String dir, String file_name) {
 		super(dir);
 		setSelectedFile(new File(file_name));
 		setDialogTitle(title);   
@@ -25,10 +26,10 @@ public class Save_dialog extends JFileChooser{
 		
 		
 		if(mode == JFileChooser.SAVE_DIALOG){
-			userSelection = showSaveDialog(Global_var.jframe);
+			userSelection = showSaveDialog(jframe);
 		}
 		else{
-			userSelection = showOpenDialog(Global_var.jframe);
+			userSelection = showOpenDialog(jframe);
 		}
 		
 		 

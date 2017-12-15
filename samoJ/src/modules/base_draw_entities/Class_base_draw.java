@@ -1,5 +1,6 @@
 package modules.base_draw_entities;
 
+import core.Core;
 import core.Global_var;
 import modules.standard_objects.line.draw_line;
 
@@ -10,11 +11,8 @@ import modules.standard_objects.line.draw_line;
  * @author vlad
  *
  */
-public class Class_base_draw
-
-
-{
-	
+public class Class_base_draw{
+	protected Core core = Core.c;
 	//Points for create object
 	public float x1;
 	public float y1;
@@ -36,8 +34,8 @@ public class Class_base_draw
 	public void init_draw(String message1, String message2, Interface_base_draw next_class, 
 			Interface_base_draw init_class){
 		set_next(message1, message2, next_class);
-		Global_var.draw_new_object = true;
-		Global_var.old_function = init_class;
+		core.global.draw_new_object = true;
+		core.global.old_function = init_class;
 	}
 	
 	/**
@@ -48,7 +46,7 @@ public class Class_base_draw
 	 */
 	public void draw_1(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
-		Global_var.point_1_coords = Global_var.cursor_snap_coords.clone();
+		core.global.point_1_coords = core.global.cursor_snap_coords.clone();
 	}
 	
 	/**
@@ -60,22 +58,22 @@ public class Class_base_draw
 	public void draw_2(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		
-		Global_var.point_2_coords = Global_var.cursor_snap_coords.clone();
+		core.global.point_2_coords = core.global.cursor_snap_coords.clone();
 		
-		x1 = Global_var.point_1_coords[0];
-		y1 = Global_var.point_1_coords[1];
+		x1 = core.global.point_1_coords[0];
+		y1 = core.global.point_1_coords[1];
 		
-		x2 = Global_var.point_2_coords[0];
-		y2 = Global_var.point_2_coords[1];
-		Global_var.point_1_coords = Global_var.cursor_snap_coords.clone();
+		x2 = core.global.point_2_coords[0];
+		y2 = core.global.point_2_coords[1];
+		core.global.point_1_coords = core.global.cursor_snap_coords.clone();
 	}
 	public void dynamic_draw(){
-		Global_var.point_2_coords = Global_var.cursor_snap_coords.clone();
-		x1 = Global_var.point_1_coords[0];
-		y1 = Global_var.point_1_coords[1];
+		core.global.point_2_coords = core.global.cursor_snap_coords.clone();
+		x1 = core.global.point_1_coords[0];
+		y1 = core.global.point_1_coords[1];
 		
-		x2 = Global_var.point_2_coords[0];
-		y2 = Global_var.point_2_coords[1];
+		x2 = core.global.point_2_coords[0];
+		y2 = core.global.point_2_coords[1];
 		
 	}
 	
@@ -86,9 +84,9 @@ public class Class_base_draw
 	 * @param next_class
 	 */
 	public void set_next(String message1, String message2, Interface_base_draw next_class){
-		Global_var.info.setText(message1);
-		Global_var.info2.setText(message2);
-		Global_var.current_function = next_class;
+		core.gui.info.setText(message1);
+		core.gui.info2.setText(message2);
+		core.global.current_function = next_class;
 	}
 	
 }

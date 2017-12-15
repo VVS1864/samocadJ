@@ -1,5 +1,6 @@
 package samoJ;
 
+import core.Core;
 import open_dxf_lib.Color_rgb;
 import samoJ.PrimitiveLine.DrawableLine;
 
@@ -16,8 +17,8 @@ public class Circle extends Shape {
 	 * @param z1
 	 */
 
-	public Circle(ObjectMode mode, float r, float x1, float y1, float z1, Color_rgb color, int width) {
-		super(mode);
+	public Circle(Core core, ObjectMode mode, float r, float x1, float y1, float z1, Color_rgb color, int width) {
+		super(mode, core);
 		theCenter = new Coord(x1, y1, z1);
 		Radius = r;
 		this.color = color;
@@ -25,8 +26,8 @@ public class Circle extends Shape {
 		create_circle();
 	}
 
-	public Circle(ObjectMode mode, float rx, float ry, float rz, float x2, float y2, float z2, Color_rgb color, int width) {
-		this(mode, (float)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2, color, width);
+	public Circle(Core core, ObjectMode mode, float rx, float ry, float rz, float x2, float y2, float z2, Color_rgb color, int width) {
+		this(core, mode, (float)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2, color, width);
 		/*int xd = rx - x2;
 		int yd = ry - y2;
 		int r = (int) Math.sqrt(xd * xd + yd * yd);
@@ -42,17 +43,17 @@ public class Circle extends Shape {
 
 		for (int i = 0; i < points.length - 2; i += 2) {
 
-			add(new DrawableLine(points[i], points[i + 1], 0,
+			add(new DrawableLine(core, points[i], points[i + 1], 0,
 					points[i + 2], points[i + 3], 0, color, width));
 		}
 		// last segment from last to first point
-		add(new DrawableLine(points[points.length - 2],
+		add(new DrawableLine(core, points[points.length - 2],
 				points[points.length - 1], 0, points[0], points[1], 0, color, width));
 
 		// Crossers in center of circle
 		float s = Radius / 20;
-		add(new DrawableLine(theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0, color, width));
-		add(new DrawableLine(theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0, color, width));
+		add(new DrawableLine(core, theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0, color, width));
+		add(new DrawableLine(core, theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0, color, width));
 		
 		// Snap center
 		add_snap_point(new SnapCoord(SnapType.MidPoint, theCenter));
@@ -67,7 +68,7 @@ public class Circle extends Shape {
 	 * @return
 	 */
 	public float[] circle_points() {
-		int segments = core.Values.circle_segments;
+		int segments = core.values.circle_segments;
 		float[] lines = new float[segments * 2];
 		// int w, h = 2.0f*Radius;
 		float angle_increment = (float) Math.PI * 2.0f / segments;

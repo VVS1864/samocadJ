@@ -8,18 +8,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import core.Core;
 import core.Global_var;
 
 public class GroupShape extends Shape {
 	
 	List<Shape> shapes;
 	
-	public GroupShape(ObjectMode mode, List<Shape> shapes) {
-		super(mode);
+	public GroupShape(Core core, ObjectMode mode, List<Shape> shapes) {
+		super(mode, core);
 		this.shapes = shapes;
 		for (Shape sh:shapes)
 		{
-			Global_var.theShapes.remove(sh.ID);
+			core.global.theShapes.remove(sh.ID);
 		}
 	}
 

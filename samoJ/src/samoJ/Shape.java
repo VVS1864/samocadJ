@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import core.Core;
 import core.Global_var;
 
 
@@ -39,15 +40,18 @@ public class Shape {
 	protected Color_rgb color;
 	// Unique object ID
 	public int ID;
+	protected Core core;
 	
-	public Shape(ObjectMode mode) {
+	public Shape(ObjectMode mode, Core core) {
+		this.core = core;
 		PrimLines = new LinkedList<DrawableLine>();
 		SnapLines = new LinkedList<Line>();
 		SnapPoints = new LinkedList<SnapCoord>();
 		if(mode == ObjectMode.New_object){
-			Global_var.theShapes.put(Global_var.current_ID, this);
-			this.ID = Global_var.current_ID;
-			Global_var.current_ID++;
+			
+			core.global.theShapes.put(core.global.current_ID, this);
+			this.ID = core.global.current_ID;
+			core.global.current_ID++;
 		}
 		// System.out.println("The constructor Shape()");
 	}
