@@ -48,10 +48,7 @@ public class Core {
 		//gui.jframe.setVisible(true);
 		
 		program_state.set_default();
-		if (glRender.gl_init == false) {
-			System.out.println("OpenGL version is old, rendering fail, exit");
-			return;
-		}
+		
 
 		
 		

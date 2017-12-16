@@ -41,11 +41,13 @@ public class Shape {
 	protected Color_rgb color;
 	// Unique object ID
 	public int ID;
+	protected ObjectMode mode;
 	
 	public Shape(ObjectMode mode) {
 		PrimLines = new LinkedList<DrawableLine>();
 		SnapLines = new LinkedList<Line>();
 		SnapPoints = new LinkedList<SnapCoord>();
+		this.mode = mode;
 		if(mode == ObjectMode.New_object){
 			
 			core.global.theShapes.put(core.global.current_ID, this);

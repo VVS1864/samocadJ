@@ -101,8 +101,7 @@ public class GUI {
 
 		jframe.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
-				jframe.dispose();
-				System.exit(0);
+				close();
 			}
 		});
 		
@@ -399,6 +398,12 @@ public class GUI {
 		
 		
 	}
+	public void close() {
+		
+		jframe.dispose();
+		System.exit(0);
+	}
+	
 	/*
 	public void set_GL_listeners(Mouse_events mouse, GL_canvas_event_listener glcanvas_events,
 			GL_key_listener key) {

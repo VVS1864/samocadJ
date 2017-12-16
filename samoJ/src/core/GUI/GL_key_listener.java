@@ -15,7 +15,6 @@ public class GL_key_listener implements KeyListener{
 		if (c == '+' | c == '-'){
 			core.zoom.button_zoom(c);
 		}
-		
 	}
 
 	@Override

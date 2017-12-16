@@ -20,7 +20,7 @@ public class ShapeLine extends Shape {
 	protected float y2;
 	protected float z2;
 	//protected int width; //!!!;
-	protected ObjectMode mode; //!!!;
+
 	/*
 	// Not dashed line
 	public Line(ObjectMode mode, double x1, double y1, double z1, double x2, double y2, double z2) {
@@ -58,7 +58,7 @@ public class ShapeLine extends Shape {
 	void formPrimitiveLines() {
 		if (dash.mask == null || dash.mask.length == 0) {
 			
-			add(new DrawableLine(x1, y1, z1, x2, y2, z2, color, width));
+			add(new DrawableLine(mode, x1, y1, z1, x2, y2, z2, color, width));
 			/*
 			float h = 4 * Values.current_scale;
 			float x = x2 - x1;
@@ -120,7 +120,7 @@ public class ShapeLine extends Shape {
 			}
 			if ((i % 2) == 0) {
 				// System.out.println("draw");
-				add(new DrawableLine(x_begin, y_begin, z1, x_end,
+				add(new DrawableLine(mode, x_begin, y_begin, z1, x_end,
 						y_end, z2, color, width));
 			}
 			i++;

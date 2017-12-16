@@ -1,12 +1,9 @@
 package core;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import open_dxf_lib.Color_rgb;
 import open_dxf_lib.dash_type;
 
-import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 
 import samoJ.Circle;
 import samoJ.GroupShape;
@@ -18,7 +15,6 @@ import core.GL2_data;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.GLArrayDataServer;
-import com.jogamp.opengl.util.GLBuffers;
 import com.jogamp.opengl.util.PMVMatrix;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -26,15 +22,12 @@ import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLUniformData;
-import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.glsl.ShaderCode;
 import com.jogamp.opengl.util.glsl.ShaderProgram;
 import com.jogamp.opengl.util.glsl.ShaderState;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GL_base {
@@ -86,7 +79,7 @@ public class GL_base {
 
 	public void init_GL() {
 		GL_version = core.gui.glcanvas.getContext().getGLSLVersionNumber().getMajor();
-		GL_version = 2;
+		GL_version = 1;
 		System.out.println("OpenGL version " + GL_version);
 		if (GL_version == 3) {
 			gl3 = core.gui.glcanvas.getGL().getGL3();
@@ -100,9 +93,9 @@ public class GL_base {
 			create_GL2_data();
 
 		} else if (GL_version == 1) {
-			return;
+			System.out.println("OpenGL version is old, rendering fail");
 			// Rendering fail
-
+			return;
 		}
 		gl_init = true;
 		
@@ -110,8 +103,12 @@ public class GL_base {
 	
 	private void create_GL2_data() {
 		// create data structure for 4 line width
-		GL2_dataArray = new GL2_data[4];
+		
+		//GL2_dataArray = new GL2_data[4];
 		for (int i = 0; i < 4; i++) {
+			if(null != GL2_dataArray[i]) {
+				gl2.glDeleteBuffers(2, GL2_dataArray[i].vbo_buffer, 0);
+			}
 			GL2_dataArray[i] = new GL2_data(i + 1);
 		}
 	}
@@ -170,7 +167,7 @@ public class GL_base {
 			y1 = randomGenerator.nextInt(1200);
 			x2 = randomGenerator.nextInt(1200);
 			y2 = randomGenerator.nextInt(1200);
-			int w = randomGenerator.nextInt(3)+1;
+			int w = 2;//randomGenerator.nextInt(3)+1;
 			/*
 			x1 = 0;
 			y1 = 0;
@@ -223,7 +220,9 @@ public class GL_base {
 		t_total += t2-t1;
 		
 		t1 = System.currentTimeMillis();
+		for (int i = 0; i<20; i++) {
 		update_data();
+		}
 		t2 = System.currentTimeMillis();
 		System.out.println("upate_data(): " +(t2 - t1)+ " ms.");
 		t_total += t2-t1;
@@ -242,15 +241,15 @@ public class GL_base {
 	 */
 	public void update_data(){
 		if(gl_init == false) {
+			System.out.println("GL init...");
 			init_GL();
-			System.out.println("GL init OK");
+			if(gl_init == true) System.out.println("GL init OK");
 		}
 		
 		if(GL_version == 3) {
 			FloatArrayList listFloat = new FloatArrayList(core.global.N_DrawableLines * 6);// (N*200);
 			FloatArrayList listFloatColor = new FloatArrayList(core.global.N_DrawableLines * 6);
 			FloatArrayList listFloatWidth = new FloatArrayList(core.global.N_DrawableLines * 2);
-			System.out.println(core.global.theShapes.size());
 			for (Shape sh : core.global.theShapes.values()) {
 				listFloat.addAll(sh.toListFloat());
 				listFloatColor.addAll(sh.toListFloatColor());
@@ -259,8 +258,14 @@ public class GL_base {
 			float[] vertices = listFloat.elements();
 			float[] colors = listFloatColor.elements();
 			float[] widths = listFloatWidth.elements();
+			//destroy old VBO (memory leak!)
+			if(null != interleavedVBO) {
+				st.ownAttribute(interleavedVBO, false);
+				interleavedVBO.destroy(gl3);				
+			}
 			interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false,
 					core.global.N_DrawableLines * 2 * 3, GL3.GL_STATIC_DRAW);
+			
 			update_vao(interleavedVBO, vertices, colors, widths, core.global.N_DrawableLines);
 		}
 		else if(GL_version == 2) {
@@ -292,7 +297,11 @@ public class GL_base {
 		float[] colors = d.get_colors();
 		float[] widths = d.get_widths();
 		core.global.N_dynamic_lines = vertices.length / 6;
-
+		//destroy old VBO (memory leak!)
+		if(null != dynamic_interleavedVBO) {
+			st.ownAttribute(dynamic_interleavedVBO, false);
+			dynamic_interleavedVBO.destroy(gl3);				
+		}
 		dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false,
 				core.global.N_dynamic_lines * 2 * 3, GL3.GL_STATIC_DRAW);
 		update_vao(dynamic_interleavedVBO, vertices, colors, widths, core.global.N_dynamic_lines);
@@ -308,13 +317,13 @@ public class GL_base {
 	public void update_vao(GLArrayDataServer iVBO, float[] vertices, float[] colors, float[] widths, int N_lines) {
 
 		st.useProgram(gl3, true);
-
+		
 		iVBO.addGLSLSubArray("position", 3, GL3.GL_ARRAY_BUFFER);
 		iVBO.addGLSLSubArray("color", 3, GL3.GL_ARRAY_BUFFER);
 		iVBO.addGLSLSubArray("width", 1, GL3.GL_ARRAY_BUFFER);
 
 		final FloatBuffer ib = (FloatBuffer) iVBO.getBuffer();
-
+		
 		for (int i = 0; i < N_lines * 2; i++) {
 			ib.put(vertices, i * 3, 3);
 			ib.put(colors, i * 3, 3);
@@ -498,8 +507,9 @@ public class GL_base {
 		for(GL2_data d: GL2_dataArray) {
 			d.vertices = d.listFloat.elements();
 			d.colors = d.listFloatColor.elements();
+		
 			FloatBuffer fbVertices = Buffers.newDirectFloatBuffer(d.vertices);
-			FloatBuffer fbColores= Buffers.newDirectFloatBuffer(d.colors);
+			FloatBuffer fbColores = Buffers.newDirectFloatBuffer(d.colors);
 			
 			gl2.glGenBuffers(2, d.vbo_buffer, 0);
 			
