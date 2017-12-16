@@ -29,7 +29,7 @@ public class Get_snap {
 			return null;
 		return getLinesIntersection(snapLines.getFirst(), snapLines.getLast());
 	}
-
+	//TODO min scale trouble
 	public static Coord getLinesIntersection(Line s1,
 			Line s2) {
 
