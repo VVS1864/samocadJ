@@ -82,7 +82,7 @@ public class GL_base {
 
 	public void init_GL() {
 		GL_version = core.gui.glcanvas.getContext().getGLSLVersionNumber().getMajor();
-		GL_version = 3;
+		GL_version =1;
 		System.out.println("OpenGL version " + GL_version);
 		if (GL_version == 3) {
 			gl3 = core.gui.glcanvas.getGL().getGL3();
@@ -108,7 +108,7 @@ public class GL_base {
 		
 		//GL2_dataArray = new GL2_data[4];
 		for (int i = 0; i < 4; i++) {
-			if(null != GL1_2_dataArray[i]) {
+			if(GL_version == 2 && null != GL1_2_dataArray[i]) {
 				gl2.glDeleteBuffers(2, GL1_2_dataArray[i].vbo_buffer, 0);
 			}
 			GL1_2_dataArray[i] = new GL1_2_data(i + 1);
