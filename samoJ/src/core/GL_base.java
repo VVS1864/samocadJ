@@ -20,6 +20,7 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL3;
+import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLUniformData;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
@@ -82,7 +83,7 @@ public class GL_base {
 
 	public void init_GL() {
 		GL_version = core.gui.glcanvas.getContext().getGLSLVersionNumber().getMajor();
-		GL_version =1;
+		//GL_version = 3;
 		System.out.println("OpenGL version " + GL_version);
 		if (GL_version == 3) {
 			gl3 = core.gui.glcanvas.getGL().getGL3();
@@ -154,7 +155,7 @@ public class GL_base {
         }
 	}
 	
-	public void init(GL3 gl2, int width, int height) {
+	public void init(int width, int height) {
 		
 		Random randomGenerator = new Random();
 		long t1, t2, t_total =0;

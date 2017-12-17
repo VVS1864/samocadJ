@@ -20,8 +20,7 @@ public class GL_canvas_event_listener implements GLEventListener{
 	@Override
 
 	public void init(GLAutoDrawable glautodrawable) {
-		core.glRender.init(glautodrawable.getGL().getGL3(),
-				glautodrawable.getSurfaceWidth(),
+		core.glRender.init(glautodrawable.getSurfaceWidth(),
 				glautodrawable.getSurfaceHeight());
 
 	}
