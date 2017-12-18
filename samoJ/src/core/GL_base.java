@@ -20,7 +20,6 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL3;
-import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLException;
 import com.jogamp.opengl.GLUniformData;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
@@ -32,21 +31,13 @@ import com.jogamp.opengl.util.glsl.ShaderState;
 import java.util.Random;
 
 public class GL_base {
+	private Core core = Core.c;
+	
 	public final ShaderProgram sp0 = new ShaderProgram();
 	public ShaderState st;
 	private GLArrayDataServer interleavedVBO;
 	private GLArrayDataServer dynamic_interleavedVBO;
 
-	
-
-	/**
-	 * Arrays for coordinates, colors and widths:
-	 */
-	/*
-	private float[] colors;
-	private float[] vertices;
-	private float[] widths;
-		*/
 	public float[] general_matrix = { 1, 0, 0, 0, 0, 1,
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
@@ -75,11 +66,8 @@ public class GL_base {
 	private int GL_version;
 	// GL2 variables
 	private GL1_2_data GL1_2_dataArray[] = new GL1_2_data[4];
-	private  GL2 gl2;
-	
-	private  GL gl1;
-	
-	private Core core = Core.c;
+	private GL1_2_data GL1_2_dynamic_dataArray[] = new GL1_2_data[4];
+	private  GL2 gl2;	
 
 	public void init_GL() {
 		GL_version = core.gui.glcanvas.getContext().getGLSLVersionNumber().getMajor();
@@ -94,7 +82,8 @@ public class GL_base {
 			gl2 = core.gui.glcanvas.getGL().getGL2();
 			gl2.glMatrixMode(GL2.GL_MODELVIEW);
 			gl2.glLoadIdentity();
-			create_GL2_data();
+			create_GL2_data(GL1_2_dataArray);
+			create_GL2_data(GL1_2_dynamic_dataArray);
 
 		} 
 		if (GL_version == 1) {
@@ -104,15 +93,19 @@ public class GL_base {
 		
 	}
 	
-	private void create_GL2_data() {
+	private void create_GL2_data(GL1_2_data[] dataArray) {
 		// create data structure for 4 line width
-		
-		//GL2_dataArray = new GL2_data[4];
 		for (int i = 0; i < 4; i++) {
-			if(GL_version == 2 && null != GL1_2_dataArray[i]) {
-				gl2.glDeleteBuffers(2, GL1_2_dataArray[i].vbo_buffer, 0);
+			dataArray[i] = new GL1_2_data(i + 1);
+		}
+	}
+	
+	private void clean_GL2_data(GL1_2_data[] dataArray) {
+		System.out.println("clean");
+		for (int i = 0; i < 4; i++) {
+			if (GL_version == 2) {
+				gl2.glDeleteBuffers(2, dataArray[i].vbo_buffer, 0);
 			}
-			GL1_2_dataArray[i] = new GL1_2_data(i + 1);
 		}
 	}
 	
@@ -221,11 +214,12 @@ public class GL_base {
 		t2 = System.currentTimeMillis();
 		System.out.println("Generation: " + core.global.N + " figures, time=" +(t2 - t1)+ " ms.");
 		t_total += t2-t1;
-		
+		/*
 		t1 = System.currentTimeMillis();
 		for (int i = 0; i<20; i++) {
 		update_data();
-		}
+		}*/
+		update_data_flag = true;
 		t2 = System.currentTimeMillis();
 		System.out.println("upate_data(): " +(t2 - t1)+ " ms.");
 		t_total += t2-t1;
@@ -279,7 +273,7 @@ public class GL_base {
 	public void update_dynamic_data(){
 		gl3 = core.gui.glcanvas.getGL().getGL3();
 		core.global.N_dynamic_lines = 0;
-		Dynamic_data d = new Dynamic_data();
+		Dynamic_data d = new Dynamic_data(GL_version);
 		
 		if (core.global.select_mode){
 			d.put_data(core.global.select_rect_vertices, core.global.select_rect_color.get_float_rgb(), core.values.select_rect_width);
@@ -291,26 +285,34 @@ public class GL_base {
 		if (core.global.snap_sign_vertices != null){
 			d.put_data(core.global.snap_sign_vertices, core.values.snap_color.get_float_rgb(), core.values.dynamic_width);
 		}
-		if (core.global.preview_object_vertices != null){
-			d.put_data(core.global.preview_object_vertices, core.values.color.get_float_rgb(), core.values.dynamic_width);
-		}	
-		
-		
-		float[] vertices = d.get_vertices();
-		float[] colors = d.get_colors();
-		float[] widths = d.get_widths();
-		core.global.N_dynamic_lines = vertices.length / 6;
-		//destroy old VBO (memory leak!)
-		if(null != dynamic_interleavedVBO) {
-			st.ownAttribute(dynamic_interleavedVBO, false);
-			dynamic_interleavedVBO.destroy(gl3);				
+		if (core.global.preview_object_vertices != null) {
+			d.put_data(core.global.preview_object_vertices, core.values.color.get_float_rgb(),
+					core.values.dynamic_width);
 		}
-		dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false,
-				core.global.N_dynamic_lines * 2 * 3, GL3.GL_STATIC_DRAW);
-		update_vao(dynamic_interleavedVBO, vertices, colors, widths, core.global.N_dynamic_lines);
 		
+		if (GL_version == 3) {
+			float[] vertices = d.get_vertices();
+			float[] colors = d.get_colors();
+			float[] widths = d.get_widths();
+			core.global.N_dynamic_lines = vertices.length / 6;
+			// destroy old VBO (memory leak!)
+			if (null != dynamic_interleavedVBO) {
+				st.ownAttribute(dynamic_interleavedVBO, false);
+				dynamic_interleavedVBO.destroy(gl3);
+			}
+			dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false,
+					core.global.N_dynamic_lines * 2 * 3, GL3.GL_STATIC_DRAW);
+			update_vao(dynamic_interleavedVBO, vertices, colors, widths, core.global.N_dynamic_lines);
+		} 
+		else if (GL_version < 3) {
+			for(GL1_2_data dataArray: d.GL1_2_dynamic_dataArray) {
+				dataArray.compile();
+			}
+			clean_GL2_data(GL1_2_dynamic_dataArray);
+			GL1_2_dynamic_dataArray = d.GL1_2_dynamic_dataArray;
+		}
 	}
-	
+
 	public void print_a(float[] a) {
 		for (int i =0; i<a.length; i++) {
 			System.out.print(" "+a[i] + " ");
@@ -347,8 +349,6 @@ public class GL_base {
 			iVBO.enableBuffer(gl3, false);
 		}
 	}
-		
-	
 	
 	/**
 	 * This method updates glcanvas if theShapes was changed.
@@ -380,7 +380,6 @@ public class GL_base {
 				st.useProgram(gl3, true);
 				update_pmv_matrix();
 				st.useProgram(gl3, false);
-
 			}
 		}
 		else if(GL_version < 3) {
@@ -394,10 +393,9 @@ public class GL_base {
 			update_data();
 			update_data_flag = false;
 		}
-		
+		update_dynamic_data();
 		//System.out.println("render");
 		if (GL_version == 3) {
-			update_dynamic_data();
 			st.useProgram(gl3, true);
 			gl3.glClearColor(0.0f, 0.0f, 0.0f, 1);
 			gl3.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
@@ -427,7 +425,6 @@ public class GL_base {
 		else if(GL_version < 3 ) {
 			render_GL2(width, height);
 		}
-		
     }
 	
 	public void dispose() {
@@ -440,11 +437,8 @@ public class GL_base {
 
 				st.destroy(gl3);
 				st = null;
-			}
-			
-		}
-		//core.gui.glcanvas.destroy();
-		
+			}	
+		}		
 	}
 		
 	public void setup_GL2(int width, int height) {
@@ -472,10 +466,12 @@ public class GL_base {
 		general_matrix = identity_matrix.clone();
 
 		for(GL1_2_data d: GL1_2_dataArray) {
-			gl2.glLineWidth(d.width);
+			
 			gl2.glEnableClientState(GL2.GL_VERTEX_ARRAY);
 			gl2.glEnableClientState(GL2.GL_COLOR_ARRAY);
 			if (GL_version == 2) {
+				gl2.glLineWidth(d.width);
+				
 				// Bind color buffer
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, d.vbo_buffer[1]);
 				gl2.glColorPointer(3, GL2.GL_FLOAT, 0, 0);
@@ -483,19 +479,18 @@ public class GL_base {
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, d.vbo_buffer[0]);
 				gl2.glVertexPointer(3, GL2.GL_FLOAT, 0, 0);
 
-				gl2.glDrawArrays(GL2.GL_LINES, 0, (int) d.vertices.length / 3);
+				gl2.glDrawArrays(GL2.GL_LINES, 0, (int) d.size() / 3);
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
-			} else {
-				gl_draw_array(d.vertices, d.colors, d.width);
 			}
-			//gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
-			
-			//gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-			
-			//gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+			else {
+				gl_draw_array(d.fb, d.fbColors, d.width);
+			}
 		}
-		//gl2.glFlush();
-		dinamic_render();	
+		// Draw dynamic data
+		for (GL1_2_data d: GL1_2_dynamic_dataArray) {
+			gl_draw_array(d.fb, d.fbColors, d.width);
+		}
+	
 		gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
 		gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 		
@@ -503,101 +498,54 @@ public class GL_base {
 		gl2.glGetFloatv(GL2.GL_PROJECTION_MATRIX, projmatrix, 0);
 		gl2.glGetIntegerv(GL2.GL_VIEWPORT, viewport, 0);
 	}
-	
+
 	public void update_data_GL2() {
-		create_GL2_data();
+		clean_GL2_data(GL1_2_dataArray);
 		for (Shape sh : core.global.theShapes.values()) {
 			int w = sh.get_width();
 			GL1_2_dataArray[w-1].listFloat.addAll(sh.toListFloat());
 			GL1_2_dataArray[w-1].listFloatColor.addAll(sh.toListFloatColor());
 		}
 		for(GL1_2_data d: GL1_2_dataArray) {
-			d.vertices = d.listFloat.elements();
-			d.colors = d.listFloatColor.elements();
-			if (GL_version == 2) {
-				FloatBuffer fbVertices = Buffers.newDirectFloatBuffer(d.vertices);
-				FloatBuffer fbColores = Buffers.newDirectFloatBuffer(d.colors);
-
+			d.compile(); 
+			if (GL_version == 2) {				
 				gl2.glGenBuffers(2, d.vbo_buffer, 0);
 
 				// Vertices buffer
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, d.vbo_buffer[0]);
-
-				int numBytes = fbVertices.capacity() * Buffers.SIZEOF_FLOAT;
-				gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbVertices, GL2.GL_STATIC_DRAW);
+				int numBytes = d.fb.capacity() * Buffers.SIZEOF_FLOAT;
+				gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, d.fb, GL2.GL_STATIC_DRAW);
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 
 				// Color buffer
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, d.vbo_buffer[1]);
-
-				numBytes = fbColores.capacity() * Buffers.SIZEOF_FLOAT;
-				gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, fbColores, GL2.GL_STATIC_DRAW);
+				numBytes = d.fbColors.capacity() * Buffers.SIZEOF_FLOAT;
+				gl2.glBufferData(GL2.GL_ARRAY_BUFFER, numBytes, d.fbColors, GL2.GL_STATIC_DRAW);
 				gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
 			}
-
-		}
-		
-		
+		}		
 	}
-	//TODO write to Dynamic_data
-	void dinamic_render() {
-		if (core.global.select_mode){
-			float color[] = color_normalize(core.global.select_rect_color.get_rgb(), core.global.select_rect_vertices.length);
-			gl_draw_array(core.global.select_rect_vertices, color, core.values.select_rect_width);			
-		}
-		if (core.global.current_Shape_vertices != null){
-			float color[] = color_normalize(core.values.current_shape_color.get_rgb(), core.global.current_Shape_vertices.length);
-			gl_draw_array(core.global.current_Shape_vertices, color, core.values.dynamic_width);	
-		}
-		if (core.global.snap_sign_vertices != null){
-			float color[] = color_normalize(core.values.snap_color.get_rgb(), core.global.snap_sign_vertices.length);
-			gl_draw_array(core.global.snap_sign_vertices, color, core.values.dynamic_width);
-		}
-		if (core.global.preview_object_vertices != null){
-			float color[] = color_normalize(core.values.color.get_rgb(), core.global.preview_object_vertices.length);
-			gl_draw_array(core.global.preview_object_vertices, color, core.values.dynamic_width);
-		}
-	}
-	float[] color_normalize(int[] color, int vert_lingth) {
-		float[] ret = new float[vert_lingth];
-		for(int i = 0; i<ret.length; i+=3) {
-			ret[i] = color[0];
-			ret[i+1] = color[1];
-			ret[i+2] = color[2];
-		}
-		return ret;
-	}
+	
 	/**
-	 * Cover for glDrawArrays for draw it with a color
-	 * @param vertices_array - array of coordinates xy-only.
-	 * @param color - array of colors
+	 * Cover for glDrawArrays for draw lines with equal line width
+	 * @param vertices  array of coordinates xy-only.
+	 * @param colors  array of colors
+	 * @param width  Line width for this array
 	 */
-	void gl_draw_array(float[] vertices, float[] colors, int width){
-		//gl2.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-		//gl2.glEnableClientState(GL2.GL_COLOR_ARRAY);
-		
+	void gl_draw_array(FloatBuffer fb, FloatBuffer fbColors, int width){		
 		gl2.glLineWidth(width);
-		//gl2.glColor3f(colors[0], colors[1], colors[2]);
-		
-		FloatBuffer fb = Buffers.newDirectFloatBuffer(vertices);
-		FloatBuffer fbColors = Buffers.newDirectFloatBuffer(colors);
 		gl2.glVertexPointer(3, GL2.GL_FLOAT, 0, fb);
 		gl2.glColorPointer(3, GL2.GL_FLOAT, 0, fbColors);
-		gl2.glDrawArrays(GL2.GL_LINES, 0, vertices.length / 3);
+		gl2.glDrawArrays(GL2.GL_LINES, 0, fb.capacity() / 3);
 		gl2.glBindBuffer(GL2.GL_ARRAY_BUFFER, 0);
-		
-		//gl2.glDisableClientState(GL2.GL_COLOR_ARRAY);
-		//gl2.glDisableClientState(GL2.GL_VERTEX_ARRAY);
 	}
 	/**
 	 * Static method for transform coordinates of glwindow to gl world
 	 * coordinates.
 	 * 
 	 * @param glcanvas
-	 * @param x
-	 *            coordinate of gl window
-	 * @param y
-	 *            coordinate of gl window
+	 * @param x coordinate of gl window
+	 * @param y coordinate of gl window
 	 * @return gl world coordinates
 	 */
 	public float[] get_real_coords(float x, float y) {
@@ -607,7 +555,7 @@ public class GL_base {
 		GLU glu = new GLU();
 		glu.gluUnProject(x, realy_y, 0.0f, mvmatrix, 0, projmatrix, 0,
 				viewport, 0, wcoord, 0);
-		//float[] returnable = wcoord;//.clone();
+		
 		return wcoord;
 	}
 }
