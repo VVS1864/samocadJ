@@ -1,15 +1,13 @@
 package core;
 
-import java.util.Arrays;
+
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import modules.base_draw_entities.Interface_base_draw;
 import open_dxf_lib.Color_rgb;
 import samoJ.Dash_base;
 import samoJ.Shape;
-import samoJ.SnapType;
 
 public class Global_var {
 	// Program state variables

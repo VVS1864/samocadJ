@@ -1,7 +1,5 @@
 package samoJ;
 import core.Core;
-import core.Global_var;
-import core.Values;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
 import open_dxf_lib.dash_type;

@@ -12,9 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import core.Values;
 import core.Core;
-import core.Global_var;
 import modules.MakeButton;
 
 public class dim_style extends base_style_dialog{

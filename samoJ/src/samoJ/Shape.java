@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import core.Core;
-import core.Global_var;
 
 
 /**

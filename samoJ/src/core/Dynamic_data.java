@@ -2,10 +2,6 @@ package core;
 
 import java.util.ArrayList;
 
-import it.unimi.dsi.fastutil.floats.FloatArrayList;
-
-
-
 public class Dynamic_data {
 	int GL_version;
 	

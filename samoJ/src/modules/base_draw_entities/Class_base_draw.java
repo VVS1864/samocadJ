@@ -1,8 +1,6 @@
 package modules.base_draw_entities;
 
 import core.Core;
-import core.Global_var;
-import modules.standard_objects.line.draw_line;
 
 /**
  * Base "entity"-class for process of creating any Shape (line, circle, etc.) 

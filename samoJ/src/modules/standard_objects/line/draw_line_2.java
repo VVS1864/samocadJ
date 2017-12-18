@@ -1,8 +1,6 @@
 package modules.standard_objects.line;
 
 import modules.base_draw_entities.Interface_base_draw;
-import core.Core;
-import core.Global_var;
 import modules.base_draw_entities.Class_base_draw;
 
 public  class draw_line_2 extends Class_base_draw implements Interface_base_draw{

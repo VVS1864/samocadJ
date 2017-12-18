@@ -7,9 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import core.Values;
 import core.Core;
-import core.Global_var;
 
 public class text_style extends base_style_dialog{
 	private Core core = Core.c;

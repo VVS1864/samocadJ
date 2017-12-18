@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import core.Core;
-import core.navigation.Zoom;
 
 public class GL_key_listener implements KeyListener{
 	private Core core = Core.c;

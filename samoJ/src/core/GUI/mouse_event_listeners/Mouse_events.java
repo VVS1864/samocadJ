@@ -12,7 +12,6 @@ import core.Core;
 import core.Draw_snap_sign;
 import core.Get_snap;
 import core.navigation.Plan_motion;
-import core.navigation.Zoom;
 import samoJ.Shape;
 import samoJ.SnapCoord;
 

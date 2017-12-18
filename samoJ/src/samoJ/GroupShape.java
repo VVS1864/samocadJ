@@ -1,7 +1,6 @@
 package samoJ;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import samoJ.PrimitiveLine.DrawableLine;
 import samoJ.PrimitiveLine.Line;
 
 import java.util.Collections;
@@ -9,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import core.Core;
-import core.Global_var;
 
 public class GroupShape extends Shape {
 	

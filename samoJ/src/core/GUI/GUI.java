@@ -7,8 +7,6 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -27,18 +25,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.Timer;
-import javax.swing.JFileChooser;
 
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 
 import core.Core;
-import core.GL_base;
-import core.Values;
-import core.Global_var;
-import core.GUI.mouse_event_listeners.Mouse_events;
 import core.GUI.styles.dim_style;
 import core.GUI.styles.line_style;
 import core.GUI.styles.text_style;

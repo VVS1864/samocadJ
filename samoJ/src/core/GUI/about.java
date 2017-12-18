@@ -11,9 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import core.Core;
-import core.Global_var;
-
-
 
 public class about extends JDialog{
 

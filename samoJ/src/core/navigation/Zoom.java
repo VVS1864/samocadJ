@@ -1,9 +1,6 @@
 package core.navigation;
 
 import core.Core;
-import core.GL_base;
-import core.Values;
-import core.Global_var;
 
 public class Zoom {
 	private Core core = Core.c;

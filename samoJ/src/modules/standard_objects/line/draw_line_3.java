@@ -1,14 +1,11 @@
 package modules.standard_objects.line;
 
-import core.Core;
-import core.GL_base;
 
 import modules.base_draw_entities.Interface_base_draw;
-import open_dxf_lib.dash_type;
+import modules.base_draw_entities.Class_base_draw;
+
 import samoJ.ShapeLine;
 import samoJ.ObjectMode;
-import modules.base_draw_entities.Class_base_draw;
-import core.Values;
 
 public  class draw_line_3 extends Class_base_draw implements Interface_base_draw{
 	

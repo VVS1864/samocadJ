@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import core.Global_var;
-
 public class Save_dialog extends JFileChooser{
 	
 	public String selected_file;

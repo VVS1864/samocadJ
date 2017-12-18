@@ -5,7 +5,6 @@ import open_dxf_lib.Color_rgb;
 import samoJ.Coord;
 import samoJ.ObjectMode;
 import core.Core;
-import core.Global_var;
 
 /**
  * the DrawableLine is a base for Shape, is visible Line for OpenGL rendering. 

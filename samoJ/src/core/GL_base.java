@@ -5,8 +5,6 @@ import open_dxf_lib.dash_type;
 
 import java.nio.FloatBuffer;
 
-import samoJ.Circle;
-import samoJ.GroupShape;
 import samoJ.ShapeLine;
 import samoJ.ObjectMode;
 import samoJ.Shape;
@@ -91,8 +89,7 @@ public class GL_base {
 		}
 		gl_init = true;
 		
-	}
-	
+	}	
 	private void create_GL2_data(GL1_2_data[] dataArray) {
 		// create data structure for 4 line width
 		for (int i = 0; i < 4; i++) {

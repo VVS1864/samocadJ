@@ -10,8 +10,6 @@ import open_dxf_lib.Mode;
 import samoJ.ShapeLine;
 import samoJ.Shape;
 import core.Core;
-import core.Global_var;
-import core.Values;
 
 public class Save_action {
 	private Core core = Core.c;

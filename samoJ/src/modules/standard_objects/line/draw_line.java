@@ -1,8 +1,6 @@
 package modules.standard_objects.line;
 
 import modules.base_draw_entities.Interface_base_draw;
-import core.Core;
-import core.Program_state;
 import modules.base_draw_entities.Class_base_draw;
 
 /**
