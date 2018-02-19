@@ -104,7 +104,6 @@ public class Class_base_draw implements Interface_base_draw{
 	}
 	
 	public void create(ObjectMode mode){
-		
 	}
 	
 }

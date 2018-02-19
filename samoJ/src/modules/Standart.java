@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JToolBar;
 
 import core.Core;
-import modules.standard_objects.line.draw_line;
+import modules.base_draw_entities.Class_base_draw;
+import modules.standard_objects.circle.draw_circle_1;
+import modules.standard_objects.line.draw_line_1;
 
 //import javax.swing.ImageIcon;
 //import java.net.URL;
@@ -21,7 +23,14 @@ public class Standart {
 		class button_line_action  implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				draw_line draw_action = new draw_line();
+				Class_base_draw draw_action = new draw_line_1();
+				draw_action.run();
+			}
+		}
+		class button_circle_action  implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Class_base_draw draw_action = new draw_circle_1();
 				draw_action.run();
 			}
 		}
@@ -57,6 +66,7 @@ public class Standart {
 			
 		
 		button_line.addActionListener(new button_line_action());
+		button_circle.addActionListener(new button_circle_action());
 			
 		
 		//Add buttons

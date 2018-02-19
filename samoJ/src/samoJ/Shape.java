@@ -21,7 +21,7 @@ import core.Core;
  * 
  */
 
-public class Shape {
+public abstract class Shape {
 	private Core core = Core.c;
 	// Displayed Lines
 	LinkedList<DrawableLine> PrimLines;
@@ -43,18 +43,29 @@ public class Shape {
 	protected ObjectMode mode;
 	
 	public Shape(ObjectMode mode) {
+		//Standard begin
 		PrimLines = new LinkedList<DrawableLine>();
 		SnapLines = new LinkedList<Line>();
 		SnapPoints = new LinkedList<SnapCoord>();
 		this.mode = mode;
-		if(mode == ObjectMode.New_object){
-			
+	}
+	
+	public void createShape() {
+		//Special for each Shape
+		addLines();
+		
+		//Standard end
+		if(mode == ObjectMode.New_object){	
 			core.global.theShapes.put(core.global.current_ID, this);
 			this.ID = core.global.current_ID;
 			core.global.current_ID++;
 		}
-		// System.out.println("The constructor Shape()");
+		else if(mode == ObjectMode.Preview_object){
+			core.global.preview_object_vertices = getPreviewData();
+		}
 	}
+	
+	abstract public void addLines();
 
 	protected ArrayList<Float> toList() {
 		ArrayList<Float> ret = new ArrayList<Float>();

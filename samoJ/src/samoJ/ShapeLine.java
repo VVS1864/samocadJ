@@ -46,14 +46,16 @@ public class ShapeLine extends Shape {
 		this.dash = new Dash(dash);
 		this.color = color;
 		this.width = width;
-		formPrimitiveLines();
+		super.createShape(); //Standard procedure of create
+	}
+	
+	@Override
+	public void addLines() {
+		createLine();
 		add_snap_line(new Line(x1, y1, z1, x2, y2, z2));
-		if(mode == ObjectMode.Preview_object){
-			core.global.preview_object_vertices = super.getPreviewData();
-		}
 	}
 
-	void formPrimitiveLines() {
+	void createLine() {
 		if (dash.mask == null || dash.mask.length == 0) {
 			
 			add(new DrawableLine(mode, x1, y1, z1, x2, y2, z2, color, width));
@@ -83,7 +85,7 @@ public class ShapeLine extends Shape {
 		}
 		float factor_mask[] = new float[dash.mask.length];
 		for (int i = 0; i < dash.mask.length; i++) {
-			factor_mask[i] = dash.mask[i] * factor;
+			factor_mask[i] = dash.mask[i] * factor*6.6f;
 
 		}
 		float dx = x2 - x1;

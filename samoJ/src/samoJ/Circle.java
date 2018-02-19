@@ -2,12 +2,14 @@ package samoJ;
 
 import core.Core;
 import open_dxf_lib.Color_rgb;
+import open_dxf_lib.DXF_file;
 import samoJ.PrimitiveLine.DrawableLine;
 
 public class Circle extends Shape {
+	private Core core = Core.c;
 	Coord theCenter;
 	float Radius;
-	protected int width; //!!!;
+	//protected int width; //!!!;
 	/**
 	 * 
 	 * @param Radius
@@ -19,14 +21,14 @@ public class Circle extends Shape {
 
 	public Circle(ObjectMode mode, float r, float x1, float y1, float z1, Color_rgb color, int width) {
 		super(mode);
-		theCenter = new Coord(x1, y1, z1);
-		Radius = r;
+		this.theCenter = new Coord(x1, y1, z1);
+		this.Radius = r;
 		this.color = color;
 		this.width = width;
-		create_circle();
+		super.createShape(); //Standard procedure of create
 	}
 
-	public Circle(ObjectMode mode, float rx, float ry, float rz, float x2, float y2, float z2, Color_rgb color, int width) {
+	public Circle(ObjectMode mode, float x2, float y2, float z2, float rx, float ry, float rz, Color_rgb color, int width) {
 		this(mode, (float)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2, color, width);
 		/*int xd = rx - x2;
 		int yd = ry - y2;
@@ -35,7 +37,14 @@ public class Circle extends Shape {
 		*/
 
 	}
-
+	
+	@Override
+	public void addLines() {
+		create_circle();
+		// Snap center
+		add_snap_point(new SnapCoord(SnapType.MidPoint, theCenter));
+	}
+	
 	public void create_circle() {
 		// int[] lines = circle_lines(Radius, theCenter.x, theCenter.y); �������!!!
 
@@ -54,9 +63,6 @@ public class Circle extends Shape {
 		float s = Radius / 20;
 		add(new DrawableLine(mode, theCenter.getX() - s, theCenter.getY(), 0, theCenter.getX() + s, theCenter.getY(), 0, color, width));
 		add(new DrawableLine(mode, theCenter.getX(), theCenter.getY() - s, 0, theCenter.getX(), theCenter.getY() + s, 0, color, width));
-		
-		// Snap center
-		add_snap_point(new SnapCoord(SnapType.MidPoint, theCenter));
 	}
 
 	/**
@@ -83,11 +89,19 @@ public class Circle extends Shape {
 		}
 		return lines;
 	}
+	
+	@Override
+	public void save_to_DXF(DXF_file f) {
+		f.put_circle(theCenter.getX(), theCenter.getY(), Radius, color, width);
+		
+	}
 	/*
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Circle c = new Circle(5, 15, 0, 25, 30, 0);
 		System.out.println(c.toList());
 	}*/
+
+	
 
 }

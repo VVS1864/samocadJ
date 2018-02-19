@@ -7,7 +7,7 @@ import modules.base_draw_entities.Class_base_draw;
  * @author vlad
  *
  */
-public class draw_line extends Class_base_draw {
+public class draw_line_1 extends Class_base_draw {
 
 	@Override
 	public void run(){

@@ -16,11 +16,11 @@ public class Values {
 	public float max_scale = 200;
 	public float min_scale = 0.0011f;
 
-	public int circle_segments = 64;
+	public int circle_segments = 360;
 	
 	public dash_type current_dash = dash_type.Continuous;
 	public int[] stipple = {4,1,1,1};
-	public float stipple_factor = 20;
+	public float stipple_factor = 3;
 	/**
 	 * Current line width 
 	 */

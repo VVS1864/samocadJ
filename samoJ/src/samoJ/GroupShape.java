@@ -16,10 +16,7 @@ public class GroupShape extends Shape {
 	public GroupShape(ObjectMode mode, List<Shape> shapes) {
 		super(mode);
 		this.shapes = shapes;
-		for (Shape sh:shapes)
-		{
-			Core.c.global.theShapes.remove(sh.ID);
-		}
+		super.createShape();
 	}
 
 		
@@ -56,6 +53,17 @@ public class GroupShape extends Shape {
 	
 	public static void main(String[] args) {
 	
+		
+	}
+
+
+
+	@Override
+	public void addLines() {
+		for (Shape sh:shapes)
+		{
+			Core.c.global.theShapes.remove(sh.ID);
+		}
 		
 	}
 	
