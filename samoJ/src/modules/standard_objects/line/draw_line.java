@@ -8,7 +8,7 @@ import modules.base_draw_entities.Class_base_draw;
  * @author vlad
  *
  */
-public class draw_line extends Class_base_draw implements Interface_base_draw{
+public class draw_line extends Class_base_draw {
 	
 	public draw_line() {
 		super();
@@ -20,10 +20,6 @@ public class draw_line extends Class_base_draw implements Interface_base_draw{
 		Interface_base_draw init_class = new draw_line();
 		core.program_state.set_default(); // Kill another processes if they are.
 		super.init_draw("Line - First point:","Escape - stop", next_class, init_class);
-	}
-
-	@Override
-	public void mouse_move_event() {		
 	}
 	
 }

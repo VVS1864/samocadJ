@@ -9,7 +9,7 @@ import core.Core;
  * @author vlad
  *
  */
-public class Class_base_draw{
+public class Class_base_draw implements Interface_base_draw{
 	protected Core core = Core.c;
 	//Points for create object
 	public float x1;
@@ -85,6 +85,14 @@ public class Class_base_draw{
 		core.gui.info.setText(message1);
 		core.gui.info2.setText(message2);
 		core.global.current_function = next_class;
+	}
+	
+	@Override
+	public void run(){
+	}
+	
+	@Override
+	public void mouse_move_event() {		
 	}
 	
 }

@@ -7,7 +7,7 @@ import modules.base_draw_entities.Class_base_draw;
 import samoJ.ShapeLine;
 import samoJ.ObjectMode;
 
-public  class draw_line_3 extends Class_base_draw implements Interface_base_draw{
+public  class draw_line_3 extends Class_base_draw{
 	
 	
 	public draw_line_3() {
