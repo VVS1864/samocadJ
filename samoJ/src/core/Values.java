@@ -43,7 +43,7 @@ public class Values {
 	};
 
 	public int text_size = 350;
-	public float text_width_factor = 1.4f;
+	public double text_width_factor = 1.4;
 	
 	public int dim_text_size = 350;
 
@@ -83,6 +83,11 @@ public class Values {
 	public  LinkedList<SnapType> snap_keys = new LinkedList<SnapType>(
 			Arrays.asList(SnapType.EndPoint, SnapType.MidPoint,
 					SnapType.Intersection, SnapType.NearPoint));
+	
+	public boolean trace_flag = false;
+	public boolean object_trace_flag = false;
+	public boolean ortho_flag = false;
+	
 	public Values() {
 		//TODO load values from config
 	}

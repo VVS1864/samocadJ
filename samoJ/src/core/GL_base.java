@@ -273,7 +273,7 @@ public class GL_base {
 		Dynamic_data d = new Dynamic_data(GL_version);
 		
 		if (core.global.select_mode){
-			d.put_data(core.global.select_rect_vertices, core.global.select_rect_color.get_float_rgb(), core.values.select_rect_width);
+			d.put_data(core.global.selective_rect.select_rect_vertices, core.global.selective_rect.select_rect_color.get_float_rgb(), core.values.select_rect_width);
 		}
 		
 		if (core.global.current_Shape_vertices != null){

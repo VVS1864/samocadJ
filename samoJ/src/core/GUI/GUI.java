@@ -53,6 +53,9 @@ public class GUI {
 	public  JDialog dim_style;
 	public  JDialog line_style;
 	public  JDialog text_style;
+	
+	public JButton button_trace;
+	
 	public GUI(){		
 // GL CANVAS
 		
@@ -114,6 +117,14 @@ public class GUI {
 				new Save_action();
 			}
 		};
+
+		//Action listeners trace buttons
+		ActionListener trace_action_listener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				trace_action();
+			}
+		};
 		
 //Addition standard button bars
 		Standart.addButtonsBar(jframe);
@@ -134,8 +145,9 @@ public class GUI {
 		Color white = new Color(255, 255, 255);
 		JButton button_ortho = new JButton("Ortho");
 		button_ortho.setBackground(white);
-		JButton button_trace = new JButton("Trace");
+		button_trace = new JButton("Trace");
 		button_trace.setBackground(white);
+		button_trace.addActionListener(trace_action_listener);
 		JButton button_object_trace = new JButton("Object trace");
 		button_object_trace.setBackground(white);
 		JButton button_snap_near = new JButton("Snap near");
@@ -394,6 +406,23 @@ public class GUI {
 		
 		jframe.dispose();
 		System.exit(0);
+	}
+	
+	private void trace_action() {
+		core.values.trace_flag = but_swich(button_trace, core.values.trace_flag);
+	}
+	
+	private boolean but_swich(JButton button, boolean flag) {
+		if (flag) {
+			Color white = new Color(255, 255, 255);
+			button.setBackground(white);
+			return false;
+		}
+		else {
+			Color blue = new Color(0, 0, 255);
+			button.setBackground(blue);
+			return true;
+		}
 	}
 	
 	/*

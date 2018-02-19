@@ -32,9 +32,7 @@ public class Save_action {
 	}
 	public void shapes_to_DXF(DXF_file f) {
 		for(Shape sh: core.global.theShapes.values()){
-			if(sh instanceof ShapeLine){
-				sh.save_to_DXF(f);
-			}
+			sh.save_to_DXF(f);
 		}
 	}
 }

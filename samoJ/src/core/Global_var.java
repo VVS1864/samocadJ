@@ -4,6 +4,7 @@ package core;
 import java.util.HashMap;
 import java.util.Map;
 
+import core.dynamic_entities.Selective_rect;
 import modules.base_draw_entities.Interface_base_draw;
 import open_dxf_lib.Color_rgb;
 import samoJ.Dash_base;
@@ -52,17 +53,11 @@ public class Global_var {
 	 * Coords of point 2 for draw objects or make actions with them
 	 */
 	public  float[] point_2_coords = new float[2];
-
+	
 	/**
-	 * Point 1 of selective rectangle
+	 * object for manage selective rectangle
 	 */
-	public  float[] select_rect_1 = new float[2];
-
-	/**
-	 * Point 2 of selective rectangle
-	 */
-	public  float[] select_rect_2 = new float[2];
-
+	public Selective_rect selective_rect = new Selective_rect();
 	/**
 	 * Class implements Interface_base_draw for run an action if user clicks
 	 * left mouse button and draw_new_object == true
@@ -85,15 +80,9 @@ public class Global_var {
 	 * OpenGL VBO
 	 */
 	public  Map<Integer, Shape> theShapes = new HashMap<Integer, Shape>();
-	// public  Map<Integer, Shape> theShapes = new HashMap<Integer,
-	// Shape>();
-	// public  List<Shape> theShapes = new LinkedList<Shape>(); 
+	
 	public  Dash_base dashes = new Dash_base();
-	/**
-	 * Selective rectangle vertices for draw on canvas and select Shapes
-	 */
-	public  float[] select_rect_vertices = new float[12];
-
+	
 	/**
 	 * Array for draw indication current Shape under cursor
 	 */
