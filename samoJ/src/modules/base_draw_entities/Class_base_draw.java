@@ -1,6 +1,7 @@
 package modules.base_draw_entities;
 
 import core.Core;
+import samoJ.ObjectMode;
 
 /**
  * Base "entity"-class for process of creating any Shape (line, circle, etc.) 
@@ -21,6 +22,8 @@ public class Class_base_draw implements Interface_base_draw{
 	public float x3;//for Dimensions and mirror function
 	public float y3;	
 	
+	//if true - draw dynamic
+	public boolean display_dynamic = false;
 	/**
 	 * Initial method of Shape-creating process or any function. 
 	 * 
@@ -31,6 +34,7 @@ public class Class_base_draw implements Interface_base_draw{
 	 */
 	public void init_draw(String message1, String message2, Interface_base_draw next_class, 
 			Interface_base_draw init_class){
+		
 		set_next(message1, message2, next_class);
 		core.global.draw_new_object = true;
 		core.global.old_function = init_class;
@@ -42,7 +46,7 @@ public class Class_base_draw implements Interface_base_draw{
 	 * @param message2
 	 * @param next_class
 	 */
-	public void draw_1(String message1, String message2, Interface_base_draw next_class){
+	public void get_point_1(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		core.global.point_1_coords = core.global.cursor_snap_coords.clone();
 	}
@@ -53,7 +57,7 @@ public class Class_base_draw implements Interface_base_draw{
 	 * @param message2
 	 * @param next_class
 	 */
-	public void draw_2(String message1, String message2, Interface_base_draw next_class){
+	public void get_point_2(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		
 		core.global.point_2_coords = core.global.cursor_snap_coords.clone();
@@ -65,6 +69,7 @@ public class Class_base_draw implements Interface_base_draw{
 		y2 = core.global.point_2_coords[1];
 		core.global.point_1_coords = core.global.cursor_snap_coords.clone();
 	}
+	
 	public void dynamic_draw(){
 		core.global.point_2_coords = core.global.cursor_snap_coords.clone();
 		x1 = core.global.point_1_coords[0];
@@ -72,7 +77,6 @@ public class Class_base_draw implements Interface_base_draw{
 		
 		x2 = core.global.point_2_coords[0];
 		y2 = core.global.point_2_coords[1];
-		
 	}
 	
 	/**
@@ -92,7 +96,15 @@ public class Class_base_draw implements Interface_base_draw{
 	}
 	
 	@Override
-	public void mouse_move_event() {		
+	public void mouse_move_event() {
+		if (display_dynamic) {
+			dynamic_draw();
+			create(ObjectMode.Preview_object);
+		}
+	}
+	
+	public void create(ObjectMode mode){
+		
 	}
 	
 }
