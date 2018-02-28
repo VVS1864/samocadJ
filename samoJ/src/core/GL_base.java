@@ -174,7 +174,7 @@ public class GL_base {
 			y2 = 150;*/
 			
 			new ShapeLine(ObjectMode.New_object, x1+20, y1+20, 0, x2+20, y2+20, 0, 
-					core.values.stipple_factor, dash_type.CENTER, core.values.color, w);
+					core.values.stipple_factor, dash_type.Continuous, core.values.color, w);
 			//Color_rgb c = new Color_rgb(200, 0, 100);
 			//new Line(ObjectMode.New_object, x1+100, y1+100, 0, x2+100, y2+100, 0, 
 			//		Values.stipple_factor, dash_type.Continuous, c, Values.width);

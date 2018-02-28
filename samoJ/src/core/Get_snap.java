@@ -124,7 +124,7 @@ public class Get_snap {
 							
 							if (c != null) {
 								//System.out.println("cursor_coords=["+cursor_coords[0]+" ,"+cursor_coords[1]+"] �="+�.toString()+" , min_Distance="+min_Distance);
-								float Distance = (float)Math.max(
+								float Distance = Math.max(
 										Math.abs(c.getX()
 												- cursor_coords[0]),
 										Math.abs(c.getY()
@@ -144,7 +144,7 @@ public class Get_snap {
 			} else
 				for (Shape sh : shapes) {
 					for (Coord c : sh.getSnapPoints(snapType)) {
-						float Distance =  (float)Math.max(
+						float Distance =  Math.max(
 								Math.abs(c.getX() - cursor_coords[0]),
 								Math.abs(c.getY() - cursor_coords[1]));
 						if (Distance < min_Distance) {

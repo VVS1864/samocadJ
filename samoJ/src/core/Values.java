@@ -18,7 +18,7 @@ public class Values {
 
 	public int circle_segments = 360;
 	
-	public dash_type current_dash = dash_type.Continuous;
+	public dash_type current_dash = dash_type.CENTER;
 	public int[] stipple = {4,1,1,1};
 	public float stipple_factor = 3;
 	/**

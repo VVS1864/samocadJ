@@ -1,7 +1,6 @@
 package core.GUI.mouse_event_listeners;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import open_dxf_lib.Color_rgb;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -11,7 +10,6 @@ import core.Clip_algorithm;
 import core.Core;
 import core.Draw_snap_sign;
 import core.Get_snap;
-import core.dynamic_entities.Selective_rect;
 import core.navigation.Plan_motion;
 import samoJ.Shape;
 import samoJ.SnapCoord;

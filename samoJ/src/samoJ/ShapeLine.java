@@ -36,6 +36,10 @@ public class ShapeLine extends Shape {
 	public ShapeLine(ObjectMode mode, float  x1, float y1, float z1, float x2, float y2, float z2, float factor,
 			dash_type dash, Color_rgb color, int width) {
 		super(mode);
+		//protection from Zero Line
+		if (x1 == x2 && y1 == y2 && z1 == z2) {
+			return;
+		}
 		this.x1 = x1;
 		this.y1 = y1;
 		this.z1 = z1;
@@ -94,7 +98,7 @@ public class ShapeLine extends Shape {
 		float den_x = (dx / sq);// * factor;
 		float den_y = (dy / sq);// * factor;
 		int i = 0;
-		int sum_stipple = 0;
+		float sum_stipple = 0;
 		float x_begin = x1;
 		float y_begin = y1;
 		float x_min = Math.min(x1, x2);
@@ -107,8 +111,8 @@ public class ShapeLine extends Shape {
 
 			float d = factor_mask[i];
 			sum_stipple += d;
-			float x_end = (float) Math.round(x1 + den_x * sum_stipple);
-			float y_end = (float) Math.round(y1 + den_y * sum_stipple);
+			float x_end =  x1 + den_x * sum_stipple;
+			float y_end =  y1 + den_y * sum_stipple;
 			// System.out.println(x_begin + " " + y_begin + " "+ x_end + " "+
 			// y_end);
 			if ((x_end < x_min) || (x_end > x_max) || (y_end < y_min)
@@ -119,7 +123,7 @@ public class ShapeLine extends Shape {
 				continue_flag = false;
 			}
 			if ((i % 2) == 0) {
-				// System.out.println("draw");
+				//System.out.println("draw");
 				add(new DrawableLine(mode, x_begin, y_begin, z1, x_end,
 						y_end, z2, color, width));
 			}
