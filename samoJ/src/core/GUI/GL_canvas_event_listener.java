@@ -1,43 +1,39 @@
 package core.GUI;
 
-
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import core.Core;
 
-
-
-import core.GL_base;
-
-
-public class glcanvas_event_listener implements GLEventListener{
+public class GL_canvas_event_listener implements GLEventListener{
+	private Core core = Core.c;
+	public GL_canvas_event_listener() {
+		
+	}
 	
 	@Override
 	public void reshape(GLAutoDrawable glautodrawable, int x, int y,
 			int width, int height) {
-		GL_base.setup(glautodrawable.getGL().getGL2(),
-				glautodrawable.getSurfaceWidth(),
-				glautodrawable.getSurfaceHeight());
+		core.glRender.setup(glautodrawable.getSurfaceWidth(), glautodrawable.getSurfaceHeight());
 
 	}
 
 	@Override
 
 	public void init(GLAutoDrawable glautodrawable) {
-		GL_base.init(glautodrawable.getGL().getGL2(),
-				glautodrawable.getSurfaceWidth(),
+		core.glRender.init(glautodrawable.getSurfaceWidth(),
 				glautodrawable.getSurfaceHeight());
 
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable glautodrawable) {
+	public void dispose(GLAutoDrawable drawable) {
+		core.glRender.dispose();
 	}
 
 	@Override
 	public void display(GLAutoDrawable glautodrawable) {
 
-		GL_base.render(glautodrawable.getGL().getGL2(),
-				glautodrawable.getSurfaceWidth(),
+		core.glRender.render(glautodrawable.getSurfaceWidth(),
 				glautodrawable.getSurfaceHeight());
 
 	}

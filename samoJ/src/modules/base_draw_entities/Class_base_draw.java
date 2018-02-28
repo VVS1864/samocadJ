@@ -1,6 +1,7 @@
 package modules.base_draw_entities;
 
-import core.Global_var;
+import core.Core;
+import samoJ.ObjectMode;
 
 /**
  * Base "entity"-class for process of creating any Shape (line, circle, etc.) 
@@ -9,44 +10,45 @@ import core.Global_var;
  * @author vlad
  *
  */
-public class Class_base_draw
-
-
-{
-	
+public class Class_base_draw implements Interface_base_draw{
+	protected Core core = Core.c;
 	//Points for create object
-	public int x1;
-	public int y1;
+	public float x1;
+	public float y1;
 	
-	public int x2;
-	public int y2;
+	public float x2;
+	public float y2;
 	
-	public int x3;//for Dimensions and mirror function
-	public int y3;	
+	public float x3;//for Dimensions and mirror function
+	public float y3;	
 	
+	//if true - draw dynamic
+	public boolean display_dynamic = false;
 	/**
 	 * Initial method of Shape-creating process or any function. 
 	 * 
 	 * @param message1 text value for first label (before command line)
 	 * @param message2 text value for second label (after command line)
 	 * @param next_class next class for next draw action
+	 * @param init_class class for 'old_function'
 	 */
-	public void init_draw(String message1, String message2, Interface_base_draw next_class){
+	public void init_draw(String message1, String message2, Interface_base_draw next_class, 
+			Interface_base_draw init_class){
+		
 		set_next(message1, message2, next_class);
-		Global_var.draw_new_object = true;
-
+		core.global.draw_new_object = true;
+		core.global.old_function = init_class;
 	}
 	
 	/**
-	 * First method Shape-creating process - remember cad_demo.point_1_coords - 
-	 * coordinates of point 1
+	 * First method Shape-creating process - remember coordinates of point 1
 	 * @param message1
 	 * @param message2
 	 * @param next_class
 	 */
-	public void draw_1(String message1, String message2, Interface_base_draw next_class){
+	public void get_point_1(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
-		Global_var.point_1_coords = Global_var.cursor_coords.clone();
+		core.global.point_1_coords = core.global.cursor_snap_coords.clone();
 	}
 	
 	/**
@@ -55,17 +57,26 @@ public class Class_base_draw
 	 * @param message2
 	 * @param next_class
 	 */
-	public void draw_2(String message1, String message2, Interface_base_draw next_class){
+	public void get_point_2(String message1, String message2, Interface_base_draw next_class){
 		set_next(message1, message2, next_class);
 		
-		Global_var.point_2_coords = Global_var.cursor_coords.clone();
+		core.global.point_2_coords = core.global.cursor_snap_coords.clone();
 		
-		x1 = (int)Global_var.point_1_coords[0];
-		y1 = (int)Global_var.point_1_coords[1];
+		x1 = core.global.point_1_coords[0];
+		y1 = core.global.point_1_coords[1];
 		
-		x2 = (int)Global_var.point_2_coords[0];
-		y2 = (int)Global_var.point_2_coords[1];
-		Global_var.point_1_coords = Global_var.cursor_coords.clone();
+		x2 = core.global.point_2_coords[0];
+		y2 = core.global.point_2_coords[1];
+		core.global.point_1_coords = core.global.cursor_snap_coords.clone();
+	}
+	
+	public void dynamic_draw(){
+		core.global.point_2_coords = core.global.cursor_snap_coords.clone();
+		x1 = core.global.point_1_coords[0];
+		y1 = core.global.point_1_coords[1];
+		
+		x2 = core.global.point_2_coords[0];
+		y2 = core.global.point_2_coords[1];
 	}
 	
 	/**
@@ -75,9 +86,24 @@ public class Class_base_draw
 	 * @param next_class
 	 */
 	public void set_next(String message1, String message2, Interface_base_draw next_class){
-		Global_var.info.setText(message1);
-		Global_var.info2.setText(message2);
-		Global_var.current_function = next_class;
+		core.gui.info.setText(message1);
+		core.gui.info2.setText(message2);
+		core.global.current_function = next_class;
+	}
+	
+	@Override
+	public void run(){
+	}
+	
+	@Override
+	public void mouse_move_event() {
+		if (display_dynamic) {
+			dynamic_draw();
+			create(ObjectMode.Preview_object);
+		}
+	}
+	
+	public void create(ObjectMode mode){
 	}
 	
 }

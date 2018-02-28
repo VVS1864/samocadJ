@@ -4,11 +4,11 @@ public class SnapCoord extends Coord {
 
 	public SnapType snap;
 
-	public SnapCoord(SnapType snap, double x, double y) {
+	public SnapCoord(SnapType snap, float x, float y) {
 		this(snap, x, y, 0);
 	}
 
-	public SnapCoord(SnapType snap, double x, double y, double z) {
+	public SnapCoord(SnapType snap, float x, float y, float z) {
 		super(x, y, z);
 		this.snap = snap;
 	}
@@ -16,4 +16,5 @@ public class SnapCoord extends Coord {
 	public SnapCoord(SnapType snap, Coord c) {
 		this(snap, c.getX(), c.getY(), c.getZ());
 	}
+	
 }

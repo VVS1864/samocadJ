@@ -1,11 +1,14 @@
 package core;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import samoJ.Coord;
-import samoJ.PrimitiveLine;
 import samoJ.Shape;
+import samoJ.SnapCoord;
+import samoJ.SnapType;
+import samoJ.PrimitiveLine.Line;
 
 public class Clip_algorithm{
 	
@@ -20,18 +23,29 @@ public class Clip_algorithm{
 	 * @param theShapes - All Shapes or Shapes in active sector (with optimization)
 	 * @return - Shapes in rectangle
 	 */
-	public static LinkedList<Shape> simple_clip(double xBL, double yBL, double xTR, double yTR, Map<Integer, Shape> theShapes){
+	public static LinkedList<Shape> simple_clip(float xBL, float yBL, float xTR, float yTR, Map<Integer, Shape> theShapes){
 		
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
 		
 		for (Shape shape : theShapes.values()){
-			for (PrimitiveLine snap_line : shape.getSnapLines()){
+			List<SnapCoord> midPoints = shape.getSnapPoints(SnapType.MidPoint);
+			if(midPoints.size()>0) {
+				SnapCoord snap_point = midPoints.get(0);
+				float x = snap_point.getX();
+				float y = snap_point.getY();
+				if ((xBL < x && x < xTR) && (yBL < y && y < yTR)) {
+					ReturnableShapes.add(shape);
+					continue;
+				}				
+			}
+			
+			for (Line snap_line : shape.getSnapLines()){
 				Coord c1 = snap_line.getC1();
-				double x1 = c1.getX();
-				double y1 = c1.getY();
+				float x1 = c1.getX();
+				float y1 = c1.getY();
 				Coord c2 = snap_line.getC2();
-				double x2 = c2.getX();
-				double y2 = c2.getY();
+				float x2 = c2.getX();
+				float y2 = c2.getY();
 				
 				if ((x1 > xTR) && (x2 > xTR)) continue; // RIGHT 
 				if ((x1 < xBL) && (x2 < xBL)) continue;	// LEFT
@@ -47,29 +61,29 @@ public class Clip_algorithm{
 					continue;//break;?  only one shape ??? AER 24/01/2017
 				}
 				
-				double c = x2*y1-x1*y2;
-				double b = x1-x2;
-				double a = y2-y1;
+				float c = x2*y1-x1*y2;
+				float b = x1-x2;
+				float a = y2-y1;
 				
-				double r1 = a*xBL + b*yTR + c;
+				float r1 = a*xBL + b*yTR + c;
 				if (r1 == 0){
 					ReturnableShapes.add(shape);
 					continue;//break; ?  only one shape ??? AER 24/01/2017
 				}
 				
-				double r2 = a*xBL + b*yBL + c;
+				float r2 = a*xBL + b*yBL + c;
 				if (r2 == 0){
 					ReturnableShapes.add(shape);
 					continue;//break; ?  only one shape ??? AER 24/01/2017
 				}
 				
-				double r3 = a * xTR + b * yTR + c;
+				float r3 = a * xTR + b * yTR + c;
 				if (r3 == 0){
 					ReturnableShapes.add(shape);
 					continue;//break; ?  only one shape ??? AER 24/01/2017
 				}
 				
-				double r4 = a * xTR + b * yBL + c;
+				float r4 = a * xTR + b * yBL + c;
 				if (r4 == 0){
 					ReturnableShapes.add(shape);
 					continue;//break; ?  only one shape ??? AER 24/01/2017

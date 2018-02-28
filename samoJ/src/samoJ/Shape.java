@@ -1,13 +1,18 @@
 package samoJ;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
+import open_dxf_lib.Color_rgb;
+import open_dxf_lib.DXF_file;
+import samoJ.PrimitiveLine.DrawableLine;
+import samoJ.PrimitiveLine.Line;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.Global_var;
+import core.Core;
+
 
 /**
  * General class for all shapes
@@ -16,40 +21,83 @@ import core.Global_var;
  * 
  */
 
-public class Shape {
+public abstract class Shape {
+	private Core core = Core.c;
 	// Displayed Lines
-	LinkedList<PrimitiveLine> PrimLines;
-	LinkedList<PrimitiveLine> SnapLines;
+	LinkedList<DrawableLine> PrimLines;
+	// Snap lines
+	LinkedList<Line> SnapLines;
+	// Snap points
 	LinkedList<SnapCoord> SnapPoints;
-	double factor;
-	int[] mask;
+	// Properties
+	protected int width;
+	protected float factor;
+	protected Dash dash;
+	/**
+	 * One color of all lines of Shape. TODO - Every primitive line of Shape must have own color, 
+	 * then this value is null.
+	 */
+	protected Color_rgb color;
+	// Unique object ID
 	public int ID;
-
-	public Shape() {
-		PrimLines = new LinkedList<PrimitiveLine>();
-		SnapLines = new LinkedList<PrimitiveLine>();
+	protected ObjectMode mode;
+	
+	public Shape(ObjectMode mode) {
+		//Standard begin
+		PrimLines = new LinkedList<DrawableLine>();
+		SnapLines = new LinkedList<Line>();
 		SnapPoints = new LinkedList<SnapCoord>();
-		Global_var.theShapes.put(Global_var.current_ID, this);
-		this.ID = Global_var.current_ID;
-		Global_var.current_ID++;
-		// System.out.println("The constructor Shape()");
+		this.mode = mode;
 	}
+	
+	public void createShape() {
+		//Special for each Shape
+		addLines();
+		
+		//Standard end
+		if(mode == ObjectMode.New_object){	
+			core.global.theShapes.put(core.global.current_ID, this);
+			this.ID = core.global.current_ID;
+			core.global.current_ID++;
+		}
+		else if(mode == ObjectMode.Preview_object){
+			core.global.preview_object_vertices = getPreviewData();
+		}
+	}
+	
+	abstract public void addLines();
 
-	ArrayList<Double> toList() {
-		ArrayList<Double> ret = new ArrayList<Double>();
-		for (PrimitiveLine p : PrimLines)
+	protected ArrayList<Float> toList() {
+		ArrayList<Float> ret = new ArrayList<Float>();
+		for (DrawableLine p : PrimLines)
 			ret.addAll(p.toList());
 		return ret;
 	}
 
-	public DoubleArrayList toListDouble() {
-		DoubleArrayList ret = new DoubleArrayList();
-		for (PrimitiveLine p : PrimLines)
-			ret.addAll(p.toListDouble());
+	public FloatArrayList toListFloat() {
+		FloatArrayList ret = new FloatArrayList(PrimLines.size()*6);
+		for (DrawableLine p : PrimLines) {
+			ret.addAll(p.toListFloat());
+			
+		}
 		return ret;
 	}
-
-	void add(PrimitiveLine theP) {
+	
+	public FloatArrayList toListFloatColor() {
+		FloatArrayList ret = new FloatArrayList(PrimLines.size()*6);
+		for (DrawableLine p : PrimLines)
+			ret.addAll(p.toListFloatColor());
+		return ret;
+	}
+	
+	public FloatArrayList toListFloatWidth() {
+		FloatArrayList ret = new FloatArrayList(PrimLines.size()*2);
+		for (DrawableLine p : PrimLines)
+			ret.addAll(p.toListFloatWidth());
+		return ret;
+	}
+	
+	protected void add(DrawableLine theP) {
 		PrimLines.add(theP);
 	}
 
@@ -59,7 +107,7 @@ public class Shape {
 	 * 
 	 * @param new_snap_line
 	 */
-	void add_snap_line(PrimitiveLine new_snap_line) {
+	protected void add_snap_line(Line new_snap_line) {
 		SnapLines.add(new_snap_line);
 		/*
 		 * for (Coord c : new_snap_line.coords) SnapPoints.add(new
@@ -67,8 +115,12 @@ public class Shape {
 		 */
 		SnapPoints.add(new_snap_line.getMiddle());
 	}
+	
+	protected void add_snap_point(SnapCoord new_snap_point) {
+		SnapPoints.add(new_snap_point);
+	}
 
-	public List<PrimitiveLine> getSnapLines() {
+	public List<Line> getSnapLines() {
 		return Collections.unmodifiableList(SnapLines);
 	}
 
@@ -80,7 +132,7 @@ public class Shape {
 
 		case EndPoint: {
 
-			for (PrimitiveLine p : SnapLines) {
+			for (Line p : SnapLines) {
 				for (Coord c : p.coords) {
 					ll.add(new SnapCoord(st, c));
 				}
@@ -94,8 +146,28 @@ public class Shape {
 		}
 
 	}
+	public float[] getPreviewData(){
+		FloatArrayList listFloat = new FloatArrayList(PrimLines.size()*6);
+		listFloat.addAll(toListFloat());
+		return listFloat.elements();
+	}
+	
+	public int get_width(){
+		return width;
+	}
+	
+	public void save_to_DXF(DXF_file f){
+	}
+	
+	public void delShape(){
+		for (DrawableLine p : PrimLines) {
+			p.delDrawableLine();
+		}
+			
+	}
 
 	// EXAMPLE
+	/*
 	public static void main(String[] args) {
 
 		Shape theShape = new Shape();
@@ -105,5 +177,5 @@ public class Shape {
 		System.out.println(theShape.getSnapPoints(SnapType.MidPoint));
 		System.out.println(theShape.getSnapPoints(SnapType.EndPoint));
 
-	}
+	}*/
 }

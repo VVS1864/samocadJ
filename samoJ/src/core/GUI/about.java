@@ -10,20 +10,23 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import core.Global_var;
-
-
+import core.Core;
 
 public class about extends JDialog{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Core core = Core.c;
 	public about(){
-		super(Global_var.jframe, "About Samocad");
+		super(Core.c.gui.jframe, "About Samocad");
 		setSize(350, 300);
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
 				dispose();
-				Global_var.about_prog = null;
+				core.gui.about_prog = null;
 			}	
 		});
 		JPanel panel = new JPanel();

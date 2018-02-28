@@ -1,3 +1,7 @@
 .classpath
 .project
+*.dxf
 /bin/
+/samoJ/.settings/
+/samoJ/.gitignore
+/.settings/

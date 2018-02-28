@@ -1,18 +1,13 @@
 package core.GUI.styles;
 
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import core.Global_var;
 
 public class base_style_dialog extends JDialog{
 	protected JPanel properties_panel;
@@ -21,8 +16,8 @@ public class base_style_dialog extends JDialog{
 	protected JPanel apply_panel;
 
 	
-	public base_style_dialog(String title, int w, int h){
-		super(Global_var.jframe, title);
+	public base_style_dialog(JFrame jframe, String title, int w, int h){
+		super(jframe, title);
 		setSize(w, h);
 		setResizable(false);
 		

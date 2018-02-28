@@ -5,28 +5,27 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JLabel;
-
 import javax.swing.JTextField;
 
-import core.Values;
-import core.Global_var;
+import core.Core;
+
 
 public class line_style extends base_style_dialog{
-
+	private Core core = Core.c;
 	public line_style(){
-		super("Line style", 180, 80);
+		super(Core.c.gui.jframe, "Line style", 180, 80);
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
 				dispose();
-				Global_var.line_style = null;
+				core.gui.line_style = null;
 			}
 		});
 		
 		// panel1 - line size
 		JLabel label1 = new JLabel("Line size");
 		JTextField text1 = new JTextField();
-		text1.setText(Double.toString(Values.stipple_factor));
+		text1.setText(Double.toString(core.values.stipple_factor));
 		properties_panel.add(label1);
 		properties_panel.add(text1);	
 		

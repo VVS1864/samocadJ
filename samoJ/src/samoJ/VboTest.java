@@ -2,37 +2,38 @@ package samoJ;
 
 import java.util.ArrayList;
 
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
+import samoJ.PrimitiveLine.DrawableLine;
 
 public class VboTest {
-	ArrayList<PrimitiveLine> primLines;
-	DoubleArrayList vertDouble;
+	ArrayList<DrawableLine> primLines;
+	FloatArrayList vertFloat;
 
 	public VboTest() {
 		// TODO Auto-generated constructor stub
-		primLines = new ArrayList<PrimitiveLine>();
-		vertDouble = new DoubleArrayList();
+		primLines = new ArrayList<DrawableLine>();
+		vertFloat = new FloatArrayList();
 
 	}
 
-	public boolean add(PrimitiveLine pp) {
+	public boolean add(DrawableLine pp) {
 		if (primLines.contains(pp))
 			return false;
 		else {
 			// Here need transaction TO DO
 			
-			vertDouble.addAll(pp.toListDouble());
+			vertFloat.addAll(pp.toListFloat());
 			primLines.add(pp);
 			// End transaction; TO DO
 			return true;
 		}
 	}
 
-	public boolean remove(PrimitiveLine pp) {
+	public boolean remove(DrawableLine pp) {
 		int ind = primLines.indexOf(pp);
 		if (ind >= 0) {
 			// Here need transaction TO DO
-			vertDouble.removeElements(ind*6, (ind+1)* 6);
+			vertFloat.removeElements(ind*6, (ind+1)* 6);
 			primLines.remove(ind);
 			// End transaction; TO DO
 			return true;
@@ -40,7 +41,7 @@ public class VboTest {
 			return false;
 	}
 
-	public boolean contains(PrimitiveLine pp) {
+	public boolean contains(DrawableLine pp) {
 		return primLines.contains(pp);
 	}
 
@@ -48,11 +49,11 @@ public class VboTest {
 		String ret = "";
 		for (int i = 0; i < primLines.size(); i++) {
 			int ii = i * 6;
-			ret += String.valueOf(i) + ":" +vertDouble.subList(ii, ii+6).toString()+ "\n";
+			ret += String.valueOf(i) + ":" +vertFloat.subList(ii, ii+6).toString()+ "\n";
 		}
 		return ret;
 	}
-
+/*
 	public static void main(String[] args) {
 		PrimitiveLine p1 = new PrimitiveLine(1, 2, 3, 4, 5, 6);
 		PrimitiveLine p2 = new PrimitiveLine(11, 12, 13, 14, 15, 16);
@@ -77,5 +78,5 @@ public class VboTest {
 		System.out.println(p2.toString());
 		
 	}
-
+*/
 }

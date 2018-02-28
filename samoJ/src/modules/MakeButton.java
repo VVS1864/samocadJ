@@ -18,21 +18,11 @@ public class MakeButton {
 		String imgLocation = "/res/"
 				+ imageName;
 		URL imageURL = Object.class.getResource(imgLocation);
-
-		//Create and initialize the button.
+		
 		JButton button = new JButton();
-		//button.setActionCommand(actionCommand);
+		
 		button.setToolTipText(toolTipText);
-		//button.addActionListener(new ActionListener(){
-
-			//@Override
-			//public void actionPerformed(ActionEvent e) {
-				//actionCommand()
-				
-			//}
-			
-			
-		//});
+		
 
 		if (imageURL != null) {                      //image found
 			button.setIcon(new ImageIcon(imageURL, altText));

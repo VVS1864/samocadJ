@@ -16,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -24,16 +25,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.Timer;
 
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 
-import core.GL_base;
-import core.Values;
-import core.Global_var;
-import core.GUI.mouse_event_listeners.normal_state;
+import core.Core;
 import core.GUI.styles.dim_style;
 import core.GUI.styles.line_style;
 import core.GUI.styles.text_style;
@@ -42,84 +39,115 @@ import modules.Standart_functions;
 import modules.MakeButton;
 
 public class GUI {
+	private Core core = Core.c;
+	// Important elements of GUI
+	public GLCanvas glcanvas;
+	private final JToolBar top_panel;
+	private final JPanel trace_panel;
+	public  JFrame jframe;
+	public  JLabel info_down;
+	public  JLabel info;
+	public  JLabel info2;
+	public  JTextField cmd;
+	public  JDialog about_prog;
+	public  JDialog dim_style;
+	public  JDialog line_style;
+	public  JDialog text_style;
 	
-//Dialogs
-	 	 
-	public GUI(){
-		
+	public JButton button_trace;
+	
+	public GUI(){		
 // GL CANVAS
+		
+		
 		GLProfile glprofile = GLProfile.getDefault();
 		GLCapabilities glcapabilities = new GLCapabilities(glprofile);
-		Global_var.glcanvas = new GLCanvas(glcapabilities);
-		Global_var.glcanvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		glcanvas = new GLCanvas(glcapabilities);
+		glcanvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+		
 		
 		// GL event listener for canvas - initialization, display, resize...
-		Global_var.glcanvas.addGLEventListener(new core.GUI.glcanvas_event_listener());
-		
-		//Mouse event listener for cursor in glcanvas
-		normal_state mouse_listener = new core.GUI.mouse_event_listeners.normal_state();
-		
-		Global_var.glcanvas.addMouseListener(mouse_listener);
-		Global_var.glcanvas.addMouseMotionListener(mouse_listener);
-		Global_var.glcanvas.addMouseWheelListener(mouse_listener);
+		glcanvas.addGLEventListener(core.glcanvas_events);
+		// Mouse event listener for cursor in glcanvas
+		glcanvas.addMouseListener(core.mouse);
+		glcanvas.addMouseMotionListener(core.mouse);
+		glcanvas.addMouseWheelListener(core.mouse);
+		glcanvas.addKeyListener(core.key);
 		
 		//Key listener for glcanvas
-		Global_var.glcanvas.addKeyListener(new gl_key_listener());
+		//Global_var.glcanvas.addKeyListener(new gl_key_listener());
 
 // Info labels
-		Global_var.info = new JLabel();
+		info = new JLabel();
 		//cad_demo.info.setText("Comand:");
-		Global_var.info2 = new JLabel();
+		info2 = new JLabel();
 		//cad_demo.info2.setText(" ");
-		Global_var.info_down = new JLabel();
-		Global_var.info_down.setText("Coordinates: X "+ 0 + "; Y " + 0 + ";");
+		info_down = new JLabel();
+		info_down.setText("Coordinates: X "+ 0 + "; Y " + 0 + ";");
 		
 		
 //Command line
-		Global_var.cmd = new JTextField(6);
+		cmd = new JTextField(6);
+		//Global_var.cmd.addKeyListener(new gl_key_listener());
 		
 //Frame for all elements
-		Global_var.jframe = new JFrame("Cad_demo, display " + GL_base.N
-				+ " vertices");
+		jframe = new JFrame("Cad_demo, display " + core.global.N
+				+ " lines");
 
-		Global_var.jframe.addWindowListener(new WindowAdapter() {
+		jframe.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent windowevent) {
-				Global_var.jframe.dispose();
-				System.exit(0);
+				close();
 			}
 		});
 		
-		Global_var.jframe.setLayout(new BorderLayout());
-		Global_var.jframe.setSize(800, 640);
+		jframe.setLayout(new BorderLayout());
+		jframe.setSize(800, 640);
 		
 		//Icon 
 		URL imageURL = GUI.class.getResource("/res/icon.gif");
 		if (imageURL != null) {  
 			ImageIcon img = new ImageIcon(imageURL);
-			Global_var.jframe.setIconImage(img.getImage());
+			jframe.setIconImage(img.getImage());
 		}
 		
+//Action listeners
+		ActionListener save_action_listener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				new Save_action();
+			}
+		};
+
+		//Action listeners trace buttons
+		ActionListener trace_action_listener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				trace_action();
+			}
+		};
+		
 //Addition standard button bars
-		Standart.addButtonsBar(Global_var.jframe);
-		Standart_functions.addButtonsBar(Global_var.jframe);
+		Standart.addButtonsBar(jframe);
+		Standart_functions.addButtonsBar(jframe);
 		
 //Add all
 		//command line container
 		final JPanel cmd_panel = new JPanel();
 		cmd_panel.setLayout(new BoxLayout(cmd_panel, BoxLayout.X_AXIS));
-		cmd_panel.add(Global_var.info);
-		cmd_panel.add(Global_var.cmd);
+		cmd_panel.add(info);
+		cmd_panel.add(cmd);
 		cmd_panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		//trace buttons container 
-		final JPanel trace_panel = new JPanel();
+		trace_panel = new JPanel();
 		trace_panel.setLayout(new BoxLayout(trace_panel, BoxLayout.X_AXIS));
 		//buttons
 		Color white = new Color(255, 255, 255);
 		JButton button_ortho = new JButton("Ortho");
 		button_ortho.setBackground(white);
-		JButton button_trace = new JButton("Trace");
+		button_trace = new JButton("Trace");
 		button_trace.setBackground(white);
+		button_trace.addActionListener(trace_action_listener);
 		JButton button_object_trace = new JButton("Object trace");
 		button_object_trace.setBackground(white);
 		JButton button_snap_near = new JButton("Snap near");
@@ -134,41 +162,42 @@ public class GUI {
 		final JPanel bot_panel = new JPanel();
 		bot_panel.setLayout(new BoxLayout(bot_panel, BoxLayout.Y_AXIS));
 		bot_panel.add(cmd_panel);
-		bot_panel.add(Global_var.info2);
-		bot_panel.add(Global_var.info_down);
+		bot_panel.add(info2);
+		bot_panel.add(info_down);
 		bot_panel.add(trace_panel);
 		
 		//North container 
 		//final JPanel top_panel = new JPanel();
-		JToolBar top_panel = new JToolBar("Still draggable", JToolBar.HORIZONTAL);
+		top_panel = new JToolBar("Still draggable", JToolBar.HORIZONTAL);
 		//top_panel.setLayout(new BoxLayout(top_panel, BoxLayout.X_AXIS));
 		//Elements for North container
 		JButton button_save = MakeButton.makeButton("saveas.gif", "Save", "Save");
+		button_save.addActionListener(save_action_listener);
 		JButton button_open = MakeButton.makeButton("open.gif", "Open", "Open");
 		JButton button_color = MakeButton.makeButton("none", "Current color", " ");
 		button_color.setBackground(new Color(255, 255, 255));
 		button_color.setMaximumSize(new Dimension(60, 40));
 		JLabel label_width = MakeButton.makeLabel("width.gif", "Width");
 		
-		JComboBox combo_width = new JComboBox(Values.line_widths); 
+		JComboBox combo_width = new JComboBox(core.values.line_widths); 
 		combo_width.setMaximumSize(new Dimension(60, 30));
 		combo_width.setSelectedIndex(0);
 		
 		
-		JComboBox combo_line_type = new JComboBox(Values.line_types); 
+		JComboBox combo_line_type = new JComboBox(core.values.line_types); 
 		combo_line_type.setSelectedIndex(0);
 		combo_line_type.setMaximumSize(new Dimension(120, 30));
 		
 		JLabel label_text_size = MakeButton.makeLabel("text_size.gif", "Text size");
 		
 		JTextField text_size = new JTextField();
-		text_size.setText(Integer.toString(Values.text_size));
+		text_size.setText(Integer.toString(core.values.text_size));
 		text_size.setMaximumSize(new Dimension(60, 30));
 				
 		JLabel label_dim_text_size = MakeButton.makeLabel("dim_size.gif", "Dimention size");
 		
 		JTextField dim_text_size = new JTextField();
-		dim_text_size.setText(Integer.toString(Values.dim_text_size));
+		dim_text_size.setText(Integer.toString(core.values.dim_text_size));
 		dim_text_size.setMaximumSize(new Dimension(60, 30));
 		
 		JButton button_undo = MakeButton.makeButton("undo.gif", "Undo", "Undo");
@@ -206,9 +235,9 @@ public class GUI {
 		top_panel.add(button_undo);
 		
 		//Addition all containers to frame
-		Global_var.jframe.add(top_panel, BorderLayout.NORTH);
-		Global_var.jframe.add(bot_panel, BorderLayout.SOUTH);
-		Global_var.jframe.add(Global_var.glcanvas, BorderLayout.CENTER);
+		jframe.add(top_panel, BorderLayout.NORTH);
+		jframe.add(bot_panel, BorderLayout.SOUTH);
+		jframe.add(glcanvas, BorderLayout.CENTER);
 		
 //MENU BAR
 		
@@ -229,12 +258,14 @@ public class GUI {
 		JMenuItem item_exit = new JMenuItem("Exit");
 		
 		//Actions menu File
+		item_saveas.addActionListener(save_action_listener);
+		
 		item_exit.addActionListener(new ActionListener()
 		  {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Global_var.jframe.dispose();
+				jframe.dispose();
 				System.exit(0);//Exit
 			}
 
@@ -298,8 +329,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (Global_var.dim_style == null){
-					Global_var.dim_style = new dim_style();
+				if (dim_style == null){
+					dim_style = new dim_style();
 				}
 			}
 		});
@@ -309,8 +340,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (Global_var.line_style == null){
-					Global_var.line_style = new line_style();
+				if (line_style == null){
+					line_style = new line_style();
 				}
 			}
 		});
@@ -320,8 +351,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (Global_var.text_style == null){
-					Global_var.text_style = new text_style();
+				if (text_style == null){
+					text_style = new text_style();
 				}
 			}
 		});
@@ -341,8 +372,8 @@ public class GUI {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (Global_var.about_prog == null){
-					Global_var.about_prog = new about();
+				if (about_prog == null){
+					about_prog = new about();
 				}
 			}
 		});
@@ -358,9 +389,60 @@ public class GUI {
 		menuBar.add(menu_format);
 		menuBar.add(menu_help);
 		
-		Global_var.jframe.setJMenuBar(menuBar);
+		jframe.setJMenuBar(menuBar);
+		/// ???!!! TODO
+		for (Component c : top_panel.getComponents()) {
+			c.addKeyListener(core.key);
+		}
+		for (Component c : trace_panel.getComponents()) {
+			c.addKeyListener(core.key);
+		}
+		
+		jframe.setVisible(true);
 		
 		
-		Global_var.jframe.setVisible(true);
 	}
+	public void close() {
+		
+		jframe.dispose();
+		System.exit(0);
+	}
+	
+	private void trace_action() {
+		core.values.trace_flag = but_swich(button_trace, core.values.trace_flag);
+	}
+	
+	private boolean but_swich(JButton button, boolean flag) {
+		if (flag) {
+			Color white = new Color(255, 255, 255);
+			button.setBackground(white);
+			return false;
+		}
+		else {
+			Color blue = new Color(0, 0, 255);
+			button.setBackground(blue);
+			return true;
+		}
+	}
+	
+	/*
+	public void set_GL_listeners(Mouse_events mouse, GL_canvas_event_listener glcanvas_events,
+			GL_key_listener key) {
+		// GL event listener for canvas - initialization, display, resize...
+		glcanvas.addGLEventListener(glcanvas_events);
+		
+		// Mouse event listener for cursor in glcanvas
+		glcanvas.addMouseListener(mouse);
+		glcanvas.addMouseMotionListener(mouse);
+		glcanvas.addMouseWheelListener(mouse);
+		
+		///???!!! TODO
+		for(Component c: top_panel.getComponents()) {
+			c.addKeyListener(key);
+		}
+		for(Component c: trace_panel.getComponents()) {
+			c.addKeyListener(key);
+		}
+		glcanvas.addKeyListener(key);
+	}*/
 }
