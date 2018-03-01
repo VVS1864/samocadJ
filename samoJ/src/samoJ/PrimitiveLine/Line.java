@@ -7,7 +7,11 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import samoJ.Coord;
 import samoJ.SnapCoord;
 import samoJ.SnapType;
-
+/**
+ * Entity for basic Line snap and data. Is not drawable line. 
+ * @author vlad
+ *
+ */
 public class Line {
 	public LinkedList<Coord> coords;
 	

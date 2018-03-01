@@ -37,9 +37,9 @@ public class ShapeLine extends Shape {
 			dash_type dash, Color_rgb color, int width) {
 		super(mode);
 		//protection from Zero Line
-		if (x1 == x2 && y1 == y2 && z1 == z2) {
-			return;
-		}
+		//if (x1 == x2 && y1 == y2 && z1 == z2) {
+		//	return;
+		//}
 		this.x1 = x1;
 		this.y1 = y1;
 		this.z1 = z1;
@@ -142,6 +142,12 @@ public class ShapeLine extends Shape {
 	@Override
 	public void save_to_DXF(DXF_file f) {
 		f.put_line(x1, y1, x2, y2, dash.dash, factor, color, width);
+		
+	}
+
+	@Override
+	public boolean zeroCoordsProtection() {
+		return !(x1 == x2 && y1 == y2 && z1 == z2);
 		
 	}
 	

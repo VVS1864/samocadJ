@@ -3,6 +3,8 @@ package samoJ;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
+import samoJ.PrimitiveArc.Arc;
+import samoJ.PrimitiveCircle.Circle;
 import samoJ.PrimitiveLine.DrawableLine;
 import samoJ.PrimitiveLine.Line;
 
@@ -27,6 +29,10 @@ public abstract class Shape {
 	LinkedList<DrawableLine> PrimLines;
 	// Snap lines
 	LinkedList<Line> SnapLines;
+	// Snap circles
+	LinkedList<Circle> SnapCircles;
+	// Snap circles
+	LinkedList<Arc> SnapArcs;
 	// Snap points
 	LinkedList<SnapCoord> SnapPoints;
 	// Properties
@@ -46,11 +52,15 @@ public abstract class Shape {
 		//Standard begin
 		PrimLines = new LinkedList<DrawableLine>();
 		SnapLines = new LinkedList<Line>();
+		SnapCircles = new LinkedList<Circle>();
+		SnapArcs = new LinkedList<Arc>();
 		SnapPoints = new LinkedList<SnapCoord>();
 		this.mode = mode;
 	}
 	
 	public void createShape() {
+		//protection from Zero Shape (override is each Shape)
+		if (!zeroCoordsProtection()) return;
 		//Special for each Shape
 		addLines();
 		
@@ -66,6 +76,12 @@ public abstract class Shape {
 	}
 	
 	abstract public void addLines();
+	
+	/**
+	 * Protection from zero shapes as circle with Radius = 0, line with length = 0, e.t.c.
+	 * @return false - is Zero Shape!
+	 */
+	abstract public boolean zeroCoordsProtection();
 
 	protected ArrayList<Float> toList() {
 		ArrayList<Float> ret = new ArrayList<Float>();
@@ -116,12 +132,28 @@ public abstract class Shape {
 		SnapPoints.add(new_snap_line.getMiddle());
 	}
 	
+	protected void add_snap_circle(Circle new_snap_circle) {
+		SnapCircles.add(new_snap_circle);
+	}
+	
+	protected void add_snap_arc(Arc new_snap_arc) {
+		SnapArcs.add(new_snap_arc);
+	}
+	
 	protected void add_snap_point(SnapCoord new_snap_point) {
 		SnapPoints.add(new_snap_point);
 	}
 
 	public List<Line> getSnapLines() {
 		return Collections.unmodifiableList(SnapLines);
+	}
+	
+	public List<Circle> getSnapCircles() {
+		return Collections.unmodifiableList(SnapCircles);
+	}
+	
+	public List<Arc> getSnapArces() {
+		return Collections.unmodifiableList(SnapArcs);
 	}
 
 	public List<SnapCoord> getSnapPoints(SnapType st) {

@@ -2,7 +2,7 @@ package modules.standard_objects.circle;
 
 import modules.base_draw_entities.Class_base_draw;
 import samoJ.ShapeLine;
-import samoJ.Circle;
+import samoJ.ShapeCircle;
 import samoJ.ObjectMode;
 
 public  class draw_circle_3 extends Class_base_draw{
@@ -17,7 +17,7 @@ public  class draw_circle_3 extends Class_base_draw{
 	
 	@Override
 	public void create(ObjectMode mode){
-		new Circle(mode, x1, y1, 0.0f, x2, y2, 0.0f, core.values.color, core.values.width);
+		new ShapeCircle(mode, x1, y1, 0.0f, x2, y2, 0.0f, core.values.color, core.values.width);
 	}
 	
 }

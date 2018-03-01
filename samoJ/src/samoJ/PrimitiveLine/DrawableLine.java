@@ -12,6 +12,7 @@ import core.Core;
  * each line must increase/decrease this value for stable GL rendering!
  * 
  * @author E.Askadullin
+ * @author vlad
  * 
  */
 

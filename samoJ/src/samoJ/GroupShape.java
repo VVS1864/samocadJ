@@ -66,6 +66,13 @@ public class GroupShape extends Shape {
 		}
 		
 	}
+
+
+
+	@Override
+	public boolean zeroCoordsProtection() {
+		return shapes.size() != 0;
+	}
 	
 }
 

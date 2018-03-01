@@ -3,9 +3,10 @@ package samoJ;
 import core.Core;
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.DXF_file;
+import samoJ.PrimitiveCircle.Circle;
 import samoJ.PrimitiveLine.DrawableLine;
 
-public class Circle extends Shape {
+public class ShapeCircle extends Shape {
 	private Core core = Core.c;
 	Coord theCenter;
 	float Radius;
@@ -19,7 +20,7 @@ public class Circle extends Shape {
 	 * @param z1
 	 */
 
-	public Circle(ObjectMode mode, float r, float x1, float y1, float z1, Color_rgb color, int width) {
+	public ShapeCircle(ObjectMode mode, float r, float x1, float y1, float z1, Color_rgb color, int width) {
 		super(mode);
 		this.theCenter = new Coord(x1, y1, z1);
 		this.Radius = r;
@@ -28,8 +29,8 @@ public class Circle extends Shape {
 		super.createShape(); //Standard procedure of create
 	}
 
-	public Circle(ObjectMode mode, float x2, float y2, float z2, float rx, float ry, float rz, Color_rgb color, int width) {
-		this(mode, (float)Math.round(Math.sqrt((rx - x2) * (rx - x2) +(ry - y2)*(ry - y2))), x2, y2, z2, color, width);
+	public ShapeCircle(ObjectMode mode, float x2, float y2, float z2, float rx, float ry, float rz, Color_rgb color, int width) {
+		this(mode, (float)Math.sqrt((rx - x2) * (rx - x2) + (ry - y2)*(ry - y2)), x2, y2, z2, color, width);
 		/*int xd = rx - x2;
 		int yd = ry - y2;
 		int r = (int) Math.sqrt(xd * xd + yd * yd);
@@ -43,6 +44,7 @@ public class Circle extends Shape {
 		create_circle();
 		// Snap center
 		add_snap_point(new SnapCoord(SnapType.MidPoint, theCenter));
+		add_snap_circle(new Circle(theCenter, Radius));
 	}
 	
 	public void create_circle() {
@@ -101,6 +103,11 @@ public class Circle extends Shape {
 		Circle c = new Circle(5, 15, 0, 25, 30, 0);
 		System.out.println(c.toList());
 	}*/
+
+	@Override
+	public boolean zeroCoordsProtection() {
+		return Radius != 0;
+	}
 
 	
 
