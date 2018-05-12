@@ -5,6 +5,7 @@ import open_dxf_lib.Color_rgb;
 public class Selective_rect {
 	public  float[] select_rect_1;
 	public  float[] select_rect_2;
+	public boolean enable = false;
 	/**
 	 * Selective rectangle vertices for draw on canvas and select Shapes
 	 */
@@ -24,6 +25,7 @@ public class Selective_rect {
 		select_rect_1 = point_1.clone();
 		select_rect_2 = point_2.clone();
 		calc_rect();
+		enable = true;
 	}
 	
 	public void new_data(float[] point_2) {
@@ -56,6 +58,20 @@ public class Selective_rect {
 
 	public void clear() {
 		select_rect_vertices = null;
+		enable = false;
+	}
+	
+	public float get_x_min() {
+		return x1<x2 ? x1 : x2;
+	}
+	public float get_y_min() {
+		return y1<y2 ? y1 : y2;
+	}
+	public float get_x_max() {
+		return x1>x2 ? x1 : x2;
+	}
+	public float get_y_max() {
+		return y1>y2 ? y1 : y2;
 	}
 
 }

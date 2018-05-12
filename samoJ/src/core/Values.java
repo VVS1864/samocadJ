@@ -64,6 +64,7 @@ public class Values {
 	 * Color for new object (Class Color_rgb!)
 	 */
 	public Color_rgb color = new Color_rgb(1f, 1f, 0f);//{255, 0, 0};
+	public Color_rgb selected_shape_color = new Color_rgb(0f, 0f, 1f);
 	public Color_rgb snap_color = new Color_rgb(0f, 1f, 1f);//{0, 255, 255};
 	/**
 	 * Color for object under cursor

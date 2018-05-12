@@ -35,11 +35,15 @@ public class GL_base {
 	public ShaderState st;
 	private GLArrayDataServer interleavedVBO;
 	private GLArrayDataServer dynamic_interleavedVBO;
+	private GLArrayDataServer fast_dynamic_interleavedVBO;
 
 	public float[] general_matrix = { 1, 0, 0, 0, 0, 1,
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
 	public float[] identity_matrix = { 1, 0, 0, 0, 0, 1,
+			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
+	
+	public float[] dynamic_matrix = { 1, 0, 0, 0, 0, 1,
 			0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 	
 	public PMVMatrix pmvMatrix;
@@ -272,7 +276,7 @@ public class GL_base {
 		core.global.N_dynamic_lines = 0;
 		Dynamic_data d = new Dynamic_data(GL_version);
 		
-		if (core.global.select_mode){
+		if (core.global.selective_rect.enable){
 			d.put_data(core.global.selective_rect.select_rect_vertices, core.global.selective_rect.select_rect_color.get_float_rgb(), core.values.select_rect_width);
 		}
 		
@@ -287,6 +291,10 @@ public class GL_base {
 					core.values.dynamic_width);
 		}
 		
+		Dynamic_data fast_d = new Dynamic_data(GL_version);
+		if(core.global.fast_dynamic_vertices != null) {
+			fast_d.put_data(core.global.fast_dynamic_vertices, core.values.selected_shape_color.get_float_rgb(), core.values.dynamic_width);
+		}
 		if (GL_version == 3) {
 			float[] vertices = d.get_vertices();
 			float[] colors = d.get_colors();
@@ -300,6 +308,19 @@ public class GL_base {
 			dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false,
 					core.global.N_dynamic_lines * 2 * 3, GL3.GL_STATIC_DRAW);
 			update_vao(dynamic_interleavedVBO, vertices, colors, widths, core.global.N_dynamic_lines);
+			
+			vertices = fast_d.get_vertices();
+			colors = fast_d.get_colors();
+			widths = fast_d.get_widths();
+			core.global.N_fast_dynamic_lines = vertices.length / 6;
+			// destroy old VBO (memory leak!)
+			if (null != fast_dynamic_interleavedVBO) {
+				st.ownAttribute(fast_dynamic_interleavedVBO, false);
+				fast_dynamic_interleavedVBO.destroy(gl3);
+			}
+			fast_dynamic_interleavedVBO = GLArrayDataServer.createGLSLInterleaved(3 + 3 + 1, GL3.GL_FLOAT, false,
+					core.global.N_fast_dynamic_lines * 2 * 3, GL3.GL_STATIC_DRAW);
+			update_vao(fast_dynamic_interleavedVBO, vertices, colors, widths, core.global.N_fast_dynamic_lines);
 		} 
 		else if (GL_version < 3) {
 			for(GL1_2_data dataArray: d.GL1_2_dynamic_dataArray) {
@@ -412,6 +433,8 @@ public class GL_base {
 
 			draw_vao(interleavedVBO, core.global.N_DrawableLines);
 			draw_vao(dynamic_interleavedVBO, core.global.N_dynamic_lines);
+			draw_fast_dynamic(fast_dynamic_interleavedVBO, core.global.N_fast_dynamic_lines);
+			
 			st.useProgram(gl3, false);
 
 			pmvMatrix.glGetFloatv(GLMatrixFunc.GL_MODELVIEW_MATRIX, mvmatrix, 0);
@@ -424,6 +447,16 @@ public class GL_base {
 		}
     }
 	
+	private void draw_fast_dynamic(
+			GLArrayDataServer fast_dynamic_interleavedVBO,
+			int n_fast_dynamic_lines) {
+		pmvMatrix.glPushMatrix();
+		pmvMatrix.glMultMatrixf(dynamic_matrix, 0);
+		update_pmv_matrix();
+		draw_vao(fast_dynamic_interleavedVBO, core.global.N_fast_dynamic_lines);
+		pmvMatrix.glPopMatrix();
+		update_pmv_matrix();
+	}
 	public void dispose() {
 		if (GL_version == 3) {
 

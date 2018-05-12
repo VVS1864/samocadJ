@@ -55,7 +55,7 @@ public class Dynamic_data {
 		float[] floatVertices = new float[vertices.size()];
 		int i = 0;
 		for (Float f : vertices) {
-		    floatVertices[i++] = f;// (f != null ? f : Float.NaN); // Or whatever default you want.
+		    floatVertices[i++] = f;
 		}
 		return floatVertices;
 		

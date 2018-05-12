@@ -10,6 +10,7 @@ import core.Clip_algorithm;
 import core.Core;
 import core.Draw_snap_sign;
 import core.Get_snap;
+import core.dynamic_entities.Selective_rect;
 import core.navigation.Plan_motion;
 import samoJ.Shape;
 import samoJ.SnapCoord;
@@ -89,13 +90,21 @@ public class Mouse_events extends mouse_state {
 		float y = core.global.cursor_coords[1];
 		// TO-DO snap to Shapes
 		
+		///temp!!!
+		if (core.global.temp_move) {
+		float dx = core.global.point_1_coords[0] - x;
+		float dy = core.global.point_1_coords[1] - y;
+		core.glRender.dynamic_matrix = new float[]{ 1, 0, 0, 0, 0, 1,
+				0, 0, 0, 0, 1, 0, -dx, -dy, 0, 1 };
+		}
+		
 		core.global.cursor_snap_coords = core.global.cursor_coords.clone();
 		if (core.global.mouse_plan_motion == false) {
 			core.gui.info_down.setText("Coordinates: X "
 					+ String.format("%.2f", x) + "; Y "
 					+ String.format("%.2f", y) + ";");
 
-			if (core.global.select_mode == true) {
+			if (core.global.selective_rect.enable == true) {
 				core.global.selective_rect.new_data(core.global.cursor_snap_coords);
 			}
 			else {
@@ -111,7 +120,7 @@ public class Mouse_events extends mouse_state {
 				// Current Shape indication - if not (select_mode,
 				// draw_new_object)
 				// and there are any Shapes under cursor
-				if (!core.global.select_mode && !core.global.draw_new_object
+				if (!core.global.selective_rect.enable && !core.global.draw_new_object
 						&& !current_Shapes.isEmpty()) {
 					core.global.current_Shape = current_Shapes.get(0);
 					// Make current shapeInteger for click-selecting
@@ -156,14 +165,23 @@ public class Mouse_events extends mouse_state {
 	}
 		
 	void mouse_select(){
-		if (core.global.select_mode == false){
+		Selective_rect r = core.global.selective_rect;
+		if (r.enable == false){
 			//TO-DO block if object on cursor!!!
-			core.global.select_mode = true;
-			core.global.selective_rect.init(core.global.cursor_snap_coords, core.global.cursor_snap_coords);
+			r.init(core.global.cursor_snap_coords, core.global.cursor_snap_coords);
 		}
 		else {
-			core.global.select_mode = false;
-			core.global.selective_rect.clear();
+			r.clear();
+			LinkedList<Shape> current_Shapes = Clip_algorithm.simple_clip(r.get_x_min(), r.get_y_min(), r.get_x_max(), r.get_y_max(), core.global.theShapes);
+			FloatArrayList list1 = new FloatArrayList(0);
+			for(Shape sh: current_Shapes) {
+				list1.addAll(sh.toListFloat());
+			}
+			core.global.fast_dynamic_vertices = list1.elements();
+			
+			///temp!!!
+			core.global.temp_move = true;
+			core.global.point_1_coords = core.global.cursor_coords.clone();
 		}
 		
 	}

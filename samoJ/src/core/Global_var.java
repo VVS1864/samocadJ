@@ -23,10 +23,6 @@ public class Global_var {
 	 */
 	public  boolean draw_new_object = false;
 
-	/**
-	 * True if program in select with rectangle state
-	 */
-	public  boolean select_mode = false;
 
 	// Program global variables
 	/**
@@ -94,6 +90,8 @@ public class Global_var {
 	public  float[] snap_sign_vertices = null;
 	
 	public  float[] preview_object_vertices = null;
+	
+	public  float[] fast_dynamic_vertices = null;
 
 	// COLORES
 	public  Color_rgb select_rect_color = new Color_rgb(1.0f, 1.0f, 1.0f);
@@ -107,8 +105,11 @@ public class Global_var {
 
 	public  int N_DrawableLines = 0;
 	public  int N_dynamic_lines = 0;
+	public  int N_fast_dynamic_lines = 0;
 	
 	public int N = 50;// number of test lines
+	
+	public boolean temp_move = false;
 	
 	public Global_var() {
 		
