@@ -71,7 +71,7 @@ public abstract class Shape {
 			core.global.current_ID++;
 		}
 		else if(mode == ObjectMode.Preview_object){
-			core.global.preview_object_vertices = getPreviewData();
+			core.global.preview_shape.init(getPreviewData());
 		}
 	}
 	

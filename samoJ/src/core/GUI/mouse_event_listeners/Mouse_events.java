@@ -1,14 +1,11 @@
 package core.GUI.mouse_event_listeners;
 
-import it.unimi.dsi.fastutil.floats.FloatArrayList;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.LinkedList;
 
 import core.Clip_algorithm;
 import core.Core;
-import core.Draw_snap_sign;
 import core.Get_snap;
 import core.dynamic_entities.Selective_rect;
 import core.navigation.Plan_motion;
@@ -89,15 +86,7 @@ public class Mouse_events extends mouse_state {
 		float x = core.global.cursor_coords[0];
 		float y = core.global.cursor_coords[1];
 		// TO-DO snap to Shapes
-		
-		///temp!!!
-		if (core.global.temp_move) {
-		float dx = core.global.point_1_coords[0] - x;
-		float dy = core.global.point_1_coords[1] - y;
-		core.glRender.dynamic_matrix = new float[]{ 1, 0, 0, 0, 0, 1,
-				0, 0, 0, 0, 1, 0, -dx, -dy, 0, 1 };
-		}
-		
+				
 		core.global.cursor_snap_coords = core.global.cursor_coords.clone();
 		if (core.global.mouse_plan_motion == false) {
 			core.gui.info_down.setText("Coordinates: X "
@@ -122,23 +111,14 @@ public class Mouse_events extends mouse_state {
 				// and there are any Shapes under cursor
 				if (!core.global.selective_rect.enable && !core.global.draw_new_object
 						&& !current_Shapes.isEmpty()) {
-					core.global.current_Shape = current_Shapes.get(0);
-					// Make current shapeInteger for click-selecting
-					FloatArrayList list1 = core.global.current_Shape
-							.toListFloat();
-					/*
-					 * core.global.current_Shape_vertices = ArrayUtils
-					 * .toPrimitive(list1.toArray(new Double[list1.size()]));
-					 */
-					core.global.current_Shape_vertices = list1.elements();
-
+					core.global.current_Shape.new_collection(current_Shapes);
 				}
 				else {
-					core.global.current_Shape_vertices = null;
+					core.global.current_Shape.clear();
 				}
 
 				// Delete old snap sign
-				core.global.snap_sign_vertices = null;
+				core.global.snap_sign.clear();
 				// Find snap
 				SnapCoord snap = null;
 				if (!current_Shapes.isEmpty()) {
@@ -147,8 +127,8 @@ public class Mouse_events extends mouse_state {
 							core.values.snap_keys);
 
 					if (snap != null) {
-						core.global.snap_sign_vertices = Draw_snap_sign
-								.draw(snap, real_snap_distance);
+						//Draw snap sign
+						core.global.snap_sign.init(snap, real_snap_distance);
 						core.global.cursor_snap_coords = snap.getXYZ();
 					}
 				}
@@ -173,15 +153,7 @@ public class Mouse_events extends mouse_state {
 		else {
 			r.clear();
 			LinkedList<Shape> current_Shapes = Clip_algorithm.simple_clip(r.get_x_min(), r.get_y_min(), r.get_x_max(), r.get_y_max(), core.global.theShapes);
-			FloatArrayList list1 = new FloatArrayList(0);
-			for(Shape sh: current_Shapes) {
-				list1.addAll(sh.toListFloat());
-			}
-			core.global.fast_dynamic_vertices = list1.elements();
-			
-			///temp!!!
-			core.global.temp_move = true;
-			core.global.point_1_coords = core.global.cursor_coords.clone();
+			core.global.collection.new_collection(current_Shapes);
 		}
 		
 	}

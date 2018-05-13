@@ -4,7 +4,10 @@ package core;
 import java.util.HashMap;
 import java.util.Map;
 
+import core.dynamic_entities.Preview_shape;
+import core.dynamic_entities.Selected;
 import core.dynamic_entities.Selective_rect;
+import core.dynamic_entities.Snap_sign;
 import modules.base_draw_entities.Interface_base_draw;
 import open_dxf_lib.Color_rgb;
 import samoJ.Dash_base;
@@ -54,6 +57,26 @@ public class Global_var {
 	 * object for manage selective rectangle
 	 */
 	public Selective_rect selective_rect = new Selective_rect();
+	
+	/**
+	 * object for manage selected Shapes
+	 */
+	public Selected collection = new Selected();
+	
+	/**
+	 * indication Shape under cursor
+	 */
+	public Selected current_Shape = new Selected();
+	
+	/**
+	 * snap sign
+	 */
+	public Snap_sign snap_sign = new Snap_sign();
+	
+	/**
+	 * snap sign
+	 */
+	public Preview_shape preview_shape = new Preview_shape();
 	/**
 	 * Class implements Interface_base_draw for run an action if user clicks
 	 * left mouse button and draw_new_object == true
@@ -66,36 +89,14 @@ public class Global_var {
 	public  Interface_base_draw old_function = null;
 	
 	/**
-	 * Shape under cursor for select with mouse left button click
-	 */
-	public  Shape current_Shape = null;
-
-	/**
 	 * General HashMap of Shapes - Lines, Circles, Dimensions... Any new Shape
-	 * must be put here. Key Integer is Shape ID All of Shapes will be passed to
+	 * must be put here. Key Integer is Shape ID. All of Shapes will be passed to
 	 * OpenGL VBO
 	 */
 	public  Map<Integer, Shape> theShapes = new HashMap<Integer, Shape>();
 	
 	public  Dash_base dashes = new Dash_base();
 	
-	/**
-	 * Array for draw indication current Shape under cursor
-	 */
-	public  float[] current_Shape_vertices = null;
-
-	/**
-	 * For draw snap sign, it depend from snap type
-	 */
-	public  float[] snap_sign_vertices = null;
-	
-	public  float[] preview_object_vertices = null;
-	
-	public  float[] fast_dynamic_vertices = null;
-
-	// COLORES
-	public  Color_rgb select_rect_color = new Color_rgb(1.0f, 1.0f, 1.0f);
-
 
 	/**
 	 * ID of Shape next for creation. It use as key in theShapes HashMap. After
@@ -108,8 +109,6 @@ public class Global_var {
 	public  int N_fast_dynamic_lines = 0;
 	
 	public int N = 50;// number of test lines
-	
-	public boolean temp_move = false;
 	
 	public Global_var() {
 		

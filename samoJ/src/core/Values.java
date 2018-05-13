@@ -66,10 +66,20 @@ public class Values {
 	public Color_rgb color = new Color_rgb(1f, 1f, 0f);//{255, 0, 0};
 	public Color_rgb selected_shape_color = new Color_rgb(0f, 0f, 1f);
 	public Color_rgb snap_color = new Color_rgb(0f, 1f, 1f);//{0, 255, 255};
+	
 	/**
 	 * Color for object under cursor
 	 */
 	public Color_rgb current_shape_color = new Color_rgb(0f, 1f, 0f);//{0, 255, 0};
+	
+	/**
+	 * Color for selective rect left
+	 */
+	public Color_rgb selective_rect_color_1 = new Color_rgb(255, 0, 0);
+	/**
+	 * Color for selective rect right
+	 */
+	public Color_rgb selective_rect_color_2 = new Color_rgb(0, 0, 255);
 	
 // Paths
 	public String current_file_name = "New_drawing.dxf";

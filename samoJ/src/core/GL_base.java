@@ -276,24 +276,24 @@ public class GL_base {
 		core.global.N_dynamic_lines = 0;
 		Dynamic_data d = new Dynamic_data(GL_version);
 		
+				
+		if (core.global.current_Shape.vertices != null){
+			d.put_data(core.global.current_Shape.vertices, core.global.current_Shape.color.get_float_rgb(), core.global.current_Shape.width);	
+		}
 		if (core.global.selective_rect.enable){
-			d.put_data(core.global.selective_rect.select_rect_vertices, core.global.selective_rect.select_rect_color.get_float_rgb(), core.values.select_rect_width);
+			d.put_data(core.global.selective_rect.vertices, core.global.selective_rect.color.get_float_rgb(), core.global.selective_rect.width);
 		}
-		
-		if (core.global.current_Shape_vertices != null){
-			d.put_data(core.global.current_Shape_vertices, core.values.current_shape_color.get_float_rgb(), core.values.dynamic_width);	
+		if (core.global.snap_sign.vertices != null){
+			d.put_data(core.global.snap_sign.vertices, core.global.snap_sign.color.get_float_rgb(), core.global.snap_sign.width);
 		}
-		if (core.global.snap_sign_vertices != null){
-			d.put_data(core.global.snap_sign_vertices, core.values.snap_color.get_float_rgb(), core.values.dynamic_width);
-		}
-		if (core.global.preview_object_vertices != null) {
-			d.put_data(core.global.preview_object_vertices, core.values.color.get_float_rgb(),
+		if (core.global.preview_shape.vertices != null) {
+			d.put_data(core.global.preview_shape.vertices, core.global.preview_shape.color.get_float_rgb(),
 					core.values.dynamic_width);
 		}
 		
 		Dynamic_data fast_d = new Dynamic_data(GL_version);
-		if(core.global.fast_dynamic_vertices != null) {
-			fast_d.put_data(core.global.fast_dynamic_vertices, core.values.selected_shape_color.get_float_rgb(), core.values.dynamic_width);
+		if(core.global.collection.vertices != null) {
+			fast_d.put_data(core.global.collection.vertices, core.global.collection.color.get_float_rgb(), core.global.collection.width);
 		}
 		if (GL_version == 3) {
 			float[] vertices = d.get_vertices();
@@ -430,10 +430,11 @@ public class GL_base {
 			if (!st.uniform(gl3, current_scaleUniform)) {
 				throw new GLException("Error setting current_scale in shader: " + st);
 			}
-
+			
 			draw_vao(interleavedVBO, core.global.N_DrawableLines);
-			draw_vao(dynamic_interleavedVBO, core.global.N_dynamic_lines);
 			draw_fast_dynamic(fast_dynamic_interleavedVBO, core.global.N_fast_dynamic_lines);
+			draw_vao(dynamic_interleavedVBO, core.global.N_dynamic_lines);
+			
 			
 			st.useProgram(gl3, false);
 
