@@ -37,7 +37,7 @@ public class Mouse_events extends mouse_state {
 				core.global.current_function.run();
 			} else {
 				// Enable select with rectangle program state
-				mouse_select();
+				new Mouse_select(e.isShiftDown());
 			}
 		}
 		core.gui.glcanvas.display();
@@ -86,7 +86,7 @@ public class Mouse_events extends mouse_state {
 		float x = core.global.cursor_coords[0];
 		float y = core.global.cursor_coords[1];
 		// TO-DO snap to Shapes
-				
+			
 		core.global.cursor_snap_coords = core.global.cursor_coords.clone();
 		if (core.global.mouse_plan_motion == false) {
 			core.gui.info_down.setText("Coordinates: X "
@@ -111,7 +111,7 @@ public class Mouse_events extends mouse_state {
 				// and there are any Shapes under cursor
 				if (!core.global.selective_rect.enable && !core.global.draw_new_object
 						&& !current_Shapes.isEmpty()) {
-					core.global.current_Shape.new_collection(current_Shapes);
+					core.global.current_Shape.new_collection(current_Shapes.getFirst());
 				}
 				else {
 					core.global.current_Shape.clear();
@@ -141,19 +141,6 @@ public class Mouse_events extends mouse_state {
 				}
 			}
 			core.gui.glcanvas.display();
-		}
-	}
-		
-	void mouse_select(){
-		Selective_rect r = core.global.selective_rect;
-		if (r.enable == false){
-			//TO-DO block if object on cursor!!!
-			r.init(core.global.cursor_snap_coords, core.global.cursor_snap_coords);
-		}
-		else {
-			r.clear();
-			LinkedList<Shape> current_Shapes = Clip_algorithm.simple_clip(r.get_x_min(), r.get_y_min(), r.get_x_max(), r.get_y_max(), core.global.theShapes);
-			core.global.collection.new_collection(current_Shapes);
 		}
 		
 	}

@@ -6,7 +6,9 @@ public class Selective_rect extends Dynamic_entity{
 	public  float[] select_rect_1;
 	public  float[] select_rect_2;
 	public boolean enable = false;
-		
+	
+	protected boolean overlapping;
+	
 	public float x1;
 	public float y1;
 	public float x2;
@@ -45,10 +47,12 @@ public class Selective_rect extends Dynamic_entity{
 				x1, y2, 0};
 		if (x1 > x2){
 			color = color_1;
+			overlapping = true;
 		}
 		else
 		{
 			color = color_2;
+			overlapping = false;
 		}		
 	}
 
@@ -75,5 +79,8 @@ public class Selective_rect extends Dynamic_entity{
 		color_2 = core.values.selective_rect_color_2;
 		width = core.values.select_rect_width;
 	}
-
+	
+	public boolean get_overlapping() {
+		return overlapping;
+	}
 }
