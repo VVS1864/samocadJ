@@ -41,9 +41,19 @@ public class ShapeCircle extends Shape {
 	
 	@Override
 	public void addLines() {
+		Coord point1 = new Coord(theCenter.getX(), theCenter.getY()-Radius);
+		Coord point2 = new Coord(theCenter.getX(), theCenter.getY()+Radius);
+		Coord point3 = new Coord(theCenter.getX()-Radius, theCenter.getY());
+		Coord point4 = new Coord(theCenter.getX()+Radius, theCenter.getY());
 		create_circle();
 		// Snap center
 		add_snap_point(new SnapCoord(SnapType.MidPoint, theCenter));
+		
+		add_snap_point(new SnapCoord(SnapType.MidPoint, point1));
+		add_snap_point(new SnapCoord(SnapType.MidPoint, point2));
+		add_snap_point(new SnapCoord(SnapType.MidPoint, point3));
+		add_snap_point(new SnapCoord(SnapType.MidPoint, point4));
+		
 		add_snap_circle(new Circle(theCenter, Radius));
 	}
 	

@@ -41,7 +41,6 @@ public class Mouse_select {
 						r.get_y_max(), core.global.theShapes);
 			}
 			make_new_collection(current_Shapes, shift_down);
-
 			
 		}
 	}

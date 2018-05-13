@@ -32,16 +32,17 @@ public class Clip_algorithm {
 			float yTR, Map<Integer, Shape> theShapes) {
 
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
-		System.out.println("simple");
 		for (Shape shape : theShapes.values()) {
 			List<SnapCoord> midPoints = shape.getSnapPoints(SnapType.MidPoint);
 			if (midPoints.size() > 0) {
-				SnapCoord snap_point = midPoints.get(0);
-				float x = snap_point.getX();
-				float y = snap_point.getY();
-				if ((xBL < x && x < xTR) && (yBL < y && y < yTR)) {
-					ReturnableShapes.add(shape);
-					continue;
+				for (SnapCoord snap_point : midPoints) {//Edited by Vlad, find more then 1 midpoint
+					//SnapCoord snap_point = midPoints.get(0);
+					float x = snap_point.getX();
+					float y = snap_point.getY();
+					if ((xBL < x && x < xTR) && (yBL < y && y < yTR)) {
+						ReturnableShapes.add(shape);
+						continue;
+					}
 				}
 			}
 
@@ -120,7 +121,6 @@ public class Clip_algorithm {
 	public static LinkedList<Shape> enclose_clip(float xBL, float yBL,
 			float xTR, float yTR, Map<Integer, Shape> theShapes) {
 		LinkedList<Shape> ReturnableShapes = new LinkedList<Shape>();
-		System.out.println("over");
 		for (Shape shape : theShapes.values()) {
 			for (Line snap_line : shape.getSnapLines()) {
 				Coord c1 = snap_line.getC1();
