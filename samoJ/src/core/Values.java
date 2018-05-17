@@ -1,10 +1,13 @@
 package core;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import open_dxf_lib.Color_rgb;
 import open_dxf_lib.dash_type;
+import samoJ.Shape;
 import samoJ.SnapType;
 
 public class Values {
@@ -27,14 +30,10 @@ public class Values {
 	public int width = 1;
 	public int dynamic_width = 2;
 	public int select_rect_width = 1;
-
-	public String[] line_types = new String[]{
-			"_____________",
-			"_ _ _ _ _ _ _",
-			"____ _ ____ _",
-			"____ _ _ ____",
-	};
-
+	
+	public Map<String, dash_type> dash_types = new HashMap<String, dash_type>();
+	
+	
 	public String[] line_widths = new String[]{
 			"1",
 			"2",
@@ -100,6 +99,10 @@ public class Values {
 	public boolean ortho_flag = false;
 	
 	public Values() {
+		dash_types.put("_____________", dash_type.Continuous);
+		dash_types.put("_ _ _ _ _ _ _", dash_type.DASHED);
+		dash_types.put("____ _ ____ _", dash_type.CENTER);
+		dash_types.put("____ _ _ ____", dash_type.PHANTOM);
 		//TODO load values from config
 	}
 	

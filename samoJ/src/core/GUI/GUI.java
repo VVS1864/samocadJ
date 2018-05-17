@@ -36,6 +36,7 @@ import core.GUI.styles.line_style;
 import core.GUI.styles.text_style;
 import modules.Standart;
 import modules.Standart_functions;
+import open_dxf_lib.dash_type;
 import modules.MakeButton;
 
 public class GUI {
@@ -53,6 +54,9 @@ public class GUI {
 	public  JDialog dim_style;
 	public  JDialog line_style;
 	public  JDialog text_style;
+	
+	private JComboBox combo_width;
+	private JComboBox combo_line_type;
 	
 	public JButton button_trace;
 	
@@ -126,6 +130,20 @@ public class GUI {
 			}
 		};
 		
+		// Action listeners combo width
+		ActionListener combo_width_action_listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				width_action();
+			}
+		};
+		// Action listeners combo width
+		ActionListener combo_line_type_action_listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				line_type_action();
+			}
+		};
 //Addition standard button bars
 		Standart.addButtonsBar(jframe);
 		Standart_functions.addButtonsBar(jframe);
@@ -179,14 +197,15 @@ public class GUI {
 		button_color.setMaximumSize(new Dimension(60, 40));
 		JLabel label_width = MakeButton.makeLabel("width.gif", "Width");
 		
-		JComboBox combo_width = new JComboBox(core.values.line_widths); 
+		combo_width = new JComboBox(core.values.line_widths); 
 		combo_width.setMaximumSize(new Dimension(60, 30));
 		combo_width.setSelectedIndex(0);
+		combo_width.addActionListener(combo_width_action_listener);
 		
-		
-		JComboBox combo_line_type = new JComboBox(core.values.line_types); 
+		combo_line_type = new JComboBox(core.values.dash_types.keySet().toArray()); 
 		combo_line_type.setSelectedIndex(0);
 		combo_line_type.setMaximumSize(new Dimension(120, 30));
+		combo_line_type.addActionListener(combo_line_type_action_listener);
 		
 		JLabel label_text_size = MakeButton.makeLabel("text_size.gif", "Text size");
 		
@@ -410,6 +429,14 @@ public class GUI {
 	
 	private void trace_action() {
 		core.values.trace_flag = but_swich(button_trace, core.values.trace_flag);
+	}
+	
+	private void width_action() {
+		core.values.width = Integer.parseInt(core.values.line_widths[combo_width.getSelectedIndex()]);
+	}
+	
+	private void line_type_action() {
+		core.values.current_dash = core.values.dash_types.get(combo_line_type.getSelectedItem());
 	}
 	
 	private boolean but_swich(JButton button, boolean flag) {
