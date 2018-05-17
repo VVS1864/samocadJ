@@ -15,6 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -36,6 +37,8 @@ import core.GUI.styles.line_style;
 import core.GUI.styles.text_style;
 import modules.Standart;
 import modules.Standart_functions;
+import open_dxf_lib.Color_dxf;
+import open_dxf_lib.Color_rgb;
 import open_dxf_lib.dash_type;
 import modules.MakeButton;
 
@@ -57,6 +60,7 @@ public class GUI {
 	
 	private JComboBox combo_width;
 	private JComboBox combo_line_type;
+	private JButton button_color;
 	
 	public JButton button_trace;
 	
@@ -144,6 +148,13 @@ public class GUI {
 				line_type_action();
 			}
 		};
+		// Action listeners combo width
+		ActionListener button_color_action_listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				set_color_action();
+			}
+		};
 //Addition standard button bars
 		Standart.addButtonsBar(jframe);
 		Standart_functions.addButtonsBar(jframe);
@@ -192,9 +203,10 @@ public class GUI {
 		JButton button_save = MakeButton.makeButton("saveas.gif", "Save", "Save");
 		button_save.addActionListener(save_action_listener);
 		JButton button_open = MakeButton.makeButton("open.gif", "Open", "Open");
-		JButton button_color = MakeButton.makeButton("none", "Current color", " ");
+		button_color = MakeButton.makeButton("none", "Current color", " ");
 		button_color.setBackground(new Color(255, 255, 255));
 		button_color.setMaximumSize(new Dimension(60, 40));
+		button_color.addActionListener(button_color_action_listener);
 		JLabel label_width = MakeButton.makeLabel("width.gif", "Width");
 		
 		combo_width = new JComboBox(core.values.line_widths); 
@@ -438,6 +450,19 @@ public class GUI {
 	private void line_type_action() {
 		core.values.current_dash = core.values.dash_types.get(combo_line_type.getSelectedItem());
 	}
+	
+	private void set_color_action() {
+		Color c = JColorChooser.showDialog(jframe, "Choose a Color", button_color.getBackground());
+	      if (c != null) {
+	    	  Color_dxf c_dxf = new Color_dxf(c.getRed(), c.getGreen(), c.getBlue());
+	    	  core.values.color = new Color_rgb(c_dxf.get_rgb());
+	    	  c = new Color(core.values.color.get_r(), core.values.color.get_g(), core.values.color.get_b());
+	    	  button_color.setBackground(c);
+	      }
+	        
+	}
+		
+	
 	
 	private boolean but_swich(JButton button, boolean flag) {
 		if (flag) {

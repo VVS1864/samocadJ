@@ -13,11 +13,14 @@ public class MakeButton {
 			String toolTipText,
 			String altText){
 		
-	
 		//Look for the image.
-		String imgLocation = "/res/"
+		URL imageURL = null;
+		String imgLocation = "";
+		if(!imageName.equals("none")) {
+		imgLocation = "/res/"
 				+ imageName;
-		URL imageURL = Object.class.getResource(imgLocation);
+		imageURL = Object.class.getResource(imgLocation);
+		}
 		
 		JButton button = new JButton();
 		
