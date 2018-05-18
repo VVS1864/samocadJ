@@ -1,7 +1,11 @@
 package core.GUI;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.swing.JTextField;
 
 import core.Core;
 
@@ -23,19 +27,46 @@ public class GL_key_listener implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_ESCAPE || (key == KeyEvent.VK_ENTER && core.global.draw_new_object == true)){
-			System.out.println("Kill");
-			core.program_state.set_default();
+		Component focus_owner = core.gui.jframe.getMostRecentFocusOwner();
+		if(focus_owner==core.gui.field_text_size) {
+			core.values.text_size = check_double_field(core.gui.field_text_size, core.values.text_size);
 		}
-		else if(key == KeyEvent.VK_ENTER && core.global.draw_new_object == false){
-			if(core.global.old_function == null) {
-				System.out.println("Old function is indefinite yet");
-			}
-			else{
-				core.global.old_function.run();
-				}
+		else if(focus_owner==core.gui.field_dim_text_size) {
+			core.values.dim_text_size = check_double_field(core.gui.field_dim_text_size, core.values.dim_text_size);
+		}
+		else {
 			
+			if (key == KeyEvent.VK_ESCAPE || (key == KeyEvent.VK_ENTER
+					&& core.global.draw_new_object == true)) {
+				System.out.println("Kill");
+				core.program_state.set_default();
+			}
+			else if (key == KeyEvent.VK_ENTER
+					&& core.global.draw_new_object == false) {
+				if (core.global.old_function == null) {
+					System.out.println("Old function is indefinite yet");
+				}
+				else {
+					core.global.old_function.run();
+				}
+
+			}
 		}
+		
+	}
+
+	private double check_double_field(JTextField field, double current_value) {
+		String str = field.getText();
+		
+		double new_value = current_value;
+		try {
+			new_value = Double.parseDouble(str);
+			field.setBackground(Color.WHITE);
+		}
+		catch(NumberFormatException ex) {
+			field.setBackground(Color.RED);
+		}
+		return new_value;
 		
 	}
 }

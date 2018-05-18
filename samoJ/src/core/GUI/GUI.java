@@ -39,7 +39,6 @@ import modules.Standart;
 import modules.Standart_functions;
 import open_dxf_lib.Color_dxf;
 import open_dxf_lib.Color_rgb;
-import open_dxf_lib.dash_type;
 import modules.MakeButton;
 
 public class GUI {
@@ -57,10 +56,15 @@ public class GUI {
 	public  JDialog dim_style;
 	public  JDialog line_style;
 	public  JDialog text_style;
+	private JDialog color_chooser_dialog;
 	
 	private JComboBox combo_width;
 	private JComboBox combo_line_type;
 	private JButton button_color;
+	private Color_chooser color_chooser;
+	
+	public JTextField field_text_size;
+	public JTextField field_dim_text_size;
 	
 	public JButton button_trace;
 	
@@ -221,15 +225,15 @@ public class GUI {
 		
 		JLabel label_text_size = MakeButton.makeLabel("text_size.gif", "Text size");
 		
-		JTextField text_size = new JTextField();
-		text_size.setText(Integer.toString(core.values.text_size));
-		text_size.setMaximumSize(new Dimension(60, 30));
+		field_text_size = new JTextField();
+		field_text_size.setText(Double.toString(core.values.text_size));
+		field_text_size.setMaximumSize(new Dimension(60, 30));
 				
 		JLabel label_dim_text_size = MakeButton.makeLabel("dim_size.gif", "Dimention size");
 		
-		JTextField dim_text_size = new JTextField();
-		dim_text_size.setText(Integer.toString(core.values.dim_text_size));
-		dim_text_size.setMaximumSize(new Dimension(60, 30));
+		field_dim_text_size = new JTextField();
+		field_dim_text_size.setText(Double.toString(core.values.dim_text_size));
+		field_dim_text_size.setMaximumSize(new Dimension(60, 30));
 		
 		JButton button_undo = MakeButton.makeButton("undo.gif", "Undo", "Undo");
 		
@@ -254,12 +258,12 @@ public class GUI {
 		top_panel.add(Box.createHorizontalStrut(g));
 		
 		top_panel.add(label_text_size);
-		top_panel.add(text_size);
+		top_panel.add(field_text_size);
 		
 		top_panel.add(Box.createHorizontalStrut(g));
 		
 		top_panel.add(label_dim_text_size);
-		top_panel.add(dim_text_size);
+		top_panel.add(field_dim_text_size);
 		
 		top_panel.add(Box.createHorizontalStrut(g));
 		
@@ -428,6 +432,12 @@ public class GUI {
 		for (Component c : trace_panel.getComponents()) {
 			c.addKeyListener(core.key);
 		}
+		for (Component c : bot_panel.getComponents()) {
+			c.addKeyListener(core.key);
+		}
+		for (Component c : cmd_panel.getComponents()) {
+			c.addKeyListener(core.key);
+		}
 		
 		jframe.setVisible(true);
 		
@@ -452,14 +462,34 @@ public class GUI {
 	}
 	
 	private void set_color_action() {
-		Color c = JColorChooser.showDialog(jframe, "Choose a Color", button_color.getBackground());
-	      if (c != null) {
-	    	  Color_dxf c_dxf = new Color_dxf(c.getRed(), c.getGreen(), c.getBlue());
-	    	  core.values.color = new Color_rgb(c_dxf.get_rgb());
-	    	  c = new Color(core.values.color.get_r(), core.values.color.get_g(), core.values.color.get_b());
-	    	  button_color.setBackground(c);
-	      }
-	        
+		// Action listeners OK in color chooser
+		ActionListener OK_color_action_listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Color c = color_chooser.getColor();
+				if (c != null) {
+					Color_dxf c_dxf = new Color_dxf(c.getRed(), c.getGreen(),
+							c.getBlue());
+					core.values.color = new Color_rgb(c_dxf.get_rgb());
+					c = new Color(core.values.color.get_r(),
+							core.values.color.get_g(),
+							core.values.color.get_b());
+					button_color.setBackground(c);
+				}
+			}
+		};
+		if (color_chooser_dialog == null) {
+			color_chooser = new Color_chooser();
+			color_chooser_dialog = JColorChooser.createDialog(jframe, "Color Chooser",
+	                true, color_chooser, OK_color_action_listener, null);
+		}
+		
+		if (color_chooser_dialog.isVisible()) {
+			color_chooser_dialog.setVisible(false);
+		}
+		else {
+			color_chooser_dialog.setVisible(true);
+		}
 	}
 		
 	

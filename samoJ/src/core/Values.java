@@ -41,10 +41,10 @@ public class Values {
 			"4",
 	};
 
-	public int text_size = 350;
+	public double text_size = 350;
 	public double text_width_factor = 1.4;
 	
-	public int dim_text_size = 350;
+	public double dim_text_size = 350;
 
 	public int dim_text_offset = 50;
 	public int dim_arrowhead_size = 100;
