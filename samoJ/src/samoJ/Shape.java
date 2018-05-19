@@ -192,9 +192,14 @@ public abstract class Shape {
 	}
 	
 	public void delShape(){
-		for (DrawableLine p : PrimLines) {
-			p.delDrawableLine();
+		if (mode == ObjectMode.New_object) {
+			for (DrawableLine p : PrimLines) {
+				p.delDrawableLine();
+			}
+			core.global.theShapes.remove(ID);
 		}
+		
+		
 			
 	}
 

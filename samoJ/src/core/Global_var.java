@@ -1,6 +1,7 @@
 package core;
 
 
+import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 

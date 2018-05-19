@@ -14,9 +14,8 @@ public class Mouse_select {
 		Selective_rect r = core.global.selective_rect;
 		if (r.enable == false) {
 			// If current shape under cursor
-			if (!core.global.current_Shape.get_collection().isEmpty()) {
-				LinkedList<Shape> current_Shapes = core.global.current_Shape
-						.get_collection();
+			if (!core.global.current_Shape.get_shapes().isEmpty()) {
+				LinkedList<Shape> current_Shapes = core.global.current_Shape.get_shapes();
 				make_new_collection(current_Shapes, shift_down);
 				
 			}
@@ -49,7 +48,7 @@ public class Mouse_select {
 			boolean shift_down) {
 		LinkedList<Shape> new_collection = new LinkedList<Shape>();
 		LinkedList<Shape> old_collection = core.global.collection
-				.get_collection();
+				.get_shapes();
 		new_collection.addAll(old_collection);
 		if (!shift_down) {
 			for (Shape new_sh : current_Shapes) {

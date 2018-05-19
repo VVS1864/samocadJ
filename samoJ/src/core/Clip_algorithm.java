@@ -35,15 +35,18 @@ public class Clip_algorithm {
 		for (Shape shape : theShapes.values()) {
 			List<SnapCoord> midPoints = shape.getSnapPoints(SnapType.MidPoint);
 			if (midPoints.size() > 0) {
-				for (SnapCoord snap_point : midPoints) {//Edited by Vlad, find more then 1 midpoint
+				boolean continue_flag = false;
+				for (SnapCoord snap_point : midPoints) {
 					//SnapCoord snap_point = midPoints.get(0);
 					float x = snap_point.getX();
 					float y = snap_point.getY();
 					if ((xBL < x && x < xTR) && (yBL < y && y < yTR)) {
 						ReturnableShapes.add(shape);
-						continue;
+						continue_flag = true;
+						break;
 					}
 				}
+				if (continue_flag) continue;
 			}
 
 			for (Line snap_line : shape.getSnapLines()) {
@@ -106,7 +109,6 @@ public class Clip_algorithm {
 
 			}
 		}
-
 		return ReturnableShapes;
 	}
 	/**

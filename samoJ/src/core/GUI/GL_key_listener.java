@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 
 import core.Core;
+import core.functions.Delete;
 
 public class GL_key_listener implements KeyListener{
 	private Core core = Core.c;
@@ -41,15 +42,18 @@ public class GL_key_listener implements KeyListener{
 				System.out.println("Kill");
 				core.program_state.set_default();
 			}
-			else if (key == KeyEvent.VK_ENTER
-					&& core.global.draw_new_object == false) {
-				if (core.global.old_function == null) {
-					System.out.println("Old function is indefinite yet");
+			else if (core.global.draw_new_object == false) {
+				if (key == KeyEvent.VK_ENTER) {
+					if (core.global.old_function == null) {
+						System.out.println("Old function is indefinite yet");
+					}
+					else {
+						core.global.old_function.run();
+					}
 				}
-				else {
-					core.global.old_function.run();
+				else if (key == KeyEvent.VK_DELETE && !core.global.collection.get_shapes().isEmpty()) {
+					new Delete().delete(core.global.collection.get_shapes());
 				}
-
 			}
 		}
 		

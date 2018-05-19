@@ -35,8 +35,10 @@ public class Selected extends Dynamic_entity{
 		width = core.values.dynamic_width;
 	}
 	
-	public LinkedList<Shape> get_collection() {
-		return collection;
+	public LinkedList<Shape> get_shapes() {
+		LinkedList<Shape> ret = new LinkedList<Shape>();
+		ret.addAll(collection);
+		return ret;
 	}
 	
 	public void clear() {
