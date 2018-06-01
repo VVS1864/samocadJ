@@ -22,24 +22,24 @@ public class Save_dialog extends JFileChooser{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("DXF 2000 files", "dxf", "dxf files");
 		setFileFilter(filter);
 		
-		
+		String string_mode = "";
 		if(mode == JFileChooser.SAVE_DIALOG){
 			userSelection = showSaveDialog(jframe);
+			string_mode = "saving";
 		}
 		else{
 			userSelection = showOpenDialog(jframe);
+			string_mode = "opening";
 		}
 		
 		 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			selected_file = getSelectedFile().getAbsolutePath();
-		    System.out.println("Save as file: " + selected_file);
-		     
 		}
-		
 		else if(userSelection == JFileChooser.CANCEL_OPTION) {
 		    // file chooser closed  
-			System.out.println("Cancel saving");
+			
+			System.out.println("Cancel " + string_mode);
 			
 		}
 	}

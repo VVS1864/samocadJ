@@ -27,7 +27,7 @@ public class Save_action {
 		DXF_file f = new DXF_file(Mode.New_file, dialog.selected_file);
 		shapes_to_DXF(f);
 		f.save_file();
-		
+		System.out.println("Save as file: " + dialog.selected_file);
 		}
 	}
 	public void shapes_to_DXF(DXF_file f) {

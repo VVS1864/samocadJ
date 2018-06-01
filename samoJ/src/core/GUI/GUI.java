@@ -129,6 +129,13 @@ public class GUI {
 				new Save_action();
 			}
 		};
+		
+		ActionListener open_action_listener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				new Open_action();
+			}
+		};
 
 		//Action listeners trace buttons
 		ActionListener trace_action_listener = new ActionListener(){
@@ -207,6 +214,7 @@ public class GUI {
 		JButton button_save = MakeButton.makeButton("saveas.gif", "Save", "Save");
 		button_save.addActionListener(save_action_listener);
 		JButton button_open = MakeButton.makeButton("open.gif", "Open", "Open");
+		button_open.addActionListener(open_action_listener);
 		button_color = MakeButton.makeButton("none", "Current color", " ");
 		button_color.setBackground(new Color(255, 255, 255));
 		button_color.setMaximumSize(new Dimension(60, 40));
@@ -294,6 +302,7 @@ public class GUI {
 		
 		//Actions menu File
 		item_saveas.addActionListener(save_action_listener);
+		item_open.addActionListener(open_action_listener);
 		
 		item_exit.addActionListener(new ActionListener()
 		  {
